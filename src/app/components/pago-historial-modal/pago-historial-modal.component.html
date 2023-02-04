@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Histórial de Pagos</h1>
+<div mat-dialog-content>
+
+<!--tabla-->
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Forma de Pago</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Monto</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let item of data?.info; let i = index">
+    <tr>
+      <th scope="row">{{i+1}}</th>
+      <td>{{item?.FormaPago}}</td>
+      <td>{{item?.EstadoPago}}</td>
+      <td>${{item?.Monto}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div mat-dialog-actions>
+  <div (click)="cerrar()" class="btn btn-danger" style="margin-right:5px">Cerrar</div>
+</div>

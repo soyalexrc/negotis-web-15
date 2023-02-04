@@ -1,0 +1,41 @@
+<div class="container" *ngIf="showLoginPage == true">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-6">
+      <mat-card class="caja">
+        <div class="titulo">
+          <img width="30" height="30" src="assets/icono-negotis.jpg">
+          <h3>Iniciar Sesión</h3>
+        </div>
+
+        <form [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+          <small *ngIf="postLogin?.Bloqueado == true" class="form-text text-muted">Usuario bloqueado</small>
+          <small *ngIf="postLogin?.Resultado == false" class="form-text text-muted">Email o contraseña incorrecta</small>
+          <div class="form-group">
+            <label>Usuario</label>
+            <input type="email" formControlName="email" class="form-control" placeholder="Ingrese usuario">
+            <small *ngIf="(myForm.get('email')?.hasError('required') || myForm.get('email')?.hasError('email')) && submitted==true"
+              class="form-text text-muted">Ingrese usuario</small>
+          </div>
+          <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" formControlName="password" class="form-control" placeholder="Password">
+            <small *ngIf="myForm.get('password')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese contraseña</small>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="checkbox" formControlName="remember" [(ngModel)]="remember" [value]="remember" class="form-check-input">
+              Mantener la sesión iniciada
+            </label>
+          </div>
+          <button type="submit" class="btn btn-warning">Iniciar Sesión</button>
+        </form>
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+  <div>
+    <a href="{{url}}" class="whatsapp" target="_blank"> <i class="fa fa-whatsapp whatsapp-icon"></i></a>
+  </div>
+</div>

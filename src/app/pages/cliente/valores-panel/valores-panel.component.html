@@ -1,0 +1,150 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container" *ngIf="roles?.FINANZAS == true || rolClienteNegotis == 'true'">
+  <h3 class="title">
+    Panel Valores
+  </h3>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <!--Fecha Desde-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha de Recibo Desde</label>
+          <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+        </div>
+      </div>
+      <!--Fecha Hasta-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha de Recibo Hasta</label>
+          <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Cliente</label>
+          <input type="text" class="form-control" [formControl]="textControl" [(ngModel)]="nombreCliente"
+            (input)=resetKey() [matAutocomplete]="auto" matInput>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOption($event.option.value)"
+            [displayWith]="displayWith">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{ option.RazonSocial }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Vendido A:</label>
+          <input type="text" class="form-control" [(ngModel)]="vendidoA">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha de Vencimiento Desde</label>
+          <input type="text" class="form-control" (click)="fechaVencimientoDesdeFunc()"
+            [(ngModel)]="fechaVencimientoDesde" readonly>
+        </div>
+      </div>
+      <!--Fecha Hasta-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha de Vencimiento Hasta</label>
+          <input type="text" class="form-control" (click)="fechaVencimientoHastaFunc()"
+            [(ngModel)]="fechaVencimientoHasta" readonly>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Estado</label>
+          <input type="text" [formControl]="textControlEstado" [(ngModel)]="nombreEstado" class="form-control"
+            (input)=resetKeyEstado() [matAutocomplete]="auto1" matInput>
+          <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectOptionEstado($event.option.value)"
+            [displayWith]="displayWithEstado">
+            <mat-option *ngFor="let option of filteredOptionsEstado | async" [value]="option">
+              {{ option.key }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <!--Gastos en Todas las Sucursales-->
+  <!--
+    <div class="row">
+    <div class="col-md-4">
+      <mat-card>
+        <div>Gastos de Todas las Sucursales</div>
+        <div>Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}</div>
+        <div>
+          <div>Total Gastos: ${{listadoGasto?.TotalGastoTodasSucursales | number:'1.1-2'}}</div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  -->
+
+
+
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">*</th>
+          <th scope="col">Fecha Venta</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Entregado Por</th>
+          <th scope="col">Vendido A</th>
+          <th scope="col">Librador</th>
+          <th scope="col">Cheque Nro</th>
+          <th scope="col">Plaza</th>
+          <th scope="col">Banco</th>
+          <th scope="col">Vencimiento</th>
+          <th scope="col">Nro Cuenta</th>
+          <th scope="col">Importe</th>
+          <th scope="col">Coste</th>
+          <th scope="col">Ganancia</th>
+          <th scope="col">Recupero</th>
+          <th scope="col">Utilidad</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listado; let i = index">
+        <tr [ngClass]="{'table-danger': getEstado(item?.item?.idEstadoVenta)==null}">
+          <th class="text-center" scope="row">{{i+1}}</th>
+          <td class="text-center">
+            <a routerLink="/cliente/finanzas/valores/editar/{{item.item.id}}"><span class="pointer">Editar</span></a>
+          </td>
+          <td class="text-center">{{item.item.fechaEgresoValor}}</td>
+          <td class="text-center">{{getEstadoNombre(item.item.idEstadoVenta)}}</td>
+          <td class="text-center">{{getClienteNombre(item.item.idCliente)}}</td>
+          <td class="text-center">{{item.item.vendidoA}}</td>
+          <td class="text-center">{{item.item.librador}}</td>
+          <td class="text-center">{{item.item.numero}}</td>
+          <td class="text-center">{{item.item.plaza}}</td>
+          <td class="text-center">{{item.item.banco}}</td>
+          <td class="text-center">{{item.item.fechaVencimiento}}</td>
+          <td class="text-center">{{item.item.cuenta}}</td>
+          <td class="text-center">{{calcularImporte(item.item)}}</td>
+          <td class="text-center">{{fixedRetencionesVenta(item.item)}}</td>
+          <td class="text-center">{{calcularGanancia(item.item)}}</td>
+          <td class="text-center">{{calcularRecupero(item.item)}}</td>
+          <td class="text-center">{{calcularUtilidad(item.item)}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

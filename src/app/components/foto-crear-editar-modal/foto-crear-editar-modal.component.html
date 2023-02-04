@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>
+  Foto
+</h1>
+<div mat-dialog-content>
+  <form *ngIf="post != true" enctype="multipart/form-data" name="myForm" id="myForm">
+    <div [hidden]="!editar">
+      <label class="btn btn-info">
+        Buscar Foto
+        <input id="fileEmpresa" accept="image/*" type='file' value="{{newPhotoEmpresa}}" (change)="readUrlFile($event)"
+          style="display: none;">
+      </label>
+      <label class="btn btn-danger clean" *ngIf="newPhotoEmpresa!=null && submitted!=true" (click)="cleanPhoto()">Limpiar</label>
+      <label class="btn btn-danger clean" *ngIf="newPhotoEmpresa==null && postExist == true" (click)="deletePhoto()">Eliminar Foto
+      </label>
+    </div>
+    <div *ngIf="soloImagenes == true" class="form-text text-muted">
+      Solo cargue imágenes
+    </div>
+    <div class="image-sample">
+      <span class="helper"></span>
+      <img class="image-sample-img" *ngIf="newPhotoEmpresa!=null" [src]="newPhotoEmpresa">
+      <img class="image-sample-img" *ngIf="newPhotoEmpresa==null && delete != true && postExist == true" src="{{imageSourceUri}}">
+    </div>
+  </form>
+  <div *ngIf="post == true">
+    ¡Foto guardada existosamente!
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button (click)="aceptar()" *ngIf="post == true" class="btn btn-success">Aceptar</button>
+  <div (click)="cancel()" *ngIf="post != true" class="btn btn-danger" style="margin-right:5px">Cerrar</div>
+  <button class="btn btn-success" *ngIf="newPhotoEmpresa!=null && submitted!=true && post != true" (click)="savePhoto()"
+    type="submit">Guardar</button>
+</div>

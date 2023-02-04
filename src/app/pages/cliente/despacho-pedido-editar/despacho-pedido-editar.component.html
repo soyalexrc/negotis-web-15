@@ -1,0 +1,194 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-12">
+      <mat-card>
+        <h3 *ngIf="postPedido?.Resultado != true">
+          Despacho
+        </h3>
+        <form *ngIf="postPedido?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <!--datos generales-->
+          <div class="margin-filtro"></div>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              Datos Generales
+            </mat-expansion-panel-header>
+            <div class="row">
+              <!--Cliente (Razon Social)-->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Cliente (Razon Social)</label>
+                  <input title="{{cliente}}" [readonly]="readOnlyCliente" class="form-control"
+                    [matAutocomplete]="autoClient" [formControl]="razonSocialCtrl" [(ngModel)]="cliente">
+                  <mat-autocomplete #autoClient="matAutocomplete">
+                    <mat-option *ngFor="let item of filteredRazonSocial | async"
+                      [value]="item.RazonSocial">
+                      <span>{{item.RazonSocial}}</span>
+                    </mat-option>
+                  </mat-autocomplete>
+                  <br>
+                </div>
+              </div>
+              <!--Sucursal (Cliente)-->
+              <div *ngIf="cliente != 'Mostrador'" class="col-md-3">
+                <div class="form-group">
+                  <label>Sucursal (Cliente)</label>
+                  <select formControlName="idSucursalCliente" class="form-control"
+                    [(ngModel)]="idSucursalCliente">
+                    <option value="">Seleccionar</option>
+                    <option title="{{item.Calle}} {{item.Numero}}, {{item.Barrio}} ({{item.Zona?.Region?.Nombre}})"
+                      *ngFor="let item of clienteSucursales?.ListSucursal" value="{{item.Id}}">{{item.Calle}}
+                      {{item.Numero}}, {{item.Barrio}} ({{item.Zona?.Region?.Nombre}})</option>
+                  </select>
+                </div>
+              </div>
+              <!--Estado de Entrega-->
+              <div *ngIf="cliente != 'Mostrador'" class="col-md-3">
+                <div class="form-group">
+                  <label>Estado de Entrega</label>
+                  <select formControlName="estadoEntrega" class="form-control" [(ngModel)]="estadoEntrega">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let item of estadosEntrega" [ngValue]="item.Id">{{item.Valor}}</option>
+                  </select>
+                </div>
+              </div>
+              <!--Estado de Pago
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Estado de Pago</label>
+                  <select formControlName="mestadoPago" type="text" class="form-control"
+                    [(ngModel)]="estadoPago">
+                    <[option ]ngValue="null">Seleccionar</option>
+                    <option value="PARCIAL">PARCIAL</option>
+                    <option value="TOTAL">TOTAL</option>
+                    <option value="PENDIENTE">PENDIENTE</option>
+                  </select>
+                  <small *ngIf="myForm.get('estadoPago')?.hasError('required') && submitted == true"
+                    class="form-text text-muted">
+                    Ingrese estado de pago
+                  </small>
+                </div>
+              </div>-->
+              <!--Estado de Confirmación-->
+              <div *ngIf="cliente != 'Mostrador' && idPedido != 0" class="col-md-3">
+                <div class="form-group">
+                  <label>Estado de Confirmación</label>
+                  <select formControlName="estadoConfirmacion" class="form-control"
+                    [(ngModel)]="estadoConfirmacion">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let item of estadosConfirmacion" [ngValue]="item.Id">{{item.Valor}}</option>
+                  </select>
+                </div>
+              </div>
+              <!--Fecha Entrega-->
+              <div *ngIf="cliente != 'Mostrador'" class="col-md-3">
+                <div class="form-group">
+                  <label>Fecha Entrega</label>
+                  <div (click)="datePicker()" class="input-group mb-3 pointer">
+                    <input formControlName="fechaEntrega" readonly type="text" class="form-control"
+                      value="{{fechaEntrega}}" [(ngModel)]="fechaEntrega">
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2"><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <small *ngIf="myForm.get('fechaEntrega')?.hasError('required') && submitted == true"
+                    class="form-text text-muted">
+                    Ingrese fecha entrega
+                  </small>
+                </div>
+              </div>
+              <!--Estado de Preparación-->
+              <div *ngIf="cliente != 'Mostrador' && idPedido != 0" class="col-md-3">
+                <div class="form-group">
+                  <label>Estado de Preparación</label>
+                  <select formControlName="estadoPreparacion" class="form-control"
+                    [(ngModel)]="estadoPreparacion">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let item of estadosPreparacion" [ngValue]="item.Id">{{item.Valor}}</option>
+                  </select>
+                </div>
+              </div>
+              <!--Prioridad-->
+              <div *ngIf="cliente != 'Mostrador'" class="col-md-3">
+                <div class="form-group">
+                  <label>Prioridad</label>
+                  <select formControlName="prioridad" class="form-control" [(ngModel)]="prioridad">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let item of prioridades" [ngValue]="item.Id">{{item.Valor}}</option>
+                  </select>
+                  <small *ngIf="myForm.get('prioridad')?.hasError('required') && submitted == true"
+                    class="form-text text-muted">
+                    Ingrese prioridad
+                  </small>
+                </div>
+              </div>
+              <!--Estado de Pedido-->
+              <div *ngIf="cliente != 'Mostrador' && idPedido != 0" class="col-md-3">
+                <div class="form-group">
+                  <label>Estado de Pedido</label>
+                  <select formControlName="estadoPedido" class="form-control" [(ngModel)]="estadoPedido">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let item of estadosPedido" [ngValue]="item.Id">{{item.Valor}}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+            <!--observación-->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Observación</label>
+                  <textarea rows="2" formControlName="observacion" class="form-control"
+                    [(ngModel)]="observacion"></textarea>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+
+          <!--articulos-->
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col"></th>
+                <th scope="col">Espc.</th>
+                <th scope="col">Código</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Rubro</th>
+                <th scope="col">Cat. Rubro</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Stock</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of this.listaArticulo; let i = index">
+              <tr>
+                <th scope="row">{{i+1}}</th>
+                <th scope="row"><span (click)="fotoModal(item.Id)" class="fas fa-image pointer"></span> </th>
+                <td class="pointer" style="color:blue;" (click)="especModal(item?.EspecificacionArt)">Ver</td>
+                <td>{{item.CodigoDeBarras}}</td>
+                <td>{{item.Nombre}}</td>
+                <td>{{item.Marca.Nombre}}</td>
+                <td>{{item.Rubro.Nombre}}</td>
+                <td>{{item.Rubro?.CategoriaRubro?.Nombre}}</td>
+                <td class="pointer cantidad">{{item.Cantidad}}</td>
+                <td>{{item.Stock}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button *ngIf="pedidoCerrado != true" type="submit" class="btn btn-warning">
+            Actualizar
+          </button>
+
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

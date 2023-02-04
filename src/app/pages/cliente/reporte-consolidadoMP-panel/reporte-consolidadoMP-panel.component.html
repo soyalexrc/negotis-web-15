@@ -1,0 +1,147 @@
+<toolbar-two ></toolbar-two>
+<div class="container">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-lg-12">
+    <mat-card>
+        
+     <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              Filtro
+            </mat-expansion-panel-header>
+                <div class="row"> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Filtro libre(Nombre, Código, Marca, Rubro,Talle)</label>
+                      <input type="text" [(ngModel)]="filtroDescripcionArticulo" class="form-control">
+                    </div>
+                  </div>
+            
+                  <!--Fecha Desde
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Categoria Rubro</label>
+                      <input type="text" [(ngModel)]="categoriaNombre" [matAutocomplete]="autoCategoria" class="form-control"
+                      [formControl]="categoriaCtrl" >
+                      <mat-autocomplete #autoCategoria="matAutocomplete">
+                        <mat-option (click)="getCategoria(item)" *ngFor="let item of filteredCategoria | async" [value]="item.Nombre">
+                          <span>{{item.Nombre}}</span>
+                        </mat-option>
+                      </mat-autocomplete>
+
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Estado de Entrega</label>
+                    <select [formControl]="myForm.get('filtroEstadoEntrega')" class="form-control" [(ngModel)]="filtroEstadoEntrega">
+                      <option [ngValue]="0">Seleccionar</option>
+                      <option *ngFor="let item of estadosEntrega" [ngValue]="item.Id">{{item.Valor}}</option>
+                    </select>
+                  </div>
+                  -->
+                  <!--Fecha Desde-->
+                  
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Fecha Desde</label>
+                      <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+                    </div>
+                  </div>
+    
+                  <!--Fecha Hasta-->
+                  
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Fecha Hasta</label>
+                      <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+                    </div>
+                  </div>
+                  <!--
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Vendedor</label>
+                      <input type="text"  class="form-control" [(ngModel)]="vendedorNombres" [matAutocomplete]="autoVendedor"
+                      [formControl]="vendedorCtrl" (ngModelChange)="filtrarVendedor()">
+                      <mat-autocomplete #autoVendedor="matAutocomplete">
+                        <mat-option (click)="getVendedor(item)" *ngFor="let item of filteredVendedor | async" [value]="item.Apellidos || item.RazonSocial">
+                          <span>{{item.RazonSocial}} </span><span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span><span>
+                            ({{item.UserName}})</span>
+                        </mat-option>
+                      </mat-autocomplete>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Lista de Precios (Activas)</label>
+                    <select  class="form-control" [(ngModel)]="idLista" >     
+                      <option [ngValue]="">Seleccionar</option>         
+                      <option (click)="getLista(item);" *ngFor="let item of listadoPrecios" value="{{item?.Id}}">{{item?.Nombre}}
+                      </option>
+                    </select>
+                  </div>
+                  -->
+                  <div class="col-md-3" *ngIf="montoTotalCostos > 0">
+                    <div class="form-group">
+                      <label>Monto Total Costos</label>
+                      <td>${{montoTotalCostos | number:'1.1-2'}}</td>
+                    </div>
+                  </div>
+                </div>
+    
+            <mat-action-row>
+              <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+              <button (click)="cargarModel()" class="btn btn-warning">Buscar</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+          
+
+          
+          <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>            
+                  <th scope="col">Código</th>
+                  <th scope="col">Nombre</th>            
+                  <th scope="col">Marca</th>
+                  <th scope="col">Rubro</th>                 
+                  <th scope="col">Cant. Vendida</th>
+                  <th scope="col">Monto Total</th>     
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of this.reporteModel.listaArticulos; let i = index">
+                <tr>
+                  <th scope="row">{{i+1}}</th>
+                  <td >{{item.CodigoDeBarras}}</td>
+                  <td>{{item.Nombre}}</td> 
+                  <td>{{item.marca}}</td>   
+                  <td>{{item.rubro}}</td>                                            
+                  <td>{{item.Cantidad_Vendida}}</td>
+                  <td>${{item.MontoTotalCosto}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <app-pagination class="mb-3"
+            (goPage)="goToPage($event)"
+            (goNext)="onNext()"
+            (goPrev)="onPrev()"
+            [pagesToShow]="20"
+            [page]="page"
+            [perPage]="limit"
+            [count]="total">
+            </app-pagination>
+            <div>
+              <a target="_blank"
+              href="{{urlImprimir}}" 
+              class="btn btn-primary pdf-btn mb-2">
+              <span>Imprimir Reporte</span>
+            </a>
+          </div>
+          <div style="display:flex; margin-top: 50px;" *ngIf="this.reporteModel.listaArticulos !== undefined && this.reporteModel.listaArticulos.length > 0 ">
+            <a (click)="marcarArticuloMasVendidos(true)"
+                class="btn btn-primary pdf-btn mb-2" style="color: white !important;">Enviar Artículos Más Vendidos
+             </a>
+           </div>
+        </mat-card>
+        </div>
+      <div class="col"></div>
+    </div>
+</div>

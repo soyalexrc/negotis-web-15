@@ -1,0 +1,244 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Despacho Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <mat-card>
+        Id° Pedido (F4)
+        <div style="display:flex">
+          <input #numFactura type="number" class="form-control" [(ngModel)]="numFactEdit">
+          <a *ngIf="numFactEdit != null && numFactEdit != ''" routerLink="/cliente/pedido/editar/{{numFactEdit}}" class="btn btn-warning">Ir
+            a Pedido</a>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <div>
+            <label (click)="fechaVtaFunc($event)"><input type="radio" name="fecha" [checked]="fechaTipoVta"> Fecha
+              Venta</label>
+          </div>
+          <div>
+            <label (click)="fechaEntregaFunc($event)"><input type="radio" name="fecha" [checked]="fechaTipoEntrega">
+              Fecha
+              de Entrega</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!--vendedor-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Vendedor</label>
+          <input type="text" (keyup)="resetVendedor()" class="form-control" [matAutocomplete]="autoVendedor"
+            [formControl]="vendedorCtrl" [(ngModel)]="vendedor">
+          <mat-autocomplete #autoVendedor="matAutocomplete">
+            <mat-option (click)="getVendedor(item)" *ngFor="let item of filteredVendedor | async" [value]="item.Apellidos || item.RazonSocial">
+              <span>{{item.RazonSocial}} </span><span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span><span>
+                ({{item.UserName}})</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <!--cliente-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Cliente</label>
+          <input type="text" (keyup)="resetCliente()" class="form-control" [matAutocomplete]="autoCliente"
+            [formControl]="clienteCtrl" [(ngModel)]="cliente">
+          <mat-autocomplete #autoCliente="matAutocomplete">
+            <mat-option (click)="getCliente(item)" *ngFor="let item of filteredCliente | async" [value]="item.RazonSocial">
+              <span>{{item.RazonSocial}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <!--sucursal cliente-->
+      <div *ngIf="clienteSucursales != null" class="col-md-3">
+        <div class="form-group">
+          <label>Sucursal Cliente</label>
+          <select class="form-control" [(ngModel)]="idSucursalCliente">
+            <option value="">Seleccionar</option>
+            <option *ngFor="let item of clienteSucursales?.ListSucursal" value="{{item.Id}}">{{item.Calle}}</option>
+          </select>
+        </div>
+      </div>
+      <!--Estado Entrega-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Entrega</label>
+          <select class="form-control" [(ngModel)]="estadoEntrega">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosEntrega" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+      <!--Estado Pago-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Pago</label>
+          <select type="text" class="form-control" [(ngModel)]="estadoPago">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosPago" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+      <!--Estado Confirmación-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Confirmación</label>
+          <select class="form-control" [(ngModel)]="estadoConfirmacion">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosConfirmacion" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+      <!--Fecha Desde-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Desde</label>
+          <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+        </div>
+      </div>
+      <!--Fecha Hasta-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Hasta</label>
+          <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+        </div>
+      </div>
+      <!--Estado Confirmación-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Preparación</label>
+          <select class="form-control" [(ngModel)]="estadoPreparacion">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosPreparacion" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+      <!--Prioridad-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Prioridad</label>
+          <select class="form-control" [(ngModel)]="prioridad">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of prioridades" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+      <!--Estado Pedido-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado de Pedido</label>
+          <select class="form-control" [(ngModel)]="estadoPedido">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosPedido" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+      <!--Zona (Cliente)-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Zona (Cliente)</label>
+          <input type="text" (keyup)="resetZona()" class="form-control" [matAutocomplete]="autoZona" [formControl]="zonaCtrl"
+            [(ngModel)]="zona">
+          <mat-autocomplete #autoZona="matAutocomplete">
+            <mat-option (click)="getZona(item)" *ngFor="let item of filteredZona | async" [value]="item.Nombre">
+              <span>{{item.Nombre}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <!--Región (Cliente)-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Región (Cliente)</label>
+          <input type="text" (keyup)="resetRegion()" class="form-control" [matAutocomplete]="autoRegion" [formControl]="regionCtrl"
+            [(ngModel)]="region">
+          <mat-autocomplete #autoRegion="matAutocomplete">
+            <mat-option (click)="getRegion(item)" *ngFor="let item of filteredRegion | async" [value]="item.Nombre">
+              <span>{{item.Nombre}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+    </div>
+
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <!--tabla-->
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Id° Pedido</th>
+          <th scope="col">N° Fact.</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Sucursal Cliente</th>
+          <th scope="col">Vendedor</th>
+          <th scope="col">Sucursal Empresa</th>
+          <th scope="col">Prioridad</th>
+          <th scope="col">Estado Pedido</th>
+          <th scope="col">Estado Preparacion</th>
+          <th scope="col">Estado Entrega</th>
+          <th scope="col">Estado Pago</th>
+          <!--<th scope="col">Estado Comisión</th>-->
+          <th scope="col">Estado Confirmación</th>
+          <th scope="col">Fecha Entrega</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of pedidoLista?.Pedidos; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td style="text-align:center;">{{item?.Id}}</td>
+          <td style="text-align:center;"><span *ngIf="item?.NumeroFactura != null">{{item?.NumeroFactura}}</span></td>
+          <td>{{item?.Cliente?.RazonSocial}}</td>
+          <td>
+            <span *ngIf="item?.Cliente?.RazonSocial != 'Mostrador'">{{item?.SucursalCliente?.Calle}}
+              {{item?.SucursalCliente?.Numero}}, {{item?.SucursalCliente?.Barrio}}
+              ({{item?.SucursalCliente?.Zona?.Region?.Nombre}})
+            </span>
+          </td>
+          <td>
+            <span *ngIf="item?.Vendedor?.ClienteNegotis != true">{{item?.Vendedor.Apellidos}}
+              {{item?.Vendedor.Nombres}}</span>
+            <span *ngIf="item?.Vendedor?.ClienteNegotis == true">{{item?.Vendedor.RazonSocial}}</span>
+          </td>
+          <td>
+            {{item.Sucursal.Calle}} {{item.Sucursal.Numero}}, {{item.Sucursal.Barrio}}
+          </td>
+          <td>{{item?.Prioridad}}</td>
+          <td>{{item?.EstadoPedido}}</td>
+          <td>{{item?.EstadoPreparacion}}</td>
+          <td>{{item?.EstadoEntrega}}</td>
+          <td>{{item?.LastPedidoPago?.EstadoPago}}</td>
+          <!--<td>{{item?.EstadoComision}}</td>-->
+          <td>{{item?.EstadoConfirmacion}}</td>
+          <td>{{item?.FechaEntrega}}</td>
+          <td><a routerLink="/cliente/despacho/pedido/editar/{{item.Id}}"><span class="pointer">Ver</span></a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

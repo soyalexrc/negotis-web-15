@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Seleccione Estado</h1>
+<div mat-dialog-content>
+  <!--Estado Comisión-->
+  <div class="form-group">
+    <label>Estado Comisión</label>
+    <select class="form-control" [(ngModel)]="estadoComision">
+      <option [ngValue]="null">Seleccionar</option>
+      <option *ngFor="let item of estadosComision" [ngValue]="item.Id">{{item.Valor}}</option>
+    </select>
+    <small *ngIf="valEstadoVacio == true" class="form-text text-muted">
+      Ingrese estado de Comisión
+    </small>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button (click)="cancelar()" style="margin-right:10px;" class="btn btn-danger">Cancelar</button>
+  <button (click)="aceptar()" class="btn btn-warning">Aceptar</button>
+</div>

@@ -1,0 +1,84 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idGasto == 0">Crear</span>
+          <span *ngIf="idGasto != 0">Editar</span>
+          Gasto
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <div class="form-group">
+            <label>Gasto</label>
+            <input type="text" formControlName="gasto" class="form-control" [(ngModel)]="gasto">
+            <small *ngIf="myForm.get('gasto')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese gasto
+            </small>
+          </div>
+
+          <div class="form-group">
+            <div class="form-group">
+              <label>Categoria</label>
+
+              <input type="text" formControlName="autocomplete" class="form-control"
+                [(ngModel)]="autocomplete" (input)=resetKey() [matAutocomplete]="auto" matInput>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOption($event.option.value)"
+                [displayWith]="displayWith">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                  {{ option.key }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Fecha Gasto</label>
+            <input type="text" class="form-control" (click)="fechaFunc()" [(ngModel)]="fechaGasto" formControlName="fechaGasto" readonly>
+          </div>
+
+
+          <div class="form-group">
+            <label>Monto</label>
+            <input type="number" formControlName="monto" class="form-control" [(ngModel)]="monto">
+            <small *ngIf="(myForm.get('monto')?.hasError('required') || myForm.get('monto')?.hasError('pattern'))
+            && submitted==true" class="form-text text-muted">
+              Ingrese monto mayor o igual a 0
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label>Cliente</label>
+            <textarea rows="1" formControlName="cliente" class="form-control"
+              [(ngModel)]="cliente"></textarea>
+          </div>
+
+
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea rows="4" formControlName="descripcion" class="form-control"
+              [(ngModel)]="descripcion"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+          <div *ngIf="idGasto != 0">
+            <a href="{{globalServ?.urlApi}}/ApiGasto/ImprimirIndividual?idGasto={{idGasto}}&idClienteNegotis={{idClienteNegotis}}&token={{token}}"
+
+            target="_blank"  class="btn btn-success btn-factura">
+            <span>Imprimir Gasto</span>
+          </a>
+        </div>
+        </form>
+
+        <div *ngIf="turnoCaja">
+          <label style="color: blue">Turno : {{this.turno}}</label>
+        </div>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Comisión Panel
+  </h3>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Empleado</label>
+          <input class="form-control" (keyup)="resetEmpleado()" [matAutocomplete]="autoEmpl" [formControl]="empleadoCtrl"
+            [(ngModel)]="empleado">
+          <mat-autocomplete #autoEmpl="matAutocomplete">
+            <mat-option (click)="getEmpelado(item)" *ngFor="let item of filteredEmpleado | async" [value]="item.Apellidos || item.RazonSocial">
+             <span>{{item.RazonSocial}} </span><span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span><span> ({{item.UserName}})</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Desde</label>
+          <input (click)="getFechaDesde()" type="text" class="form-control" [(ngModel)]="fechaDesde" readonly>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Hasta</label>
+          <input (click)="getFechaHasta()" type="text" class="form-control" [(ngModel)]="fechaHasta" readonly>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado de Comisión</label>
+          <select class="form-control" [(ngModel)]="estadoComision">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosComision" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <div>
+    <!--Totales-->
+    <div *ngIf="mostrarTotal == true" class="col-md-4">
+      <mat-card>
+        <div class="form-group">
+          <label>Total Comisión: ${{sumaTotalComision | number:'1.1-2'}}</label>
+        </div>
+        <div class="form-group">
+          <select class="form-control" [(ngModel)]="estComSleccionados">
+            <option [ngValue]="null" ]="">Seleccionar</option>
+            <option *ngFor="let item of estadosComision" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+          <div style="margin-top:10px" *ngIf="estComSleccionados != ''">
+            <button (click)="saveSeleccionados()" class="btn btn-warning">Guardar</button>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col"><span class="pointer" (click)="checkAll()" title="Check todos">Check</span></th>
+          <th scope="col">Vendedor</th>
+          <th scope="col">Sucursal</th>
+          <th scope="col">Comisión Total</th>
+          <th scope="col">EstadoComision</th>
+          <th scope="col">Fecha Creación</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of comisionList; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <th scope="row"><input (change)="check(item,$event)" type="checkbox" [checked]="item.checked">
+          <td>
+            <span *ngIf="item?.Vendedor?.Apellidos != null">{{item?.Vendedor?.Apellidos}} {{item?.Vendedor?.Nombres}}</span>
+            <span *ngIf="item?.Vendedor?.RazonSocial != null">{{item?.Vendedor?.RazonSocial}}</span>
+          </td>
+          <td>{{item?.Sucursal?.Calle}} {{item?.Sucursal?.Numero}}, {{item?.Sucursal?.Barrio}},
+            {{item?.Sucursal?.Zona?.Nombre}}</td>
+          <th>{{item?.ComisionTotal}}</th>
+          <th class="resaltar pointer">
+            <span (click)="cambiarEstado(item)" *ngIf="item?.CodigoEstadoComision != null">{{item?.EstadoComision}}</span>
+            <span (click)="cambiarEstado(item)" *ngIf="item?.CodigoEstadoComision === null">Seleccionar</span>
+          </th>
+          <td>{{item?.FechaCracion}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

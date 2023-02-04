@@ -1,0 +1,62 @@
+<toolbar-one *ngIf="idUser != null"></toolbar-one>
+<toolbar-two *ngIf="idUser == null"></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    {{data?.RazonSocial}} <span *ngIf="data?.NombreFantasia != null">({{data?.NombreFantasia}})</span> 
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a *ngIf="idUser != null" routerLink="/superadmin/clientenegotis/sucursal/crear/{{idUser}}">
+        <mat-card class="pointer">
+          Agregar Sucursal
+        </mat-card>
+      </a>
+      <a *ngIf="idUser == null" routerLink="/cliente/sucursal/crear/{{idCliente}}">
+        <mat-card class="pointer">
+          Agregar Sucursal
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Calle</th>
+          <th scope="col">Número</th>
+          <th scope="col">Barrio</th>
+          <th *ngIf="idUser == null" scope="col">Zona</th>
+          <th *ngIf="idUser == null" scope="col">Región</th>
+          <th *ngIf="idUser != null" scope="col">Punto de Vta</th>
+          <th scope="col">*</th>
+          <th *ngIf="idUser != null" scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of data?.ListSucursal; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item?.Calle}}</td>
+          <td>{{item?.Numero}}</td>
+          <td>{{item?.Barrio}}</td>
+          <td *ngIf="idUser == null">{{item?.Zona?.Nombre}}</td>
+          <td *ngIf="idUser == null">{{item?.Zona?.Region?.Nombre}}</td>
+          <td *ngIf="idUser != null">{{item?.PuntoDeVenta}}</td>
+          <td *ngIf="idUser == null"><a routerLink="/cliente/sucursal/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
+          <td>
+            <span (click)="borrar(item)" class="fas fa-trash-alt pointer"></span>
+          </td>
+          <td *ngIf="idUser != null"><a routerLink="/superadmin/clientenegotis/sucursal/editar/{{item.Id}}/{{item?.IdUser}}"><span class="pointer">Editar</span></a></td>
+          <td *ngIf="idUser != null"><span (click)="deshabilitar(item)" style="cursor:pointer;color:blue">
+            <span *ngIf="item?.Deshabilitar == null">Deshabilitar</span>
+            <span *ngIf="item?.Deshabilitar == true">Habilitar</span>
+          </span>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

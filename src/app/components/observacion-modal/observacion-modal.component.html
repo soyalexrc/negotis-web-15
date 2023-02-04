@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>
+    Descripcion Artículo
+  </h1>
+  <div mat-dialog-content>
+    <div class="form-group">
+        <label>Observación</label>
+        <textarea rows="4"  [(ngModel)]="observacion"  class="form-control"
+          ></textarea>
+      </div>
+  </div>
+  <div mat-dialog-actions>
+    <button (click)="cerrar()" class="btn btn-danger">Cerrar</button>
+    <button (click)="onSubmit()"class="btn btn-warning">Guardar</button>
+  </div>

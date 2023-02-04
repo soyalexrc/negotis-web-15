@@ -1,0 +1,101 @@
+<toolbar-two ></toolbar-two>
+
+
+<div class="container">
+  <h3 class="title">
+    Alarma Stock
+  </h3>
+  <!--filtro-->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">    
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Filtro libre(Nombre, Código, Marca, Rubro,Talle,Proveedor)</label>
+          <input type="text" [(ngModel)]="filtroDescripcionArticulo" class="form-control">
+        </div>
+      </div> 
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Estado</label>
+            <select type="text" [(ngModel)]="filtroEstado" class="form-control">
+              <option [ngValue]="false">Ambos</option>
+              <option [ngValue]="1">Activo</option>
+              <option [ngValue]="0">Inactivo</option>
+            </select>
+          </div>
+
+    <mat-action-row>
+        <button (click)="cargarModel()" class="btn btn-warning">Buscar</button>
+      </mat-action-row>
+
+    </div>
+  </div>
+</mat-expansion-panel>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>   
+          <th scope="col">ArtÍculo</th>
+          <th scope="col">Marca</th>
+          <th scope="col" >Precio Costo</th>
+          <th scope="col">Precio</th>
+          <th scope="col" >Unidades</th>
+          <th scope="col">Rubro</th>
+          <th scope="col">Proveedor</th>
+          <th scope="col">Categoría Rubro</th>
+          <th scope="col" *ngIf="visualizarCantidadXPackHabilitado">Cant. x Pack</th>
+          <th scope="col" *ngIf="visualizarIDEstadoHabilitado">Estado</th>          
+          <th scope="col">Código</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of alarmaLista.listaArticulos; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.Nombre}}</td>
+          <td>{{item.Marca}}</td>
+          <td >
+            {{item.PrecioCosto}}
+          </td>
+          <td >
+            {{item.PrecioBase | number:'1.1-2'}}
+          </td>          
+          <td class="cant-art">
+            {{item.CantidadArticulo}}
+          </td>
+          <td>{{item.Rubro}}</td>
+          <td >{{item.Proveedor}}</td>
+          <td>{{item.CategoriaRubro}}</td>
+          <td *ngIf="visualizarCantidadXPackHabilitado"><span >{{item.CantidadPorPack}}</span></td>
+          <td *ngIf="visualizarIDEstadoHabilitado">
+            <span *ngIf="item.Estado == true" class="estado-A">Activo</span>
+            <span *ngIf="item.Estado != true" class="cant-art">Inactivo</span>
+          </td>
+          <td>
+            {{item.CodigoDeBarras}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination class="mb-3"
+    (goPage)="goToPage($event)"
+    (goNext)="onNext()"
+    (goPrev)="onPrev()"
+    [pagesToShow]="20"
+    [page]="page"
+    [perPage]="limit"
+    [count]="total">
+    </app-pagination>
+    <div>
+      <a target="_blank"
+    href="{{urlImprimir}}" 
+      class="btn btn-primary pdf-btn mb-2">
+      <span>Imprimir Reporte</span>
+    </a>
+  </div>
+  </div>
+</div>

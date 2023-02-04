@@ -1,0 +1,101 @@
+<div class="fullscreen">
+<h1 mat-dialog-title>
+  Agregar Artículo
+</h1>
+<div mat-dialog-content>
+  <!--filtro-->
+    <div class="row">
+      <div >
+        <div class="form-group">
+          <label>Filtro (nombre, código, marca, rubro)</label>
+          <input type="text" [(ngModel)]="filtroDescripcionArticulo" #descripcionArticulo class="form-control">
+        </div>
+      </div>
+    </div>
+   <div >
+    <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+    <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    <!--tabla-->
+    <table class="table">
+      <!--<div class="sticky">-->
+      <thead>
+        <tr>
+          <!--<th scope="col">#</th>-->
+          <th scope="col" class="sticky"></th>
+          <th scope="col" class="sticky">ArtÍculo</th>
+          <th scope="col" class="sticky">Marca</th>
+          <th scope="col" class="sticky">Precio</th>
+          <!-- <th scope="col" class="sticky" *ngIf="this.fatman">Precio En Pesos</th>       -->
+          <th scope="col" *ngIf="tieneRolOcultarRubro == false" class="sticky">Rubro</th>
+          <th scope="col" *ngIf="tieneRolCliente != true" class="sticky">Stock</th>
+          <th scope="col" *ngIf="tieneRolVisualizarCategoria" class="sticky">Cat. Rubro</th>
+          <th scope="col" *ngIf="tieneRolVisualizarCantXPack || tieneRolComboOferta" class="sticky">Cant. x Pack</th>
+          <th scope="col" *ngIf="tieneRolComboOferta || visualizarPrecioOferta" class="sticky">Precio Oferta</th>
+          <th scope="col" *ngIf="tieneRolVisualizarOfertas" class="sticky">Acciones</th>
+          <th scope="col" class="sticky">Código</th>
+          <th scope="col" *ngIf="tieneRolVisualizarTalle" class="sticky">Talle</th>
+          <th scope="col" *ngIf="tieneRolVisualizarColor" class="sticky">Color</th>
+        </tr>
+      </thead>
+   <!-- </div>-->
+      <tbody *ngFor="let item of listado; let i = index">
+
+        <tr style="color: blue;" *ngIf="item.destacar">
+         <!-- <th (click)="seleccionar(item)" scope="row">{{i+1}}</th>-->
+          <th (click)="fotoModal(item.id)" scope="row">
+            <span *ngIf="item.existeImagen == false" class="fas fa-image pointer"></span>
+            <img style="height: 50px;" class="image-sample-img" *ngIf="item.existeImagen == true" src="{{globalService.urlApi}}/ApiArchivo/GetArchivo?idClienteNegotis={{idClienteNegotis}}&idArticulo={{item.id}}&token={{token}}">
+          </th>
+          <td (click)="seleccionar(item)" >{{item.nombre}}</td>
+          <td (click)="seleccionar(item)">{{item.nombreMarca}}</td>
+          <td (click)="seleccionar(item)" *ngIf="esCompra != true">{{item.precioUnitario | number:'1.1-2'}}</td>
+          <!-- <td (click)="seleccionar(item)" *ngIf="esCompra != true && this.fatman">{{item.precioDolar | number:'1.1-2'}}</td>   -->
+          <td (click)="seleccionar(item)" *ngIf="esCompra == true">{{item.precioCosto | number:'1.1-2'}}</td>
+          <td (click)="seleccionar(item)" *ngIf="tieneRolOcultarRubro == false">{{item.nombreRubro}}</td>
+          <td (click)="seleccionar(item)" *ngIf="tieneRolCliente != true">{{item.cantidadArticulo}}</td>
+          <td (click)="seleccionar(item)" *ngIf="tieneRolVisualizarCategoria">{{item.nombreCategoriaRubro}}</td>
+          <td (click)="seleccionar(item)" *ngIf="tieneRolVisualizarCantXPack || tieneRolComboOferta" ><span *ngIf="item.cantidadPorPack != 0">{{item.cantidadPorPack}}</span></td>
+          <td (click)="seleccionar(item)" *ngIf="tieneRolComboOferta || visualizarPrecioOferta" ><span>{{item.precioXBulto}}</span></td>
+          <td (click)="especModal(item.especificacion)" style="color:blue" *ngIf="tieneRolVisualizarOfertas">Ver</td>
+          <td (click)="seleccionar(item)">{{item.codigoDeBarras}}</td>
+          <td (click)="seleccionar(item)" *ngIf="tieneRolVisualizarTalle">{{item.talle}}</td>
+          <td (click)="seleccionar(item)" *ngIf="tieneRolVisualizarColor">{{item.color}}</td>
+        </tr>
+        <tr *ngIf="item.destacar != true">
+          <!-- <th (click)="seleccionar(item)" scope="row">{{i+1}}</th>-->
+           <th (click)="fotoModal(item.id)" scope="row">
+             <span *ngIf="item.existeImagen == false" class="fas fa-image pointer"></span>
+             <img style="height: 50px;" class="image-sample-img" *ngIf="item.existeImagen == true" src="{{globalService.urlApi}}/ApiArchivo/GetArchivo?idClienteNegotis={{idClienteNegotis}}&idArticulo={{item.id}}&token={{token}}">
+           </th>
+           <td (click)="seleccionar(item)" >{{item.nombre}}</td>
+           <td (click)="seleccionar(item)">{{item.nombreMarca}}</td>
+           <td (click)="seleccionar(item)" *ngIf="esCompra == false">{{item.precioUnitario | number:'1.1-2'}}</td>
+           <!-- <td (click)="seleccionar(item)" *ngIf="esCompra == false && this.fatman">{{item.precioDolar | number:'1.1-2'}}</td>    -->
+           <td (click)="seleccionar(item)" *ngIf="esCompra == true">{{item.precioCosto | number:'1.1-2'}}</td>
+           <td (click)="seleccionar(item)" *ngIf="tieneRolOcultarRubro == false">{{item.nombreRubro}}</td>
+           <td (click)="seleccionar(item)" *ngIf="tieneRolCliente != true">{{item.cantidadArticulo}}</td>
+           <td (click)="seleccionar(item)" *ngIf="tieneRolVisualizarCategoria">{{item.nombreCategoriaRubro}}</td>
+           <td (click)="seleccionar(item)" *ngIf="tieneRolVisualizarCantXPack || tieneRolComboOferta" ><span *ngIf="item.cantidadPorPack != 0">{{item.cantidadPorPack}}</span></td>
+           <td (click)="seleccionar(item)" *ngIf="tieneRolComboOferta || visualizarPrecioOferta" ><span>{{item.precioXBulto}}</span></td>
+           <td (click)="especModal(item.especificacion)" style="color:blue" *ngIf="tieneRolVisualizarOfertas">Ver</td>
+           <td (click)="seleccionar(item)">{{item.codigoDeBarras}}</td>
+           <td (click)="seleccionar(item)" *ngIf="tieneRolVisualizarTalle">{{item.talle}}</td>
+           <td (click)="seleccionar(item)" *ngIf="tieneRolVisualizarColor">{{item.color}}</td>
+         </tr>
+      </tbody>
+    </table>
+    <app-pagination class="mb-3"
+        (goPage)="goToPage($event)"
+        (goNext)="onNext()"
+        (goPrev)="onPrev()"
+        [pagesToShow]="20"
+        [page]="page"
+        [perPage]="limit"
+        [count]="total">
+    </app-pagination>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button (click)="cerrar()" class="btn btn-danger">Volver</button>
+</div>
+</div>

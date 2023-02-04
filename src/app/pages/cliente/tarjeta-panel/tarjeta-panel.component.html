@@ -1,0 +1,45 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Panel Tarjetas
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a [routerLink]="['/cliente/usuario/tarjeta/crear']">
+        <mat-card class="pointer">
+          Agregar Tarjeta
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">TipoTarjeta</th>
+          <th scope="col">Porcentaje</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of post; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.Nombre}}</td>
+          <td >{{item.TipoTarjeta}}</td>
+          <td>{{item.Porcentaje}}</td>                 
+           <td><a routerLink="/cliente/usuario/tarjeta/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
+          <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

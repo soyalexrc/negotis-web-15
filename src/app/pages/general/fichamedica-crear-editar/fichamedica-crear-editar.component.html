@@ -1,0 +1,172 @@
+<toolbar-one *ngIf="idUser != null"></toolbar-one>
+<toolbar-two *ngIf="idUser == null"></toolbar-two>
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post != true">
+          <span *ngIf="idFichaMedica == 0">Crear</span>
+          <span *ngIf="idFichaMedica != 0">Editar</span>
+          Ficha Médica
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+            <label>Tipo de Pelo:</label><span style="margin-left: 10px;">Color:</span><input type="text" formControlName="colorPelo" class="form-control" [(ngModel)]="colorPelo">
+            <span>Grosor:</span><input type="text" formControlName="grosorPelo" class="form-control" [(ngModel)]="grosorPelo">
+
+          <h3 >
+            ANTECEDENTES PERSONALES
+          </h3>
+          <div class="form-group">
+            <label>Edad de la primera menstruación</label><input type="text" formControlName="edadM" class="form-control" [(ngModel)]="edadM">
+            <label >Ciclos:</label>
+            <select formControlName="cicloM" class="form-control" [(ngModel)]="cicloM">
+              <option value="">Seleccionar</option>
+              <option value="Regulares">Regulares</option>
+              <option value="Irregulares">Irregulares</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label >Embarazos:</label>
+            <select formControlName="embarazos" class="form-control" [(ngModel)]="embarazos">
+              <option value="">Seleccionar</option>
+              <option value="true">SI</option>
+              <option value="false">NO</option>
+            </select>
+            <label>Cuantos?
+                <input type="text" formControlName="cantidadEmbarazos" class="form-control" [(ngModel)]="cantidadEmbarazos">
+            </label>
+            <label style="margin-left: 40px;">Cuantos llegaron a termino?
+                <input type="text" formControlName="embTerminados" class="form-control" [(ngModel)]="embTerminados">
+            </label>
+          </div>
+
+            <div class="form-group">
+                <label >Tuviste acne</label>
+                <select formControlName="acne" class="form-control" [(ngModel)]="acne">
+                  <option value="">Seleccionar</option>
+                  <option value="true">SI</option>
+                  <option value="false">NO</option>
+                </select>
+                <label >Realizaste tratamiento?</label>
+                <select formControlName="tratamientoAcne" class="form-control" [(ngModel)]="tratamientoAcne">
+                  <option value="">Seleccionar</option>
+                  <option value="true">SI</option>
+                  <option value="false">NO</option>
+                </select>
+                <label>Cuando finalizo?
+                    <input type="text" formControlName="fechaFinAcne" class="form-control" [(ngModel)]="fechaFinAcne">
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label >Tenes Psoriasis</label>
+                <select formControlName="cambiosPsoriasis" class="form-control" [(ngModel)]="psoriasis">
+                  <option value="">Seleccionar</option>
+                  <option value="true">SI</option>
+                  <option value="false">NO</option>
+                </select>
+                <label >Notaste cambios en los ultimos meses?:</label>
+                <select formControlName="cambiosPsoriasis" class="form-control" [(ngModel)]="cambiosPsoriasis">
+                  <option value="">Seleccionar</option>
+                  <option value="true">SI</option>
+                  <option value="false">NO</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label >Tuviste o tenes un tumor maligno?</label>
+                <select formControlName="tMaligno" class="form-control" [(ngModel)]="tMaligno">
+                  <option value="">Seleccionar</option>
+                  <option value="true">SI</option>
+                  <option value="false">NO</option>
+                </select>
+                <label >Estas realizando tratamiento?</label>
+                <select formControlName="tratamientoT" class="form-control" [(ngModel)]="tratamientoT">
+                  <option value="">Seleccionar</option>
+                  <option value="true">SI</option>
+                  <option value="false">NO</option>
+                </select>
+                <label>Cuando finalizo el tratamiento?
+                    <input type="text" formControlName="fechaFinTratamientoT" class="form-control" [(ngModel)]="fechaFinTratamientoT">
+                </label>
+              </div>
+              <div class="form-group">
+                <label >Hipotiroidismo?</label>
+                <select formControlName="hipotiroidismo" class="form-control" [(ngModel)]="hipotiroidismo">
+                  <option value="">Seleccionar</option>
+                  <option value="true">SI</option>
+                  <option value="false">NO</option>
+                </select>
+                <label >Ovario Poliquistico</label>
+                <select formControlName="oPoliquistico" class="form-control" [(ngModel)]="oPoliquistico">
+                  <option value="">Seleccionar</option>
+                  <option value="true">SI</option>
+                  <option value="false">NO</option>
+                </select>
+              </div>
+              <div class="form-group">
+              <label >Tuviste o tenes algún otro problema hormonal?</label>
+              <select formControlName="problemaH" class="form-control" [(ngModel)]="problemaH">
+                <option value="">Seleccionar</option>
+                <option value="true">SI</option>
+                <option value="false">NO</option>
+              </select>
+              <label>Cual?
+                  <input type="text" formControlName="problemaHDescripcion" class="form-control" [(ngModel)]="problemaHDescripcion">
+              </label>
+            </div>
+              <div class="form-group">
+                <label >Tuviste o tenes alguna alergia?</label>
+                <select formControlName="alergia" class="form-control" [(ngModel)]="alergia">
+                  <option value="">Seleccionar</option>
+                  <option value="true">SI</option>
+                  <option value="false">NO</option>
+                </select>
+                <label>A que sos alergico?
+                    <input type="text" formControlName="alergiaDescripcion" class="form-control" [(ngModel)]="alergiaDescripcion">
+                </label>
+              </div>
+              <div class="form-group">
+                <label >Tenes epilepsia?</label>
+                <select formControlName="epilepsia" class="form-control" [(ngModel)]="epilepsia">
+                  <option value="">Seleccionar</option>
+                  <option value="true">SI</option>
+                  <option value="false">NO</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Presentas alguna otra patologia?
+                    <input type="text" formControlName="patologiaExtra" class="form-control" [(ngModel)]="patologiaExtra">
+                </label>
+              </div>
+              <div class="form-group">
+                <label>Tomas alguna medicacion habitual?
+                    <input type="text" formControlName="medicacionHabitual" class="form-control" [(ngModel)]="medicacionHabitual">
+                </label>
+              </div>
+              <div class="form-group">
+                <label>Observaciones:
+                    <input type="text" formControlName="nombreApellidoEmergencia" class="form-control" [(ngModel)]="observaciones">
+                </label>
+              </div>
+              <div class="form-group">
+                <label>Contacto de emergencia: Nombre y Apellido
+                    <input type="text" formControlName="nombreApellidoEmergencia" class="form-control" [(ngModel)]="nombreApellidoEmergencia">
+                </label>
+              </div>
+              <div class="form-group">
+                <label >Relación:
+                    <input type="text" formControlName="relacion" class="form-control" [(ngModel)]="relacion">
+                </label>
+              </div>
+
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

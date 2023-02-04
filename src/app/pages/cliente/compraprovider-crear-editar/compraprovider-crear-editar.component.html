@@ -1,0 +1,332 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <mat-card>
+        <h3>
+          <span *ngIf="idCompra == 0">Crear</span>
+          <span *ngIf="idCompra != 0">Editar</span>
+          Compra
+        </h3>
+        <form [formGroup]="myForm">
+
+          <!--datos generales
+          -->
+          <div class="margin-filtro"></div>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              Datos Generales
+            </mat-expansion-panel-header>
+            <div class="row">
+              <!--Proveedor (Razon Social)-->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Nombre de Proveedor</label>
+                  <input type="text" class="form-control" [formControl]="ctrlProveedor" [(ngModel)]="proveedor"
+                    (input)=resetProveedor() [matAutocomplete]="autoProveedor" matInput>
+                  <mat-autocomplete #autoProveedor="matAutocomplete" (optionSelected)="selectProveedor($event)"
+                    [displayWith]="displayProveedorSelected">
+                    <mat-option *ngFor="let option of filteredProveedor | async" [value]="option">
+                      {{ displayProveedorOption(option) }}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <small *ngIf="selectedProvider == null && submitted == true" class="form-text text-muted">
+                    Ingrese Proveedor
+                  </small>
+                </div>
+              </div>
+
+
+
+              <!--Forma de Pago-->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Forma de Pago</label>
+                  <select formControlName="formaPago" class="form-control" [(ngModel)]="formaPago"
+                    (change)="updateDropdowns()">
+                    <option *ngFor="let item of formasPagoHabilitadas" [ngValue]="item.Id">{{item.Valor}}</option>
+                  </select>
+                </div>
+              </div>
+              <!--Estado de Pago-->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label> Estado de Pago</label>
+                  <select formControlName="estadoPago" class="form-control" [(ngModel)]="estadoPago"
+                    (change)="updateDropdowns()">
+                    <option *ngFor="let item of estadosPagoHabilitadas" [ngValue]="item.Id">{{item.Valor}}</option>
+                  </select>
+                  <small *ngIf="myForm.get('estadoPago')?.hasError('required') && submitted == true"
+                    class="form-text text-muted">
+                    Ingrese estado de pago
+                  </small>
+                </div>
+              </div>
+              <div *ngIf="mostrarPagoParcial()">
+                <label>Pago Parcial: (F4)</label>
+                <input (keyup)="calcularResto()" #pagoCliente type="number"
+                  formControlName="pagoParcial" class="form-control" [(ngModel)]="pagoParcial">
+                <small *ngIf="!pagoParcialValido()" class="form-text text-muted">
+                  Ingrese pago parcial mayor a 0 y no superior/igual al monto total
+                </small>
+              </div>
+              <div>
+                Resto a Pagar: ${{restoAPagar | number:'1.1-2'}}
+              </div>
+              <!--Proveedor Data-->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Tasa</label>
+                  <input type="number" class="form-control" formControlName="tasa" [(ngModel)]="tasa" [disabled]="true">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Retención</label>
+                  <input type="number" class="form-control" formControlName="retencion" [(ngModel)]="retencion" [disabled]="true">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Percepción</label>
+                  <input type="number" class="form-control" formControlName="percepcion" [(ngModel)]="percepcion" [disabled]="true">
+                </div>
+              </div>
+              <!--Estado de Entrega-->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Estado de Entrega</label>
+                  <select formControlName="estadoEntrega" class="form-control" [(ngModel)]="estadoEntrega">
+                    <option *ngFor="let item of estadosEntrega" [ngValue]="item.Id">{{item.Valor}}</option>
+                  </select>
+                  <!--<small *ngIf="myForm.get('estadoEntrega')?.hasError('required') && submitted == true" class="form-text text-muted">
+                      Ingrese estado de entrega
+                    </small>-->
+                </div>
+              </div>
+              <!--Fecha Compra-->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Fecha Compra</label>
+                  <div (click)="fechaCompraDatePicker()" class="input-group mb-3 pointer">
+                    <input formControlName="fechaCompra" readonly type="text" class="form-control"
+                      value="{{fechaCompra}}" [(ngModel)]="fechaCompra">
+                    <div class="input-group-append">
+                      <span class="input-group-text"><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <small *ngIf="myForm.get('fechaCompra')?.hasError('required') && submitted == true"
+                    class="form-text text-muted">
+                    Ingrese fecha compra
+                  </small>
+                </div>
+              </div>
+              <!--Fecha Entrega-->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Fecha Entrega</label>
+                  <div (click)="fechaEntregaDatePicker()" class="input-group mb-3 pointer">
+                    <input formControlName="fechaEntrega" readonly type="text" class="form-control"
+                      value="{{fechaEntrega}}" [(ngModel)]="fechaEntrega">
+                    <div class="input-group-append">
+                      <span class="input-group-text"><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <small *ngIf="myForm.get('fechaEntrega')?.hasError('required') && submitted == true"
+                    class="form-text text-muted">
+                    Ingrese fecha entrega
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Nro Comprobante</label>
+                  <input type="text" formControlName="numeroComprobante" class="form-control"
+                  [(ngModel)]="numeroComprobante">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Tipo Comprobante</label>
+                  <select formControlName="tipoComprobante" class="form-control" [(ngModel)]="tipoComprobante">
+                    <option value="">Seleccionar</option>
+                    <option value="PRESUPUESTO">PRESUPUESTO</option>
+                    <option value="FACTURA a">FACTURA A</option>
+                    <option value="FACTURA B">FACTURA B</option>
+                    <option value="FACTURA C">FACTURA C</option>
+                    <option value="NOTA DEBITO">NOTA DEBITO</option>
+                    <option value="NOTA CREDITO">NOTA CREDITO</option>
+                    <option value="FACTURA m">FACTURA M</option>
+                  </select>
+                </div>
+              </div>
+              <div >
+                <div class="form-group">
+                  <label>Cambiar Lista Precios</label>
+                  <input type="text"  class="form-control" [(ngModel)]="listaNombres" [matAutocomplete]="autoLista"
+                         [formControl]="listaCtrl">
+                  <mat-autocomplete #autoLista="matAutocomplete">
+                    <mat-option (click)="cambiarLista(item)" *ngFor="let item of filteredLista | async" [value]="item.Nombre">
+                      <span>{{item.Nombre}} </span>
+                    </mat-option>
+                  </mat-autocomplete>
+                </div>
+
+              </div>
+            </div>
+
+          </mat-expansion-panel>
+
+          <!--Agregar articulos y Totales-->
+          <div class="row">
+            <!--Agregar articulos-->
+            <div class="col-md-6">
+              <mat-card *ngIf="compraCerrada != true">
+
+                <div class="form-group">
+                  <label>Agregar Artículos</label>
+                  <div>
+                    <label (click)="agregarArticuloPorNombre()" class="btn btn-secondary btn-carro"
+                      style="background-color:white;">
+                      <i class="fas fa-cart-plus fa-2x" style="color :blue;" fa-lg></i>
+                    </label>
+                  </div>
+                  <small *ngIf="listaArticulo.length == 0 && submitted == true" class="form-text text-muted">
+                    Ingrese articulo/s
+                  </small>
+                  <span *ngIf="tieneRolProduccion">
+                    <label>Agregar Materia Prima</label>
+                    <div>
+                      <label (click)="agregarMPPorNombre()" class="btn btn-secondary btn-carro"
+                        style="background-color:white;">
+                        <i class="fas fa-cart-plus fa-2x" style="color :blue;" fa-lg></i>
+                      </label>
+                  </div>
+                </span>
+                </div>
+                <div class="form-group">
+                  <label>Código de Barra / Articulo (F2)</label>
+                  <input formControlName="codigo" type="text" #codigoBarras class="form-control"
+                    [(ngModel)]="codigo">
+                  <small *ngIf="listaArticulo.length == 0 && submitted == true" class="form-text text-muted">
+                    Ingrese articulo/s
+                  </small>
+                  <span style="margin-left:10px">
+                    <label>
+                      <input (change)="pesableClick($event)" type="checkbox" [checked]="pesable">
+                      Pesable (F8)
+                    </label>
+                    <span style="margin-right:10px">
+                      <label>
+                        <input  (change)="precioCostoClick($event)" type="checkbox" [checked]="precioCostoCheck">
+                        No modificar precio stock
+                      </label>
+                    </span>
+                  </span>
+                </div>
+              </mat-card>
+            </div>
+
+            <!--Totales-->
+            <div #totales class="col-md-6">
+
+              <mat-card>
+                <div>
+                  <div class="form-group">
+                    <label>Observación</label>
+                    <textarea rows="2" formControlName="observacion" class="form-control"
+                      [(ngModel)]="observacion"></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div>
+                    <label>Total Artículos: {{totalArticulos | number:'1.1-2'}}</label>
+                  </div>
+                  <div>
+                    <label>Total Precio: ${{totalAPagar | number:'1.1-2'}}</label>
+                  </div>
+                  <div>
+                    <label>Pagado hasta el momento: ${{totalPagado | number:'1.1-2'}}</label>
+                  </div>
+
+                  <!--pago parcial-->
+
+                </div>
+              </mat-card>
+            </div>
+          </div>
+
+          <div *ngIf="turnoCaja">
+            <label style="color: blue">Turno : {{this.turno}}</label>
+          </div>
+
+          <!--tabla articulos-->
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col"></th>
+                <th scope="col">Código</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Unidades</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Cant. x Pack</th>
+                <th scope="col">Desc. (%)</th>
+                <th scope="col">Desc. Monto</th>
+                <th scope="col">Precio x U.</th>
+                <th scope="col">Precio Final</th>
+                <th scope="col">Stock</th>
+                <th scope="col">*</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of this.listaArticulo; let i = index">
+              <tr>
+                <th scope="row">{{i+1}}</th>
+                <th scope="row"><span (click)="fotoModal(item.Id)" class="fas fa-image pointer"></span> </th>
+                <td> {{item.CodigoDeBarras}}</td>
+                <td>{{item.Nombre}}</td>
+
+                <td *ngIf="compraCerrada != true" class="pointer cantidad" (click)="cambiarCantidad(item)">
+                  {{item.Cantidad | number:'1.0'}}</td>
+                <td *ngIf="compraCerrada == true">{{item.Cantidad | number:'1.0'}}</td>
+
+                <td>{{item.Marca.Nombre}}</td>
+                <td><span *ngIf="item.CantidadPorPack != 0">{{item.CantidadPorPack}}</span></td>
+                <td class="pointer cantidad" (click)="cambiarDescuento(item)">{{item.DescuentoPorcentaje}}</td>
+                <td class="pointer cantidad" (click)="cambiarDescuentoMonto(item)">{{item.DescuentoMonto}}</td>
+                <td *ngIf="editarPrecios && compraCerrada != true " class="pointer cantidad" >
+                  ${{item.PrecioCosto | number:'1.1-2'}}</td>
+                  <td *ngIf="compraCerrada != true && editarPrecios == false" class="pointer cantidad" (click)="cambiarPrecioUnitario(item)">
+                    ${{item.PrecioCosto | number:'1.1-2'}}</td>
+                <td *ngIf="compraCerrada == true">
+                  ${{item.PrecioFinal | number:'1.1-2'}}</td>
+
+
+                <td>${{getPrecioTotalArticulo(item) | number:'1.1-2'}}</td>
+                <td> <span *ngIf="!tieneRolCliente">{{item.Stock}}</span></td>
+
+                <td><span *ngIf="compraCerrada != true" (click)="deleteArt(item)"
+                    class="fas fa-trash-alt pointer"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+
+        <button #submit type="button" (click)="onSubmit(myForm.value)" class="btn btn-warning">
+          <span *ngIf="idCompra == 0">Confirmar(F9)</span>
+          <span *ngIf="idCompra != 0">Actualizar</span>
+        </button>
+
+        <a href="{{globalServ?.urlApi}}/ApiCompraProveedor/Get/Pdf/Generar/Factura?idCompra={{idCompra}}&idClienteNegotis={{idClienteNegotis}}&token={{token}}"
+          target="_blank" *ngIf="idCompra != 0" class="btn btn-success btn-factura">
+          <span>Imprimir Comprobante</span>
+        </a>
+
+      </mat-card>
+    </div>
+  </div>
+</div>

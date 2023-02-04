@@ -1,0 +1,143 @@
+<toolbar-two></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Proveedor Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a routerLink="/cliente/proveedor/crear">
+        <mat-card class="pointer">
+          Agregar Proveedor
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Nombres</label>
+          <input type="text" class="form-control" [(ngModel)]="nombreFiltro" [matAutocomplete]="autoNombre" [formControl]="nombreCtrl">
+          <mat-autocomplete #autoNombre="matAutocomplete">
+            <mat-option *ngFor="let item of filteredNombre | async" [value]="item.nombre">
+              <span>{{item.nombre}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Apellidos</label>
+          <input type="text" class="form-control" [(ngModel)]="apellidoFiltro" [matAutocomplete]="autoApellido" [formControl]="apellidoCtrl">
+          <mat-autocomplete #autoApellido="matAutocomplete">
+            <mat-option *ngFor="let item of filteredApellido | async" [value]="item.apellido">
+              <span>{{item.apellido}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Razon Social</label>
+          <input type="text" class="form-control" [(ngModel)]="razonSocialFiltro" [matAutocomplete]="autoRazonSocial" [formControl]="razonSocialCtrl">
+          <mat-autocomplete #autoRazonSocial="matAutocomplete">
+            <mat-option *ngFor="let item of filteredRazonSocial | async" [value]="item.razonSocial">
+              <span>{{item.razonSocial}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>CUIT</label>
+          <input type="text" class="form-control" [(ngModel)]="cuitFiltro" [matAutocomplete]="autoCuit" [formControl]="cuitCtrl">
+          <mat-autocomplete #autoCuit="matAutocomplete">
+            <mat-option *ngFor="let item of filteredCuit | async" [value]="item.cuit">
+              <span>{{item.cuit}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Numero Cuenta</label>
+          <input type="text" class="form-control" [(ngModel)]="nroCuentaFiltro" [matAutocomplete]="autoNroCuenta" [formControl]="nroCuentaCtrl">
+          <mat-autocomplete #autoNroCuenta="matAutocomplete">
+            <mat-option *ngFor="let item of filteredNroCuenta | async" [value]="item.nroCuenta">
+              <span>{{item.nroCuenta}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Empresa</label>
+          <input type="text" class="form-control" [(ngModel)]="empresaFiltro" [matAutocomplete]="autoEmpresa" [formControl]="empresaCtrl">
+          <mat-autocomplete #autoEmpresa="matAutocomplete">
+            <mat-option *ngFor="let item of filteredEmpresa | async" [value]="item.empresa">
+              <span>{{item.empresa}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">*</th>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">Provincia</th>
+          <th scope="col">Localiad</th>
+          <th scope="col">Direccion</th>
+          <th scope="col">Telefono</th>
+          <th scope="col">Razon Social</th>
+          <th scope="col">CUIT</th>
+          <th scope="col">Nro Cuenta</th>
+          <th scope="col">Empresa</th>
+          <th scope="col">Email</th>
+          <th scope="col">Detalle</th>
+          <th scope="col">*</th>          
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listado; let i = index">
+        <tr>
+          <td><a routerLink="/cliente/proveedor/editar/{{item.id}}"><span class="pointer">Editar</span></a></td>
+          <th scope="row">{{i+1}}</th>          
+          <td>{{item.nombre}}</td>
+          <td>{{item.apellido}}</td>
+          <td>{{item.provincia}}</td>
+          <td>{{item.localidad}}</td>
+          <td>{{item.direccion}}</td>
+          <td>{{item.telefono}}</td>
+          <td>{{item.razonSocial}}</td>
+          <td>{{item.cuit}}</td>
+          <td>{{item.numeroCuenta}}</td>
+          <td>{{item.empresa}}</td>
+          <td>{{item.email}}</td>
+          <td>{{item.detalle}}</td>          
+          <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

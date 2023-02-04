@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>
+  Ofertas Artículo
+</h1>
+<div mat-dialog-content>
+  <pre *ngIf="especificaion != null && especificaion != ''">
+      {{especificaion}}
+  </pre>
+  <div *ngIf="especificaion == null || especificaion == ''">
+    Sin Oferta
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button (click)="cerrar()" class="btn btn-danger">Cerrar</button>
+</div>

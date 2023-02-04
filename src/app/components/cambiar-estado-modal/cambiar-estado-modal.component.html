@@ -1,0 +1,39 @@
+<h3 mat-dialog-title style="
+    margin: 0 !important;
+    font-size: .8rem;
+    font-weight: bold;">ATENCI&Oacute;N.</h3>
+<div mat-dialog-content>
+  <p>Esta a punto de realizar una operaci&oacute;n de <span style="font-weight: bold;">Cambio de Estados</span></p>
+
+
+  <form *ngIf="myForm" [formGroup]="myForm">
+  <div class="row">
+    <div class="col-md-6">
+
+
+      <label>Estado Pago</label>
+      <select [disabled]="false" class="form-control minimal" id="estadoPago" formControlName="estadoPago">
+        <option *ngFor="let item of estadosPago" [ngValue]="item.Id">{{item.Valor}}</option>
+      </select>
+    </div>
+
+    <div class="col-md-6">
+        <label>Forma de Pago</label>
+        <select (change)="selectFormaPago()" type="text" class="form-control minimal" id="formaPago" formControlName="formaPago">
+          <option *ngFor="let item of formasPago" [ngValue]="item.Id">{{item.Valor}}</option>
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label>Estado Entrega</label>
+            <select class="form-control minimal" id="estadoEntrega" formControlName="estadoEntrega">
+            <option *ngFor="let item of estadosEntrega" [ngValue]="item.Id">{{item.Valor}}</option>
+        </select>
+
+    </div>
+  </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button (click)="aceptar()" class="btn btn-primary">Confirmar</button>
+  <button (click)="cancelar()" style="margin-right:10px;" class="btn btn-danger">Cancelar</button>
+</div>

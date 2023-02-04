@@ -1,0 +1,26 @@
+<h1>{{this.request.titulo}}</h1>
+
+<div mat-dialog-content class="min-spaced">
+  
+  <span [innerHTML]="this.request.contenido"></span>
+
+  <div class="form-group spaced">
+    <label>Ingrese el nuevo estado de los valores.</label>
+    <input type="text" [formControl]="textControlEstado" class="form-control" (input)=resetKeyEstado()
+      [matAutocomplete]="auto1" matInput>
+      <small *ngIf="submited && !isOk">Ingrese un Estado</small>
+    <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectOptionEstado($event.option.value)"
+      [displayWith]="displayWithEstado">
+      <mat-option *ngFor="let option of filteredOptionsEstado | async" [value]="option">
+        {{ option.key }}
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+
+</div>
+
+<div mat-dialog-actions class="min-spaced">
+  <div class="container text-center">
+    <button (click)="cerrar()" class="btn btn-primary">Aceptar</button>
+  </div>
+</div>

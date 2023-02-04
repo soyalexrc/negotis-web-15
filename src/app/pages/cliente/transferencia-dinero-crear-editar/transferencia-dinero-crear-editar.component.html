@@ -1,0 +1,111 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post != true">
+          <span *ngIf="idTransDep == 0">Crear</span>
+          <span *ngIf="idTransDep != 0">Editar</span>
+          Ingreso / Deposito / Egreso
+        </h3>
+        <div *ngIf= "turnoCaja">
+          <label style="color: blue">Turno : {{this.turno}}</label>
+        </div>
+
+        <form *ngIf="post != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <div class="form-group">
+            <label>Opciones</label>
+            <div>
+              <label (click)="extParaSucFunc($event)">
+                <input class="check-dep" [(ngModel)]="extParaSuc" [checked]="extParaSuc" type="radio">
+                <span style="margin-left:15px;">
+                  Transferencia Externa a Sucursal (Ingreso De Caja)
+                </span>
+              </label>
+            </div>
+            <div>
+              <label (click)="egresoDineroFunc($event)">
+                <input class="check-dep" [(ngModel)]="egresoDinero" [checked]="egresoDinero" type="radio">
+                <span style="margin-left:15px;">
+                  Egreso de dinero de Sucursal
+                </span>
+              </label>
+            </div>
+            <div>
+              <label (click)="deSucParaSucfUNC($event)">
+                <input class="check-dep" [(ngModel)]="deSucParaSuc" [checked]="deSucParaSuc" type="radio">
+                <span style="margin-left:15px;">
+                  Transferencia de Sucursal a Sucursal
+                </span>
+              </label>
+            </div>
+          </div>
+
+
+
+
+          <div *ngIf="deSucParaSuc == true || egresoDinero == true" class="form-group">
+            <label>De</label>
+            <div>
+              <strong>
+
+                {{infoInicio?.DeSucursal?.Calle}} {{infoInicio?.DeSucursal?.Numero}} {{infoInicio?.DeSucursal?.Barrio}}
+              </strong>
+            </div>
+          </div>
+
+          <div *ngIf="egresoDinero == false" class="form-group">
+            <label>Para</label>
+            <select formControlName="idParaSucursal" class="form-control" [(ngModel)]="idParaSucursal">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of sucursales" value="{{item?.Id}}">{{item?.Calle}} {{item?.Numero}} {{item?.Barrio}}</option>
+            </select>
+            <small *ngIf="myForm.get('idParaSucursal')?.hasError('required') && submitted==true"
+              class="form-text text-muted">
+              Ingrese sucursal para destinar fondos
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label>Monto <!-- <strong *ngIf="extParaSuc != true">(Máximo ${{infoInicio?.TotalSuc | number:'1.1-2'}})</strong> --></label>
+            <input type="number" formControlName="monto" class="form-control" [(ngModel)]="monto">
+            <small *ngIf="(myForm.get('monto')?.hasError('required') || myForm.get('monto')?.hasError('pattern') || valMonto == true)
+            && submitted==true" class="form-text text-muted">
+              Ingrese monto mayor o igual a $0 y menor que ${{infoInicio?.TotalSuc | number:'1.1-2'}}
+            </small>
+          </div>
+
+
+          <div class="col-md-3">
+              <label>Fecha Movimiento</label>
+              <input type="text" class="form-control" (click)="fechaDesdeFunc()"  value="{{fechaDesde}}" [(ngModel)]="fechaDesde" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea rows="4" formControlName="descripcion" class="form-control"
+              [(ngModel)]="descripcion"></textarea>
+          </div>
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        <div *ngIf="idTransDep != 0">
+          <a href="{{globalServ?.urlApi}}/ApiTransferencia/Deposito/Dinero/ImprimirIndividual?idEgreso={{idTransDep}}&idClienteNegotis={{idClienteNegotis}}&token={{token}}"
+          target="_blank"  class="btn btn-success btn-factura">
+          <span>Imprimir Egreso</span>
+        </a>
+      </div>
+      <div *ngIf="idTransDep != 0">
+        <a href="{{globalServ?.urlApi}}/ApiTransferencia/Deposito/Dinero/ImprimirIndividual?idEgreso={{idTransDep}}&idClienteNegotis={{idClienteNegotis}}&Egreso80mm=true&token={{token}}"
+        target="_blank"  class="btn btn-success btn-factura">
+        <span>Imprimir Egreso 80mm</span>
+      </a>
+    </div>
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

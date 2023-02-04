@@ -1,0 +1,50 @@
+<toolbar-one></toolbar-one>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3>
+          Crear Afip 
+        </h3>
+        <div>
+          <small *ngIf="post?.NoPfx == true" class="form-text text-muted">
+            El arcivo debe ser en formato Pfx
+          </small>
+          <small *ngIf="post?.PfxExistente == true" class="form-text text-muted">
+             Archivo existente
+          </small>
+ 
+          <div class="form-group">
+            <div >
+              Buscar Pfx  
+            </div>
+            <input id="filePfx" type='file'>
+            <small *ngIf="sinArchivo == true" class="form-text text-muted">
+              Ingrese archivo
+            </small>
+          </div>
+
+          <!--
+          <div class="form-group">
+              <label>Tipo Comprobante</label>
+              <select class="form-control" [(ngModel)]="tipoComprobante">
+                <option value="">Sleccionar</option>
+                <option value="001">FACTURA A</option>
+                <option value="006">FACTURA B</option>
+              </select>
+              <small *ngIf="sinComprobante == true" class="form-text text-muted">
+                  Ingrese tipo comprobante
+              </small>
+          </div>
+          -->
+
+          <button (click)="saveAfip()" class="btn btn-dark">Guardar</button>
+        </div>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

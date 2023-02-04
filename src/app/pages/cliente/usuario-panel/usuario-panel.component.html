@@ -1,0 +1,118 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-box">
+      <a [routerLink]="['/cliente/usuario/password/editar']">
+        <mat-card class="box pointer">
+          Editar Contraseña
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4 col-box" *ngIf="tieneRolLimitar == false || soporte">
+      <a [routerLink]="['/cliente/usuario/misdatos']">
+        <mat-card class="box pointer">
+          Mis Datos
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4 col-box"  *ngIf="tieneRolVisualizarSuc == true || (tieneRolVisualizarSuc == false && tieneRolLimitar == false)   || soporte">
+      <a [routerLink]="['/cliente/sucursal/seleccionar']">
+        <mat-card class="box pointer">
+          Seleccionar Sucursal
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box"  *ngIf="tieneRolLimitar == false || soporte">
+      <a [routerLink]="['/cliente/usuario/comision']">
+        <mat-card class="box pointer">
+          Porcentaje Comisión
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box"  *ngIf="tieneRolLimitar == false || soporte">
+      <a [routerLink]="['/cliente/usuario/tarjeta/crear']">
+        <mat-card class="box pointer">
+          Dar de alta Tarjeta
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box"  *ngIf="tieneRolLimitar == false || soporte">
+      <a [routerLink]="['/cliente/categoriacliente/panel']">
+        <mat-card class="box pointer">
+          Panel Categoria Cliente
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box"  *ngIf="tieneRolLimitar == false || soporte">
+      <a [routerLink]="['/cliente/usuario/tarjeta/panel']">
+        <mat-card class="box pointer">
+          Panel de Tarjetas
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box"  *ngIf="tieneRolMensajeAplicacion || soporte">
+      <a [routerLink]="['/cliente/usuario/mensaje/usuario']">
+        <mat-card class="box pointer">
+          Mensaje Aplicación
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box"  *ngIf="tieneRolLimitar == false || soporte">
+      <a [routerLink]="['/cliente/usuario/turno/crear']">
+        <mat-card class="box pointer">
+          Dar de alta Turno
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box"  *ngIf="tieneRolLimitar == false || soporte">
+      <a [routerLink]="['/cliente/usuario/turno/panel']">
+        <mat-card class="box pointer">
+          Panel de Turnos
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box"  *ngIf="tieneRolLimitar == false || soporte">
+      <a (click)="fotoModal()">
+        <mat-card class="box pointer">
+          <span class="fas fa-image"></span> Foto de la Empresa
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box " *ngIf="tieneRolLimitar == false || soporte">
+      <a (click)="clienteMostradorStatusModal()">
+        <mat-card class="box pointer">
+          Cliente Mostrador Status
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4 col-box"  *ngIf="tieneRolLimitar == false || soporte">
+      <a (click)="mostrarDatosFacturaStatusModal()">
+        <mat-card class="box pointer">
+          Mostrar Datos En Comprobante
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box" *ngIf="tieneRolLimitar == false || soporte">
+      <a (click)="habilitarAfip()">
+        <mat-card class="box pointer">
+          Habilitar Registros
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box " *ngIf="tieneRolLimitar == false || soporte">
+      <a (click)="ocultarLogoModal()">
+        <mat-card class="box pointer">
+          Ocultar Logo Impresiones
+        </mat-card>
+      </a>
+    </div>
+    <div  class="col-md-4 col-box " *ngIf="tieneRolLimitar == false || soporte">
+      <a (click)="ocultarTelefonoModal()">
+        <mat-card class="box pointer">
+          Ocultar Telefono Impresiones
+        </mat-card>
+      </a>
+    </div>
+  </div>
+</div>

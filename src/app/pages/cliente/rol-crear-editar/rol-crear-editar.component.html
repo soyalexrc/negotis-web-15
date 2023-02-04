@@ -1,0 +1,1230 @@
+<toolbar-two></toolbar-two>
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="postRol?.Resultado != true">
+          <span *ngIf="idRol == 0">Crear</span>
+          <span *ngIf="idRol != 0">Editar</span>
+          Rol
+        </h3>
+        <form *ngIf="postRol?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+          <small *ngIf="postRol?.Repetido == true" class="form-text text-muted">Nombre de Rol existente</small>
+          <div class="form-group">
+            <label>Rol Nombre</label>
+            <input type="text" formControlName="nombreRol" class="form-control" [(ngModel)]="nombreRol">
+            <small *ngIf="myForm.get('nombreRol')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese nombre de rol</small>
+          </div>
+          <div class="form-group">
+            <label>Seleccionar Modulos</label>
+            <div>
+              <div><hr>
+               <label><b>Módulo Pedidos</b></label>
+
+               <span style="margin-left:10px">
+                 <label>
+                    <input (change)="pedidosClick($event)" type="checkbox" [checked]="PEDIDOS">
+                    PEDIDOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="modificarPedidosClick($event)" type="checkbox" [checked]="modificarPedidos">
+                    Mod. PEDIDOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarCantidadVentasClick($event)" type="checkbox" [checked]="VISUALIZARCANTIDADVENTAS">
+                    VISUALIZAR CANTIDAD DE VENTAS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarRentabilidadClick($event)" type="checkbox" [checked]="VISUALIZARRENTABILIDAD">
+                    VISUALIZAR RENTABILIDAD
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="aumentoDescuentoMontoClick($event)" type="checkbox" [checked]="AUMENTO_DESCUENTO_MONTO">
+                    AUMENTO / DESCUENTO MONTO
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarAumentoDescuentoListaClick($event)" type="checkbox" [checked]="VISUALIZAR_AUMENTO_DESCUENTOLISTA">
+                    PORCENTAJE LISTA %
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarAumentoDescuentoPorcentajeClick($event)" type="checkbox" [checked]="VISUALIZARPORCENTAJEAUMENTO">
+                    VISUALIZAR PORCENTAJE AUMENTO/DESCUENTO
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="eliminarPedidosClick($event)" type="checkbox" [checked]="eliminarPedidos">
+                    Eliminar PEDIDOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarPedidosClick($event)" type="checkbox" [checked]="visualizarPedidos">
+                    Visualizar PEDIDOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarCategoriaClick($event)" type="checkbox" [checked]="VISUALIZARCATEGORIA">
+                    Visualizar CATEGORIA
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                     <input (change)="visualizarCodigoArticuloClick($event)" type="checkbox" [checked]="VISUALIZARCODIGOARTICULO">
+                     Visualizar CODIGO
+                   </label>
+                 </span>
+                 <span style="margin-left:10px">
+                  <label>
+                     <input (change)="visualizarImpresionBTClick($event)" type="checkbox" [checked]="VISUALIZAR_IMPRESIONBT">
+                     Visualizar Impresion Bluetooth
+                   </label>
+                 </span>
+                 <span style="margin-left:10px">
+                   <label>
+                   <input (change)="visualizarComprobante_FacturaClick($event)" type="checkbox" [checked]="VISUALIZARCOMPROBANTE_FACTURA">
+                    Ver Datos Facturas Listado Pedidos
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                  <input (change)="visualizarPesablesClick($event)" type="checkbox" [checked]="VISUALIZARPESABLES">
+                   VISUALIZAR CHECK PARA PESABLES
+                 </label>
+               </span>
+               <span style="margin-left:10px">
+                <label>
+                <input (change)="visualizarTalleClick($event)" type="checkbox" [checked]="VISUALIZARTALLE">
+                 VISUALIZAR TALLE
+               </label>
+             </span>
+             <span style="margin-left:10px">
+              <label>
+              <input (change)="visualizarEstadosPedidosClick($event)" type="checkbox" [checked]="VISUALIZARESTADOSPEDIDOS">
+               VISUALIZAR ESTADOS PEDIDOS
+             </label>
+           </span>
+           <span style="margin-left:10px">
+            <label>
+            <input (change)="visualizarDescuentosClick($event)" type="checkbox" [checked]="VISUALIZARDESCUENTOS">
+            OCULTAR DESCUENTOS
+           </label>
+         </span>
+         <span style="margin-left:10px">
+            <label>
+            <input (change)="editarPreciosClick($event)" type="checkbox" [checked]="EDITARPRECIOS">
+            EDITAR PRECIOS
+          </label>
+         </span>
+         <span style="margin-left:10px">
+            <label>
+            <input (change)="ocultarRubroClick($event)" type="checkbox" [checked]="OCULTARRUBRO">
+            OCULTAR RUBRO
+          </label>
+         </span>
+         <span style="margin-left:10px">
+          <label>
+          <input (change)="comboOfertaClick($event)" type="checkbox" [checked]="COMBOOFERTA">
+          COMBO OFERTA
+        </label>
+       </span>
+       <span style="margin-left:10px">
+        <label>
+        <input (change)="visualizarCategoriaRubroPedidosClick($event)" type="checkbox" [checked]="VISUALIZARCATEGORIARUBROPEDIDOS">
+          VISUALIZAR CATEGORIA Y RUBRO
+        </label>
+      </span>
+      <span style="margin-left:10px">
+        <label>
+        <input (change)="visualizarDescripcionClick($event)" type="checkbox" [checked]="VISUALIZARDESCRIPCION">
+          VISUALIZAR DESCRIPCION
+        </label>
+      </span>
+     <span style="margin-left:10px">
+        <label>
+        <input (change)="sincronizarApiClick($event)" type="checkbox" [checked]="SINCRONIZARAPI">
+        SINCRONIZAR API (AL CAMPO)
+      </label>
+    </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="pedidoVendedorClick($event)" type="checkbox" [checked]="PEDIDOVENDEDOR">
+     ASIGNAR VENDEDOR A UN PEDIDOO
+    </label>
+  </span>
+      <span style="margin-left:10px">
+        <label>
+        <input (change)="sincronizarPedidosClick($event)" type="checkbox" [checked]="SINCRONIZARPEDIDOS">
+          SINCRONIZAR PEDIDOS
+      </label>
+    </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="imprimirComanderaClick($event)" type="checkbox" [checked]="IMPRESIONCOMANDERA">
+        IMPRIMIR COMANDERA
+    </label>
+  </span>
+      <span style="margin-left:10px">
+        <label>
+        <input (change)="ocultarComprobanteClick($event)" type="checkbox" [checked]="OCULTARCOMPROBANTE">
+          OCULTAR COMPROBANTE
+      </label>
+    </span>
+
+      <span style="margin-left:10px">
+        <label>
+        <input (change)="visualizarFiltroMultipleClick($event)" type="checkbox" [checked]="VISUALIZARFILTROMULTIPLE">
+         VISUALIZAR FILTRO MULTIPLE
+      </label>
+      </span>
+          <span style="margin-left:10px">
+            <label>
+            <input (change)="controlEntregasClick($event)" type="checkbox" [checked]="CONTROLENTREGAS">
+            ACTIVAR CONTROL DE ENTREGAS
+          </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="visualizarComprobanteUnificadoClick($event)" type="checkbox" [checked]="VISUALIZARCOMPROBANTEUNIFICADO">
+          VISUALIZAR COMPROBANTE UNIFICADO
+        </label>
+          </span>
+          <span style="margin-left:10px">
+            <label>
+            <input (change)="saldoAFavorClick($event)" type="checkbox" [checked]="SALDOAFAVOR">
+              SALDO A FAVOR / BOTON DE PAGOS
+          </label>
+        </span>
+          <span style="margin-left:10px">
+            <label>
+            <input (change)="ubicacionArticulosClick($event)" type="checkbox" [checked]="UBICACIONARTICULOS">
+            UBICACION ARTICULOS (PEDIDOS)
+          </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="ocultarPreciosPedidoClick($event)" type="checkbox" [checked]="OCULTARPRECIOSPEDIDOS">
+            OCULTAR PRECIOS
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="distanciaClick($event)" type="checkbox" [checked]="DISTANCIA">
+          VISUALIZAR DISTANCIA
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="imprimir80mmClick($event)" type="checkbox" [checked]="IMPRIMIR80MM">
+          IMPRIMIR COMPROBANTE 80 MM
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="mostradorEfectivoClick($event)" type="checkbox" [checked]="MOSTRADOREFECTIVO">
+          MOSTRADOR EFECTIVO
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="modificarListaClick($event)" type="checkbox" [checked]="MODIFICARLISTA">
+          MODIFICAR LISTA
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="mensajeClick($event)" type="checkbox" [checked]="MENSAJEAPLICACION">
+          VISUALIZAR MENSAJE CONFIGURADO
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="iva27Click($event)" type="checkbox" [checked]="IVA27">
+          VISUALIZAR IVA 27
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="iva10Click($event)" type="checkbox" [checked]="IVA10">
+          VISUALIZAR IVA 10
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="cambioEstadosClick($event)" type="checkbox" [checked]="VISUALIZARCAMBIOESTADOS">
+          VISUALIZAR CAMBIO ESTADOS
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="ocultarFacturasClick($event)" type="checkbox" [checked]="OCULTARFACTURA">
+            OCULTAR FACTURAS (A4)
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="ocultarFacturasComanderaClick($event)" type="checkbox" [checked]="OCULTARFACTURACOMANDERA">
+            OCULTAR FACTURAS COMANDERA
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="revertirOrdenPedidosClick($event)" type="checkbox" [checked]="REVERTIRORDENPEDIDOS">
+            REVERTIR ORDEN PEDIDOS
+        </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="ocultarDatosGeneralesClick($event)" type="checkbox" [checked]="OCULTARDATOSGENERALES">
+          OCULTAR DATOS GENERALES (DESPLEGABLE)
+        </label>
+       </span>
+       <span style="margin-left:10px">
+        <label>
+        <input (change)="crearDuplicadosClick($event)" type="checkbox" [checked]="CREARDUPLICADOS">
+          CREAR DUPLICADOS
+      </label>
+     </span>
+      <span style="margin-left:10px">
+        <label>
+        <input (change)="impresionDobleClick($event)" type="checkbox" [checked]="IMPRESIONDOBLE">
+          IMPRESION DOBLE
+      </label>
+    </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="ocultarFechaClick($event)" type="checkbox" [checked]="BLOQUEARFECHA">
+            BLOQUEAR FECHA PEDIDO
+        </label>
+      </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="pedidoEntregadoClick($event)" type="checkbox" [checked]="PEDIDOENTREGADO">
+        ESTADO ENTREGA ENTREGADO
+    </label>
+  </span>
+  <span style="margin-left:10px">
+    <label>
+    <input (change)="bloqueoPedidosClick($event)" type="checkbox" [checked]="BLOQUEOPEDIDOS">
+    BLOQUEO PEDIDOS
+  </label>
+ </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="bloqueoDeleteArticulosClick($event)" type="checkbox" [checked]="ESCONDERDELETEARTICULOS">
+      BLOQUEO DELETE ARTICULOS
+    </label>
+    </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="ocultarIndicadorVentasClick($event)" type="checkbox" [checked]="OCULTARINDICADORVENTAS">
+      OCULTAR INDICADOR VENTAS
+    </label>
+    </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="crearPedidoDirectoClick($event)" type="checkbox" [checked]="CREARPEDIDODIRECTO">
+      CREAR PEDIDO DIRECTO
+    </label>
+    </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="recalculoUnidadClick($event)" type="checkbox" [checked]="RECALCULOUNIDAD">
+      RECALCULO UNIDAD/GRAMOS
+    </label>
+    </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="porcentajeTarjetasClick($event)" type="checkbox" [checked]="PORCENTAJETARJETAS">
+      PORCENTAJE TARJETAS
+    </label>
+    </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="comprobanteWSClick($event)" type="checkbox" [checked]="COMPROBANTEWS">
+      ENVIAR COMPROBANTES POR WS
+    </label>
+    </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="repartoXDefectoClick($event)" type="checkbox" [checked]="REPARTOXDEFECTO">
+      REPARTO POR DEFECTO
+    </label>
+    </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="ocultarAlgunosDatosGeneralesClick($event)" type="checkbox" [checked]="OCULTARALGUNOSDATOSGENERALES">
+      OCULTAR ALGUNOS DATOS GENERALES
+    </label>
+    </span>
+      </div>
+              <div><hr>
+                <label><b>Módulo Compras</b></label>
+
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="comprasProveedorClick($event)" type="checkbox" [checked]="ComprasProveedor">
+                    COMPRAS A PROVEEDORES
+                  </label>
+                  <label>
+                    <input (change)="eliminarComprasProveedorClick($event)" type="checkbox" [checked]="EliminarComprasProveedor">
+                    ELIMINAR COMPRAS A PROVEEDORES
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                  <input (change)="ocultarFiltrosComprasClick($event)" type="checkbox" [checked]="OCULTARFILTROSCOMPRAS">
+                  OCULTAR FILTROS
+                </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                  <input (change)="costoCheckClick($event)" type="checkbox" [checked]="COSTOCHECK">
+                  AUTO SELECCIONAR CHECK COSTO
+                </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                  <input (change)="editarPreciosComprasClick($event)" type="checkbox" [checked]="BLOQUEAREDITARCOMPRAS">
+                BLOQUEAR EDITAR PRECIOS
+                </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="saldoAFavorProveedoresClick($event)" type="checkbox" [checked]="SALDOAFAVORCOMPRAS">
+                    SALDO A FAVOR PROVEEDORES
+                  </label>
+                </span>
+              </div>
+
+
+
+              <div><hr>
+                <label><b>Módulo Stock</b></label>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="modificarProductosClick($event)" type="checkbox" [checked]="modificarProductos">
+                    Mod. PRODUCTOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarListaPreciosClick($event)" type="checkbox" [checked]="VISUALIZARLISTAPRECIOS">
+                     VISUALIZAR LISTAS DE PRECIOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="stockValorClick($event)" type="checkbox" [checked]="StockValor">
+                    STOCK VALOR
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="venderConStockClick($event)" type="checkbox" [checked]="VENDERCONSTOCK">
+                     VENDER CON STOCK
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarStockProveedorClick($event)" type="checkbox" [checked]="VISUALIZARSTOCKPROVEEDOR">
+                    VISUALIZAR STOCK PROVEEDOR
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarListaArticulosClick($event)" type="checkbox" [checked]="VISUALIZARLISTAARTICULOS">
+                    VISUALIZAR LISTA ARTICULOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="ocultarPreciosClick($event)" type="checkbox" [checked]="OCULTARPRECIOS">
+                    OCULTAR PRECIOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="ocultarFiltrosClick($event)" type="checkbox" [checked]="OCULTARFILTROSARTICULOS">
+                    OCULTAR FILTROS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="ocultarCodigoYUnidadesClick($event)" type="checkbox" [checked]="OCULTARCODIGOUNIDADES">
+                    OCULTAR CODIGO Y UNIDADES
+                  </label>
+                </span>
+
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarCantXPackClick($event)" type="checkbox" [checked]="VISUALIZARCANTXPACK">
+                    VISUALIZAR CANTIDAD POR PACK
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarCodigoClick($event)" type="checkbox" [checked]="VISUALIZARCODIGO">
+                    VISUALIZAR CODIGO (IMPRESION LISTADO)
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="preciosClick($event)" type="checkbox" [checked]="PRECIOS">
+                    PRECIOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="productosClick($event)" type="checkbox" [checked]="PRODUCTOS">
+                    PRODUCTOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarStockClick($event)" type="checkbox" [checked]="VISUALIZARSTOCK">
+                    Visualizar Stock Lista
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarIDEstadoClick($event)" type="checkbox" [checked]="VISUALIZARIDESTADO">
+                    VISUALIZAR ID Y ESTADO
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarPorcentajeClick($event)" type="checkbox" [checked]="VISUALIZARPORCENTAJE">
+                    VISUALIZAR PORCENTAJE
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarLogoClick($event)" type="checkbox" [checked]="VISUALIZARLOGO">
+                    VISUALIZAR LOGO
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarActualizarPreciosClick($event)" type="checkbox" [checked]="VISUALIZARACTUALIZARPRECIOS">
+                    VISUALIZAR ACTUALIZAR PRECIOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                  <input (change)="visualizarColorClick($event)" type="checkbox" [checked]="VISUALIZARCOLOR">
+                   VISUALIZAR COLOR
+                 </label>
+               </span>
+               <span style="margin-left:10px">
+                <label>
+                  <input (change)="cargarDuplicadosClick($event)" type="checkbox" [checked]="CARGARDUPLICADOS">
+                  CARGAR DUPLICADOS
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="cargarCodigoBarraClick($event)" type="checkbox" [checked]="CARGARCODIGOBARRA">
+                  CARGAR CODIGO DE BARRA
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="ocultarDatosEClick($event)" type="checkbox" [checked]="OCULTARDATOSE">
+                 MOSTRAR DATOS ECOMMERCE
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="preciosCostoAdicionalesClick($event)" type="checkbox" [checked]="PRECIOSCOSTOADICIONALES">
+                 PRECIOS COSTO ADICIONALES
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="visualizarPrecioDolarClick($event)" type="checkbox" [checked]="VISUALIZARPRECIODOLAR">
+                 VISUALIZAR PRECIO DOLAR
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="filtroEnterClick($event)" type="checkbox" [checked]="FILTROENTER">
+                 FILTRAR CON ENTER
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="ordenarPorRubroClick($event)" type="checkbox" [checked]="ORDENARPORRUBRO">
+                  ORDENAR POR RUBRO
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="listarPorRubroClick($event)" type="checkbox" [checked]="LISTARPORRUBRO">
+                  LISTAR POR RUBRO
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="rolExcelClick($event)" type="checkbox" [checked]="ROLEXCEL">
+                  SINCRONIZAR EXCEL
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="visualizarAccionesClick($event)" type="checkbox" [checked]="VISUALIZARACCIONES">
+                  VISUALIZAR PRECIO OFERTA
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="sincronizarExcelClick($event)" type="checkbox" [checked]="SINCRONIZAREXCEL">
+                  SINCRONIZAR EXCEL
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="imprimirEtiquetasClick($event)" type="checkbox" [checked]="IMPRIMIRETIQUETAS">
+                  IMPRIMIR ETIQUETAS
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="imprimirEtiquetasJPGClick($event)" type="checkbox" [checked]="ETIQUETASJPG">
+                  IMPRIMIR ETIQUETAS JPG
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="mostrarPrecioOfertaClick($event)" type="checkbox" [checked]="MOSTRARPRECIOOFERTA">
+                  MOSTRAR PRECIO OFERTA(ETIQUETAS)
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="ocultarCodigoBarrasClick($event)" type="checkbox" [checked]="OCULTARCODIGOBARRAS">
+                  OCULTAR CODIGO DE BARRAS(ETIQUETAS)
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="codigoQRClick($event)" type="checkbox" [checked]="CODIGOQR">
+                  CODIGO QR ARTICULOS(ETIQUETAS)
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="ocultarQRClick($event)" type="checkbox" [checked]="OCULTARQR">
+                  OCULTAR QR ARTICULOS(ETIQUETAS)
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="ocultarPreciosEtiquetasClick($event)" type="checkbox" [checked]="OCULTARPRECIOSETIQUETAS">
+                  OCULTAR PRECIOS ETIQUETAS(ETIQUETAS)
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="mostrarCodigosEtiquetasClick($event)" type="checkbox" [checked]="MOSTRARCODIGOETIQUETAS">
+                  MOSTRAR CODIGOS ETIQUETAS(ETIQUETAS)
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="mostrarRubrosEtiquetasClick($event)" type="checkbox" [checked]="MOSTRARRUBROSETIQUETAS">
+                  MOSTRAR RUBROS ETIQUETAS(ETIQUETAS)
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="compraMinimaClick($event)" type="checkbox" [checked]="COMPRAMINIMA">
+                  COMPRA MINIMA
+                </label>
+              </span>
+
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="visualizarOfertasClick($event)" type="checkbox" [checked]="VISUALIZAROFERTAS">
+                  Visualizar DESCRIPCÓN
+                </label>
+              </span>
+
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="visualizarUbicacionesClick($event)" type="checkbox" [checked]="VISUALIZARUBICACION">
+                  Visualizar UBICACIONES
+                </label>
+              </span>
+
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="visualizarCodigoClienteClick($event)" type="checkbox" [checked]="VISUALIZARCODIGOCLIENTE">
+                  Visualizar CÓDIGO CLIENTE Y PROVEEDOR
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="modificarUnidadesClick($event)" type="checkbox" [checked]="MODIFICARUNIDADES">
+                  MODIFICAR UNIDADES
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="visualizarActivarListaClick($event)" type="checkbox" [checked]="VISUALIZARACTIVARLISTA">
+                  VISUALIZAR ACTIVAR LISTAS
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="visualizarImagenesRubrosClick($event)" type="checkbox" [checked]="VISUALIZARIMAGENESRUBROS">
+                  VISUALIZAR IMAGENES RUBROS
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="agregarListaClick($event)" type="checkbox" [checked]="AGREGARLISTA">
+                  AGREGAR LISTA
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="comboArticulosClick($event)" type="checkbox" [checked]="COMBOARTICULOS">
+                  COMBO ARTICULOS
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="observacionArticulosClick($event)" type="checkbox" [checked]="OBSERVACIONARTICULOS">
+                  OBSERVACION ARTICULOS
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="activoSucursalClick($event)" type="checkbox" [checked]="ACTIVOSUCURSAL">
+                  ESTADO POR SUCURSAL
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="bloquearPreciosClick($event)" type="checkbox" [checked]="BLOQUEARPRECIOS">
+                  BLOQUEAR PRECIOS
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                <input (change)="VisualizarCodigoArticuloClick($event)" type="checkbox" [checked]="VISUALIZARCODIGOARTICULOCOMPROBANTE">
+                 VISUALIZAR CODIGO ARTICULO
+              </label>
+            </span>
+            <span style="margin-left:10px">
+              <label>
+              <input (change)="OrdenarPorCodigoClick($event)" type="checkbox" [checked]="ORDENARPORCODIGO">
+               ORDENAR POR CÓDIGO
+            </label>
+          </span>
+          <span style="margin-left:10px">
+            <label>
+            <input (change)="AutoAsignarCodigoBarraClick($event)" type="checkbox" [checked]="AUTOASIGNARCODIGOBARRA">
+              AUTO ASIGNAR CODIGOS DE BARRA
+          </label>
+        </span>
+              </div>
+
+              <hr>
+              <div>
+                <label><b>Módulo Usuario</b></label>
+
+                 <span style="margin-left:10px">
+                    <label>
+                      <input (change)="empleadosClick($event)" type="checkbox" [checked]="EMPLEADOS">
+                      EMPLEADOS
+                    </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="filtroPedidosClick($event)" type="checkbox" [checked]="FILTROPEDIDOS">
+                    FILTRO PEDIDOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarObjetivoClick($event)" type="checkbox" [checked]="VISUALIZAROBJETIVO">
+                    VISUALIZAR OBJETIVO
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="filtroUsuarioClick($event)" type="checkbox" [checked]="FILTROUSUARIO">
+                    FILTRO USUARIO SUCURSAL
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="filtroGastosTotalesClick($event)" type="checkbox" [checked]="FILTROGASTOSTOTALES">
+                    OCULTAR FILTRO TOTALES GASTOS
+                  </label>
+                </span>
+              </div>
+              <div><hr>
+                <label><b>Módulo Clientes</b></label>
+
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="clientesClick($event)" type="checkbox" [checked]="CLIENTES">
+                    CLIENTES
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="zonasClick($event)" type="checkbox" [checked]="ZONAS">
+                    ZONAS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="eliminarClientesClick($event)" type="checkbox" [checked]="ELIMINARCLIENTES">
+                    ELIMINAR CLIENTES
+                  </label>
+                  <span style="margin-left:10px">
+                    <label>
+                      <input (change)="filtroVendedorClick($event)" type="checkbox" [checked]="FILTROVENDEDOR">
+                     FILTRO VENDEDOR
+                    </label>
+                  </span>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarDatosEsteticaClick($event)" type="checkbox" [checked]="VISUALIZARDATOSESTETICA">
+                   VISUALIZAR DATOS ESTETICA
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarDatosTallerClick($event)" type="checkbox" [checked]="VISUALIZARDATOSTALLER">
+                   VISUALIZAR DATOS TALLER
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="filtroClienteSucursalClick($event)" type="checkbox" [checked]="FILTROCLIENTESUCURSAL">
+                   FILTRO CLIENTE SUCURSAL
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarDatosSucursalClick($event)" type="checkbox" [checked]="VISUALIZARDATOSSUCURSAL">
+                   PRECARGAR DATOS SUCURSAL
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="ordenarPorNumeroClick($event)" type="checkbox" [checked]="ORDENARPORNUMERO">
+                   ORDENAR POR NUMERO
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="fichaMedicaClick($event)" type="checkbox" [checked]="FICHAMEDICA">
+                   VISUALIZAR FICHA MEDICA
+                  </label>
+                </span>
+              </div>
+              <div><hr>
+                <label><b>Módulo Roles</b></label>
+
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="rolesClick($event)" type="checkbox" [checked]="ROLES">
+                    ROLES
+                  </label>
+                </span>
+              </div>
+              <div><hr>
+                <label><b>Módulo Proveedores</b></label>
+
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="proveedoresClick($event)" type="checkbox" [checked]="proveedores">
+                    PROVEEDORES
+                  </label>
+                </span>
+              </div>
+              <div><hr>
+                <label><b>Módulo Caja</b></label>
+
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="gastosClick($event)" type="checkbox" [checked]="GASTOS">
+                    GASTOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="totalesClick($event)" type="checkbox" [checked]="TOTALES">
+                    TOTALES
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="transferenciasClick($event)" type="checkbox" [checked]="TRANSFERENCIAS">
+                    Transferencias/Depositos/Egresos
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="filtroCajaClick($event)" type="checkbox" [checked]="FILTROCAJA">
+                    FILTRO CAJA
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="finanzasClick($event)" type="checkbox" [checked]="FINANZAS">
+                     FINANZAS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarCajaClick($event)" type="checkbox" [checked]="VISUALIZARCAJA">
+                     VISUALIZAR TOTALES CAJA
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="turnosCajaClick($event)" type="checkbox" [checked]="TURNOSCAJA">
+                     TURNOS CAJA
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="ocultarGananciasClick($event)" type="checkbox" [checked]="OCULTARGANANCIAS">
+                     OCULTAR GANANCIAS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="ocultarComprasClick($event)" type="checkbox" [checked]="OCULTARCOMPRAS">
+                     OCULTAR INDICADORES COMPRAS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="ocultarEditarDepositosClick($event)" type="checkbox" [checked]="OCULTAREDITARDEPOSITOS">
+                     OCULTAR EDITAR DEPOSITOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="prestamosClick($event)" type="checkbox" [checked]="PRESTAMOS">
+                     HABILITAR PRESTAMOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="ocultarIndicadoresEgresoClick($event)" type="checkbox" [checked]="OCULTARINDICADORESEGRESO">
+                    OCULTAR INDICADORES EGRESO/INGRESO
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                  <input (change)="ocultarDeleteIngresosClick($event)" type="checkbox" [checked]="OCULTARDELETEINGRESOS">
+                  OCULTAR DELETE INGRESOS
+                </label>
+              </span>
+              </div>
+              <div><hr>
+                <label><b>Módulo Configuraciones</b></label>
+
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarConfiguracionesClick($event)" type="checkbox" [checked]="VISUALIZARCONFIGURACIONES">
+                     VISUALIZAR CONFIGURACIONES
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="limitarConfiguracionClick($event)" type="checkbox" [checked]="LIMITARCONFIGURACION">
+                     LIMITAR CONFIGURACIONES
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="visualizarSeleccionSucursalClick($event)" type="checkbox" [checked]="VISUALIZARSELECCIONARSUCURSAL">
+                     VISUALIZAR SELECCIONAR SUCURSAL
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="mostrador2Click($event)" type="checkbox" [checked]="MOSTRADOR2">
+                     MOSTRADOR 2 EXCLUSIVO
+                  </label>
+                </span>
+              </div>
+              <div><hr>
+                <label><b>Módulo Produccion</b></label>
+
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="produccionClick($event)" type="checkbox" [checked]="PRODUCCION">
+                     VISUALIZAR PRODUCCION
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="mpStockClick($event)" type="checkbox" [checked]="MPSTOCK">
+                     LIMITAR STOCK MATERIAS PRIMAS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="articulosMPClick($event)" type="checkbox" [checked]="ARTICULOSMP">
+                     VISUALIZAR MATERIAS PRIMAS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="ocultarPreciosProduccionClick($event)" type="checkbox" [checked]="OCULTARPRECIOSPRODUCCION">
+                     OCULTAR PRECIOS
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="modificarPreciosMPClick($event)" type="checkbox" [checked]="MODIFICARPRECIOSMP">
+                     MODIFICAR PRECIOS MP
+                  </label>
+                </span>
+              </div>
+              <div><hr>
+                <label><b>Módulo Comprobante</b></label>
+                  <span style="margin-left:10px">
+                    <label>
+                      <input (change)="visualizarCodigoDescuentoClick($event)" type="checkbox" [checked]="VISUALIZARCODIGO_DESCUENTO">
+                      VISUALIZAR CODIGO Y DESCUENTO
+                    </label>
+                  </span>
+                  <span style="margin-left:10px">
+                    <label>
+                      <input (change)="visualizarMarcaRemitoClick($event)" type="checkbox" [checked]="VISUALIZARMARCAREMITO">
+                      VISUALIZAR MARCA(REMITO)
+                    </label>
+                  </span>
+                  <span style="margin-left:10px">
+                    <label>
+                      <input (change)="visualizarCantXPackRemitoClick($event)" type="checkbox" [checked]="VISUALIZARCANTXPACKREMITO">
+                      VISUALIZAR CANTIDAD X PACK(REMITO)
+                    </label>
+                  </span>
+                  <span style="margin-left:10px">
+                    <label>
+                      <input (change)="visualizarUsuarioRemitoClick($event)" type="checkbox" [checked]="VISUALIZARUSUARIOREMITO">
+                      VISUALIZAR USUARIO (REMITO)
+                    </label>
+                  </span>
+                  <span style="margin-left:10px">
+                    <label>
+                       <input (change)="mostrarPorcentajeListaClick($event)" type="checkbox" [checked]="MOSTRARPORCENTAJELISTA">
+                       Mostrar Porcentaje Lista
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="visualizarFechaEstadoFacturaClick($event)" type="checkbox" [checked]="VISUALIZARFECHAESTADOFACTURA">
+                       VISUALIZAR FECHA ACTUALIZACION Y ESTADO
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="visualizarLogoNegotisClick($event)" type="checkbox" [checked]="VISUALIZARLOGONEGOTIS">
+                       VISUALIZAR LOGO NEGOTIS
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="visualizarDatosFiscalesClick($event)" type="checkbox" [checked]="VISUALIZARDATOSFISCALES">
+                       VISUALIZAR DATOS FISCALES
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="visualizarCategoriaRubroClick($event)" type="checkbox" [checked]="VISUALIZARRUBROCATEGORIA">
+                       VISUALIZAR CATEGORIA Y RUBRO
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="imprimirDuplicadoClick($event)" type="checkbox" [checked]="IMPRIMIRDUPLICADO">
+                       IMPRIMIR DUPLICADO
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="visualizarDescuentoClick($event)" type="checkbox" [checked]="VISUALIZARDESCUENTO">
+                       VISUALIZAR DESCUENTO (GRAL)
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="visualizarPrecioListaClick($event)" type="checkbox" [checked]="VISUALIZARPRECIOLISTA">
+                       VISUALIZAR PRECIO LISTA
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="ocultarPresupuestoClick($event)" type="checkbox" [checked]="OCULTARPRESUPUESTO">
+                       OCULTAR PRESUPUESTO
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="ocultarPreciosComprobanteClick($event)" type="checkbox" [checked]="OCULTARPRECIOSCOMPROBANTE">
+                       OCULTAR PRECIOS
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="ocultarTotalesClick($event)" type="checkbox" [checked]="OCULTARTOTALES">
+                       OCULTAR TOTALES (SIN PRECIOS)
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                       <input (change)="visualizarIVAClick($event)" type="checkbox" [checked]="VISUALIZARIVA">
+                       VISUALIZAR IVA (COMPROBANTE)
+                     </label>
+                   </span>
+                   <span style="margin-left:10px">
+                    <label>
+                    <input (change)="ocultarFPClick($event)" type="checkbox" [checked]="OCULTARFP">
+                      OCULTAR FORMA PAGO Y ESTADO PAGO (FACTURA)
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                  <input (change)="rolOxyClick($event)" type="checkbox" [checked]="ROLOXY">
+                   ROL OXYMEDICA
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                <input (change)="comprobanteSinAzulClick($event)" type="checkbox" [checked]="COMPROBANTESINAZUL">
+                  COMPROBANTES SIN BARRA AZUL
+              </label>
+            </span>
+            <span style="margin-left:10px">
+              <label>
+              <input (change)="OcultarAprobadoAfipClick($event)" type="checkbox" [checked]="OCULTARAPROBADOAFIP">
+                OCULTAR APROBADO AFIP
+            </label>
+          </span>
+          <span style="margin-left:10px">
+            <label>
+            <input (change)="ocultarFantasiaClick($event)" type="checkbox" [checked]="OCULTARFANTASIA">
+              OCULTAR NOMBRE FANTASIA
+          </label>
+        </span>
+        <span style="margin-left:10px">
+          <label>
+          <input (change)="footerClick($event)" type="checkbox" [checked]="FOOTER">
+            PIE PAGINA AL FINAL
+        </label>
+      </span>
+      <span style="margin-left:10px">
+        <label>
+        <input (change)="facturaMClick($event)" type="checkbox" [checked]="FACTURAM">
+        HABILITAR FACTURA M
+      </label>
+    </span>
+    <span style="margin-left:10px">
+      <label>
+      <input (change)="comprobanteEspejoClick($event)" type="checkbox" [checked]="COMPROBANTEESPEJO">
+      COMPROBANTE ESPEJO
+    </label>
+  </span>
+              </div>
+              <hr>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="imprimirEtiquetas80mmClick($event)" type="checkbox" [checked]="IMPRIMIRETIQUETAS80MM">
+                  Imprimir Etiquetas 80mm
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="VisualizarReportesClick($event)" type="checkbox" [checked]="VISUALIZARREPORTES">
+                  Visualizar Reportes
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="visualizarReporteVencimientoClick($event)" type="checkbox" [checked]="VISUALIZARREPORTEVENCIMIENTO">
+                  Visualizar Reporte Vencimiento
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="visualizarLibrosClick($event)" type="checkbox" [checked]="VISUALIZARLIBROS">
+                  Visualizar Libros
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="categoriaLibrosClick($event)" type="checkbox" [checked]="CATEGORIALIBROS">
+                  Visualizar Categoria Libro Ventas
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="despachoClick($event)" type="checkbox" [checked]="DESPACHO">
+                  DESPACHO
+                </label>
+              </span>
+              <span style="margin-left:10px">
+                <label>
+                  <input (change)="habilitarHomeClick($event)" type="checkbox" [checked]="HABILITARHOME">
+                  HABILITAR HOME
+                </label>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="FatmanClick($event)" type="checkbox" [checked]="FATMAN">
+                    FATMAN
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="MedinorClick($event)" type="checkbox" [checked]="MEDINOR">
+                    MEDINOR
+                  </label>
+                </span>
+                <span style="margin-left:10px">
+                  <label>
+                    <input (change)="datosMedinorClick($event)" type="checkbox" [checked]="DATOSMEDINOR">
+                    MOSTRAR DATOS MEDINOR
+                  </label>
+                </span>
+              </span>
+            </div>
+            <small *ngIf="idModuloSelected?.length == 0 && submitted==true" class="form-text text-muted">
+              Ingrese modulo/s</small>
+          </div>
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

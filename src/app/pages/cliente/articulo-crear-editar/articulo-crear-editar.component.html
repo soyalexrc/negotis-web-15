@@ -1,0 +1,444 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idArticulo == 0">Crear</span>
+          <span *ngIf="idArticulo != 0">Editar</span>
+          Artículo
+        </h3>
+        <div *ngIf="idArticulo != 0">
+          <button (click)="fotoModal()" type="button" class="btn btn-primary"><span class="fas fa-image"></span> Cargar
+            Foto</button>
+        </div>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <div class="form-group">
+            <label class="obligatorio">Articulo (Nombre)</label>
+            <input type="text" formControlName="articulo" class="form-control" [(ngModel)]="articulo">
+            <small *ngIf="myForm.get('articulo')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese artículo
+            </small>
+            <small *ngIf="post?.RepetidoNombre == true && tieneRolCargaDuplicado == false" class="form-text text-muted">
+              Nombre artículo existente
+            </small>
+          </div>
+
+          <div class="form-group" *ngIf="tieneRolVisualizarOfertas">
+            <label>Descripción</label>
+            <textarea rows="4" formControlName="especificacion" class="form-control"
+              [(ngModel)]="especificacion"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="obligatorio">Codigo de barras (Mínimo 7)</label>
+            <input type="text" formControlName="codigoDeBarras" class="form-control"
+              [(ngModel)]="codigoDeBarras">
+            <small *ngIf="myForm.get('codigoDeBarras')?.hasError('required') && submitted==true"
+              class="form-text text-muted">
+              Ingrese código</small>
+            <small *ngIf="post?.RepetidoCodigo == true && tieneRolCargaDuplicado == false" class="form-text text-muted">Código de barras existente</small>
+          </div>
+
+          <div class="form-group">
+            <label>Segundo Codigo de barras (Mínimo 7)</label>
+            <input type="text" formControlName="codigobarras2" class="form-control"
+              [(ngModel)]="codigobarras2">
+          </div>
+
+          <div class="form-group" *ngIf="tieneRolQR">
+            <label >Codigo QR</label>
+            <input type="text" formControlName="codigoQR" class="form-control"
+              [(ngModel)]="codigoQR">
+          </div>
+
+          <div class="form-group">
+            <label>Codigo Articulo</label>
+            <input type="text" formControlName="codigoArticulo" class="form-control"
+              [(ngModel)]="codigoArticulo">
+          </div>
+
+
+          <div class="form-group">
+            <label class="obligatorio">Marca</label>
+            <select formControlName="idMarca" class="form-control" [(ngModel)]="idMarca">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listadoMarcas" value="{{item.Id}}">{{item.Nombre}}</option>
+            </select>
+            <small *ngIf="myForm.get('idMarca')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese marca</small>
+          </div>
+
+          <div class="form-group">
+            <label class="obligatorio">Proveedor</label>
+            <select formControlName="idProveedor" class="form-control" [(ngModel)]="idProveedor">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listadoProveedores" value="{{item.id}}">{{item.nombre}}</option>
+            </select>
+            <small *ngIf="myForm.get('idProveedor')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Seleccione Proveedor
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label>Segundo Proveedor</label>
+            <select formControlName="idProveedor2" class="form-control" [(ngModel)]="idProveedor2">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listadoProveedores" value="{{item.id}}">{{item.nombre}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label >Tercer Proveedor</label>
+            <select formControlName="idProveedor3" class="form-control" [(ngModel)]="idProveedor3">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listadoProveedores" value="{{item.id}}">{{item.nombre}}</option>
+            </select>
+          </div>
+
+          <div class="form-group" *ngIf="Ubicaciones">
+            <label>Ubicación Depósito</label>
+            <input formControlName="ubicacionDeposito" class="form-control" [(ngModel)]="ubicacionDeposito">
+          </div>
+          <div class="form-group" *ngIf="Ubicaciones">
+            <label>Ubicación Artículo</label>
+            <input formControlName="ubicacionArticulo" class="form-control" [(ngModel)]="ubicacionArticulo">
+          </div>
+          <div class="form-group" *ngIf="VerCodigoCliente">
+            <label>Código Cliente</label>
+            <input formControlName="codigoCliente" class="form-control" [(ngModel)]="codigoCliente">
+          </div>
+          <div class="form-group" *ngIf="VerCodigoCliente">
+            <label>Código Proveedor</label>
+            <input formControlName="codigoProveedor" class="form-control" [(ngModel)]="codigoProveedor">
+          </div>
+
+          <div *ngIf="tieneRolMP" class="form-group">
+            <button (click)="MPModal()" type="button" > Cargar
+             Materia Prima</button>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col">Stock</th>
+                  <th scope="col">*</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of listaMateriaPrimas; let i = index">
+                <tr>
+                  <th class="text-center" scope="row">{{i+1}}</th>
+                  <th class="text-center" scope="row">{{item.nombre}}</th>
+                  <th class="text-center" scope="row">{{item.cantidad}}</th>
+                  <th class="text-center" scope="row">{{item.precio}}</th>
+                  <th class="text-center" scope="row">{{item.stock}}</th>
+                  <td><span (click)="deleteMP(item)" class="fas fa-trash-alt pointer"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+          <div *ngIf="tieneRolComboArticulos" class="form-group">
+            <button (click)="ComboModal()" type="button" > Cargar
+             Combo Artículo</button>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Stock</th>
+                  <th scope="col">*</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of listaCombo; let i = index">
+                <tr>
+                  <th class="text-center" scope="row">{{i+1}}</th>
+                  <th class="text-center" scope="row">{{item.nombre}}</th>
+                  <th class="text-center" scope="row">{{item.cantidad}}</th>
+                  <th class="text-center" scope="row">{{item.stock}}</th>
+                  <td><span (click)="deleteCombo(item)" class="fas fa-trash-alt pointer"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+
+          <div class="form-group" >
+            <label class="obligatorio">Rubro</label>
+            <select formControlName="idRubro" class="form-control" [(ngModel)]="idRubro">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listadoRubro" value="{{item.Id}}">{{item.Nombre}}
+                ({{item?.CategoriaRubro?.Nombre}})</option>
+            </select>
+            <small *ngIf="myForm.get('idRubro')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese rubro</small>
+          </div>
+
+          <div class="form-group">
+            <label class="obligatorio">Precio Costo</label>
+            <input type="number" formControlName="precioCosto" class="form-control"
+              [(ngModel)]="precioCosto" (change)="onChange()">
+            <small
+              *ngIf="(myForm.get('precioCosto')?.hasError('required') || myForm.get('precioCosto').hasError('pattern')) && submitted==true"
+              class="form-text text-muted">
+              Ingrese precio costo mayor o igual a 0</small>
+          </div>
+
+          <div class="form-group">
+            <label>Porcentaje</label>
+            <input type="number" formControlName="porcentaje" class="form-control"
+              [(ngModel)]="porcentaje" (change)="onChange()">
+          </div>
+
+          <div class="form-group">
+            <label class="obligatorio">Precio Base</label>
+            <input type="number" formControlName="precioBase" class="form-control"
+             [(ngModel)]="precioBase">
+            <small
+              *ngIf="(myForm.get('precioBase')?.hasError('required') || myForm.get('precioBase').hasError('pattern'))
+              && submitted==true"
+              class="form-text text-muted">
+              Ingrese precio base mayor o igual a 0</small>
+          </div>
+
+          <div *ngIf="tieneRolCostosAdicionales">
+          <div class="form-group">
+            <label>Precio Costo 2</label>
+            <input type="number" formControlName="precioCosto2" class="form-control"
+              [(ngModel)]="precioCosto2 " (change)="onChange()">
+          </div>
+
+          <div class="form-group">
+            <label>Precio Costo 3</label>
+            <input type="number" formControlName="precioCosto3" class="form-control"
+              [(ngModel)]="precioCosto3" (change)="onChange()">
+          </div>
+
+          <div class="form-group">
+            <label>Precio Costo 4</label>
+            <input type="number" formControlName="precioCosto4" class="form-control"
+              [(ngModel)]="precioCosto4" (change)="onChange()">
+          </div>
+
+        </div>
+
+        <div class="form-group" *ngIf="visualizarAcciones">
+          <label>Porcentaje Precio Oferta</label>
+          <input type="number" formControlName="porcentajeO" class="form-control"
+            [(ngModel)]="porcentajeO" (change)="onChange()">
+        </div>
+
+        <div class="form-group" *ngIf="visualizarAcciones">
+          <label>Precio Oferta</label>
+          <input type="number" formControlName="precioBulto" class="form-control"
+            [(ngModel)]="precioBulto ">
+        </div>
+
+          <div class="form-group" ng *ngIf="tieneRolPrecioDolar">
+            <label>Precio Dolar</label>
+            <input type="number" formControlName="precioDolar" class="form-control"
+              [(ngModel)]="precioDolar">
+          </div>
+
+          <div class="form-group">
+            <label >Cantidad Por Pack / Cantidad Oferta</label>
+            <input type="number" formControlName="cantidadPorPack" class="form-control"
+              [(ngModel)]="cantidadPorPack">
+            <small *ngIf="myForm.get('cantidadPorPack')?.hasError('pattern') && submitted==true"
+              class="form-text text-muted">
+              Ingrese cantidad mayor o igual a 0</small>
+          </div>
+
+          <div class="form-group">
+            <label>Unidad de Medida</label>
+            <div>
+              <label>
+                <input type="radio" (click)="changeUnidad()" [checked]="unidad">
+                Unidad
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" (click)="changeKilogramo()" [checked]="kilogramo">
+                Kilogramo
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" (click)="changeLitro()" [checked]="litro">
+                Litro
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" (click)="changeMetro()" [checked]="metro">
+                Metro
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" (click)="changeKilometro()" [checked]="kilometro">
+                Kilometro
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" (click)="changeHoras()" [checked]="hora">
+                Horas
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" (click)="changePesable()" [checked]="pesable">
+                Pesable
+              </label>
+            </div>
+          </div>
+
+          <div *ngIf="tieneRolCompraMinima">
+            <label>Compra Mínima</label>
+            <input type="number" formControlName="compraMinima" class="form-control"
+              [(ngModel)]="compraMinima">
+          </div>
+
+          <div *ngIf="mostrarDatosEcommerce">
+            <label>Rango Compra (Tienda)</label>
+            <input type="number" formControlName="rangoCompra" class="form-control"
+              [(ngModel)]="rangoCompra">
+          </div>
+
+          <div *ngIf="mostrarDatosEcommerce">
+            <label>Limite Stock (Tienda)</label>
+            <input type="number" formControlName="limiteStock" class="form-control"
+              [(ngModel)]="limiteStock">
+          </div>
+
+          <div class="form-group">
+            <label>Stock Minimo</label>
+            <input type="number" formControlName="stockMinimo" class="form-control"
+              [(ngModel)]="stockMinimo">
+          </div>
+
+          <div>
+            <label>Color</label>
+            <input type="text" formControlName="color" class="form-control"
+              [(ngModel)]="color">
+          </div>
+
+          <div *ngIf="medinor">
+            <div>
+              <label>Lote</label>
+              <input type="text" formControlName="lote" class="form-control"
+                [(ngModel)]="lote">
+            </div>
+
+            <div class="form-group">
+              <label>Fecha de Ingreso (año/mes/dia)</label>
+              <input type="text" formControlName="fechaIngreso" class="form-control"
+                [(ngModel)]="fechaIngreso">
+            </div>
+
+
+            <div class="form-group">
+              <label>Fecha de Egreso (año/mes/dia)</label>
+              <input type="text" formControlName="fechaEgreso" class="form-control"
+                [(ngModel)]="fechaEgreso">
+            </div>
+
+        </div>
+
+          <div class="form-group">
+            <label>Vencimiento (año/mes/dia)</label>
+            <input type="text" formControlName="vencimiento" class="form-control"
+              [(ngModel)]="vencimiento">
+              <small *ngIf="myForm.get('vencimiento')?.hasError('required') && submitted==true" class="form-text text-muted">
+                Ingrese Vencimiento</small>
+          </div>
+
+          <div class="form-group">
+            <label>Vencimiento Oferta (año/mes/dia)</label>
+            <input type="text" formControlName="vencimientoOferta" class="form-control"
+              [(ngModel)]="vencimientoOferta">
+          </div>
+
+
+
+          <div class="form-group">
+            <label>Talle/Tamaño</label>
+            <input type="text" formControlName="talle" class="form-control"
+              [(ngModel)]="talle">
+          </div>
+
+
+<!--
+          <div class="form-group" *ngIf="mostrarDatosEcommerce">
+            <label>Agregar a E-commerce</label>
+            <div>
+            <input (change)="ecommerceClick($event)" type="checkbox" class="ecommerce" [checked]="articuloE">
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="mostrarDatosEcommerce">
+            <label>Lista de Precios (Activas)</label>
+            <select size="3" class="form-control" [(ngModel)]="idLista" >
+              <option (click)="getLista(item);" *ngFor="let item of listadoPrecios" value="{{item?.Id}}">{{item?.Nombre}}
+              </option>
+            </select>
+          </div>
+-->
+            <div class="form-group">
+              <label >Destacar En Carro</label>
+              <select formControlName="destacar" class="form-control" [(ngModel)]="destacar">
+                <option value="false">No</option>
+                <option value="true">Si</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label >Iva</label>
+              <select formControlName="iva" class="form-control" [(ngModel)]="iva">
+                <option value="21">21</option>
+                <option value="27">27</option>
+                <option value="10">10.5</option>
+                <option value="-1">0</option>
+              </select>
+            </div>
+
+
+          <div class="form-group">
+            <label >Estado</label>
+            <select formControlName="activo" class="form-control" [(ngModel)]="activo">
+              <option value="">Seleccionar</option>
+              <option value="true">Activo</option>
+              <option value="false">Inactivo</option>
+            </select>
+            <small *ngIf="myForm.get('activo')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese estado
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label >Eliminar</label>
+            <select formControlName="eliminar" class="form-control" [(ngModel)]="eliminar">
+              <option value="false">No</option>
+              <option value="true">Si</option>
+            </select>
+            <small *ngIf="myForm.get('eliminar')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Complete este campo
+            </small>
+          </div>
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

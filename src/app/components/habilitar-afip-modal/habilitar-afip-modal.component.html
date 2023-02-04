@@ -1,0 +1,33 @@
+<div mat-dialog-content>
+  <div>
+    Habilitar Registros 
+  </div>
+  <div style="margin-top:25px;margin-bottom:25px;">
+    <div *ngIf="post != true">
+      <div>
+          <label (click)="soloAfipFunc()">
+              <input type="radio" [checked]="soloAfip"> Solo Afip
+            </label>
+      </div>
+      <div>
+          <label (click)="soloInformalFunc()">
+              <input type="radio" [checked]="soloInformal"> Solo Informal
+            </label>
+        </div>
+        <div>
+            <label (click)="afipInfomalFunc()">
+                <input type="radio" [checked]="afipInformal"> Afip e Informal
+              </label>
+          </div>
+    </div>
+  
+    <label *ngIf="post == true">
+      Status Guardado Exitosamente
+    </label>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button *ngIf="post != true" (click)="cancelar()" style="margin-right:10px;" class="btn btn-danger">Cancelar</button>
+  <button *ngIf="post != true" (click)="guardar()" class="btn btn-warning">Guardar</button>
+  <button *ngIf="post == true" (click)="cancelar()" class="btn btn-success">Aceptar</button>
+</div>

@@ -1,0 +1,427 @@
+
+<toolbar-two></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Rol Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a routerLink="/cliente/rol/crear">
+        <mat-card class="pointer">
+          Agregar Rol
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <div>
+    <!--filtro-->
+    <div class="margin-filtro"></div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        Filtro
+      </mat-expansion-panel-header>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Rol</label>
+            <input type="text" class="form-control" [(ngModel)]="nombreRol" [matAutocomplete]="autoRol"
+              [formControl]="rolCtrl">
+            <mat-autocomplete #autoRol="matAutocomplete">
+              <mat-option *ngFor="let item of filteredRol | async" [value]="item.Name">
+                <span>{{item.Name}}</span>
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+      </div>
+      <mat-action-row>
+        <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+        <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">*</th>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">CLIENTES</th>
+          <th scope="col">ZONAS</th>
+          <th scope="col">EMPLEADOS</th>
+          <th scope="col">COMPRAS</th>
+          <th scope="col">ELIMINAR COMPRAS</th>
+          <th scope="col">PEDIDOS</th>
+          <th scope="col">Mod. PEDIDOS</th>
+          <th scope="col">Eliminar PEDIDOS</th>
+          <th scope="col">Visualizar PEDIDOS</th>
+          <th scope="col">PRECIOS</th>
+          <th scope="col">PRODUCTOS</th>
+          <th scope="col">Mod. PRODUCTOS</th>
+          <th scope="col">ROLES</th>
+          <th scope="col">GASTOS</th>
+          <th scope="col">TOTALES</th>
+          <th scope="col">TRANS/DEP/EGR</th>
+          <th scope="col">VisualizarReportes</th>
+          <th scope="col">DESPACHO</th>
+          <th scope="col">PROVEEDORES</th>
+          <th scope="col">CAJA</th>
+          <th scope="col">STOCK VALOR</th>
+          <th scope="col">FINANZAS</th>
+          <th scope="col">AUMENTO / DESCUENTO MONTO</th>
+          <th scope="col">VISUALIZAR STOCK</th>
+          <th scope="col">VISUALIZAR CODIGO</th>
+          <th scope="col">VISUALIZAR CODIGO Y DESCUENTO</th>
+          <th scope="col">VENDER CON STOCK</th>
+          <th scope="col">VISUALIZAR CANTIDAD VENTAS</th>
+          <th scope="col">VISUALIZAR CONFIGURACIONES</th>
+          <th scope="col">VISUALIZAR STOCK PROVEEDOR</th>
+          <th scope="col">VISUALIZAR AUMENTO/DESCUENTO LISTA %</th>
+          <th scope="col">VISUALIZAR ID Y ESTADO</th>
+          <th scope="col">VISUALIZAR MARCA(REMITO)</th>
+          <th scope="col">VISUALIZAR CANTIDAD POR PACK(REMITO)</th>
+          <th scope="col">VISUALIZAR USUARIO(REMITO)</th>
+          <th scope="col">ELIMINAR CLIENTE</th>
+          <th scope="col">VISUALIZAR OFERTAS</th>
+          <th scope="col">VISUALIZAR CATEGORIA</th>
+          <th scope="col">FILTRO PEDIDOS</th>
+          <th scope="col">MOSTRAR PORCENTAJE LISTA</th>
+          <th scope="col">VISUALIZAR REPORTE VENCIMIENTO</th>
+          <th scope="col">VISUALIZAR LISTA ARTICULOS</th>
+          <th scope="col">VISUALIZAR RENTABILIDAD</th>
+          <th scope="col">VISUALIZAR FECHA ACTUALIZACION Y ESTADO</th>
+          <th scope="col">VISUALIZAR LOGO NEGOTIS</th>
+          <th scope="col">VISUALIZAR TALLE</th>
+          <th scope="col">VISUALIZAR LOGO</th>
+          <th scope="col">VISUALIZAR ACTUALIZAR PRECIOS</th>
+          <th scope="col">VISUALIZAR COLOR</th>
+          <th scope="col">VISUALIZAR OBJETIVO</th>
+          <th scope="col">CARGAR DUPLICADOS</th>
+          <th scope="col">OCULTAR DATOS ECOMMERCE</th>
+          <th scope="col">MODIFICAR UNIDADES</th>
+          <th scope="col">FILTRO VENDEDOR</th>
+          <th scope="col">VISUALIZAR ESTADOS PEDIDOS</th>
+          <th scope="col">VISUALIZAR DATOS FISCALES</th>
+          <th scope="col">PRECIOS COSTO ADICIONALES</th>
+          <th scope="col">VISUALIZAR PRECIO DOLAR</th>
+          <th scope="col">OCULTAR DESCUENTOS</th>
+          <th scope="col">VISUALIZAR CATEGORIA RUBRO</th>
+          <th scope="col">IMPRIMIR DUPLICADO</th>
+          <th scope="col">VISUALIZAR DATOS ESTETICA</th>
+          <th scope="col">EDITAR PRECIOS</th>
+          <th scope="col">FILTRO USUARIO</th>
+          <th scope="col">OCULTAR FILTRO TOTALES GASTOS</th>
+          <th scope="col">FILTRO ENTER</th>
+          <th scope="col">VISUALIZAR DESCUENTO COMPROBANTE</th>
+          <th scope="col">OCULTAR RUBRO</th>
+          <th scope="col">ORDENAR POR RUBRO</th>
+          <th scope="col">VISUALIZAR PORCENTAJE AUMENTO</th>
+          <th scope="col">SINCRONIZAR EXCEL</th>
+          <th scope="col">VISUALIZAR DATOS TALLER</th>
+          <th scope="col">FILTRO CLIENTE SUCURSAL</th>
+          <th scope="col">VISUALIZAR DATOS SUCURSAL</th>
+          <th scope="col">VISUALIZAR CATEGORIA Y RUBRO</th>
+          <th scope="col">OCULTAR CODIGO BARRAS (ETIQUETAS)</th>
+          <th scope="col">SINCRONIZAR API</th>
+          <th scope="col">COMPRA MINIMA</th>
+          <th scope="col">OCULTAR PRECIOS</th>
+          <th scope="col">OCULTAR PRESUPUESTO</th>
+          <th scope="col">OCULTAR CODIGO Y UNIDADES</th>
+          <th scope="col">OCULTAR FILTROS ARTICULOS</th>
+          <th scope="col">ASIGNAR VENDEDOR A UN PEDIDO</th>
+          <th scope="col">SINCRONIZAR PEDIDOS</th>
+          <th scope="col">IMPRESION COMANDERA</th>
+          <th scope="col">OCULTAR PRECIOS COMPROBANTE</th>
+          <th scope="col">OCULTAR COMPROBANTE</th>
+          <th scope="col">LIMITAR CONFIGURACIONES</th>
+          <th scope="col">VISUALIZAR PRODUCCION</th>
+          <th scope="col">LIMITAR STOCK MATERIAS PRIMAS</th>
+          <th scope="col">VISUALIZAR MATERIAS PRIMAS</th>
+          <th scope="col">ORDENAR POR NUMERO</th>
+          <th scope="col">OCULTAR PRECIOS PRODUCCION</th>
+          <th scope="col">VISUALIZAR UBICACIONES ARTICULOS</th>
+          <th scope="col">VISUALIZAR CODIGO CLIENTE Y PROVEEDOR</th>
+          <th scope="col">OCULTAR TOTALES (SIN PRECIO)</th>
+          <th scope="col">VISUALIZAR ACTIVAR LISTA</th>
+          <th scope="col">VISUALIZAR FILTRO MULTIPLE</th>
+          <th scope="col">MODIFICAR PPRECIOS (MP)</th>
+          <th scope="col">CARGAR CODIGO DE BARRA</th>
+          <th scope="col">ACTIVAR CONTROL DE ENTREGAS</th>
+          <th scope="col">VISUALIZAR COMPROBANTE UNIFICADO</th>
+          <th scope="col">VISUALIZAR IVA</th>
+          <th scope="col">SALDO A FAVOR</th>
+          <th scope="col">UBICACION ARTICULOS (PEDIDOS)</th>
+          <th scope="col">OCULTAR PRECIOS</th>
+          <th scope="col">VISUALIZAR IMAGENES RUBROS</th>
+          <th scope="col">AGREGAR LISTA</th>
+          <th scope="col">COMBO ARTICULOS</th>
+          <th scope="col">VISUALIZAR DISTANCIA</th>
+          <th scope="col">IMPRIMIR COMPROBANTE 80MM</th>
+          <th scope="col">VISUALIZAR FICHA MEDICA</th>
+          <th scope="col">MOSTRADOR EFECTIVO</th>
+          <th scope="col">OCULTAR FILTROS COMPRAS</th>
+          <th scope="col">MODIFICAR LISTA</th>
+          <th scope="col">VISUALIZAR IVA 27</th>
+          <th scope="col">VISUALIZAR IVA 10</th>
+          <th scope="col">VISUALIZAR CODIGOS QR</th>
+          <th scope="col">VISUALIZAR CAMBIOS DE ESTADOS</th>
+          <th scope="col">OCULTAR FACTURAS</th>
+          <th scope="col">OCULTAR QR</th>
+          <th scope="col"> OCULTAR PRECIOS ETIQUETAS</th>
+          <th scope="col"> MOSTRAR CODIGO ETIQUETAS</th>
+          <th scope="col">OCULTAR FACTURAS COMANDERA</th>
+          <th scope="col">REVERTIR ORDEN PEDIDOS</th>
+          <th scope="col">VISUALIZAR LIBROS</th>
+          <th scope="col">OCULTAR DATOS GENERALES</th>
+          <th scope="col">MOSTRAR RUBRO (ETIQUETA)</th>
+          <th scope="col">IMPRIMIR ETIQUETAS 80MM</th>
+          <th scope="col">TURNOS CAJA</th>
+          <th scope="col">CREAR DUPLICADOS</th>
+          <th scope="col">OCULTAR GANANCIAS</th>
+          <th scope="col">OCULTAR INDICADORES COMPRAS</th>
+          <th scope="col">IMPRESION DOBLE</th>
+          <th scope="col"> OCULTAR EDITAR DEPOSITOS</th>
+          <th scope="col"> BLOQUEAR FECHA PEDIDO</th>
+          <th scope="col"> ESTADO ENTREGA ENTREGADO</th>
+          <th scope="col"> HABILITAR PRESTAMOS</th>
+          <th scope="col"> OCULTAR FORMA PAGO Y ESTADO PAGO (COMPROBANTE)</th>
+          <th scope="col"> AUTO SELECCIONAR CHECK COSTO(COMPRAS)</th>
+          <th scope="col">ESTADO POR SUCURSAL</th>
+          <th scope="col">CAMBIAR COLOR COMPROBANTES (OXY)</th>
+          <th scope="col">BLOQUEAR EDITAR PRECIOS</th>
+          <th scope="col">BLOQUEAR PRECIOS (stock)</th>
+          <th scope="col">VISUALIZAR CODIGO ARTICULO (COMPROBANTE)</th>
+          <th scope="col">ORDENAR POR CÓDIGO (STOCK)</th>
+          <th scope="col">AUTO ASIGNAR CODIGOS DE BARRA (STOCK)</th>
+          <th scope="col"> COMPROBANTES SIN BARRA AZUL</th>
+          <th scope="col"> BLOQUEO PEDIDOS</th>
+          <th scope="col"> CATEGORIA LIBRO VENTAS</th>
+          <th scope="col"> ESCONDER DELETE ARTICULOS</th>
+          <th scope="col"> VISUALIZAR SELECCIONAR SUCURSAL</th>
+          <th scope="col"> OCULTAR APROBADO AFIP</th>
+          <th scope="col"> OCULTAR NOMBRE FANTASIA</th>
+          <th scope="col"> PIE PAGINA AL FINAL</th>
+          <th scope="col"> OCULTAR INDICADORES VENTAS</th>
+          <th scope="col"> CREAR PEDIDO DIRECTO</th>
+          <th scope="col"> RECALCULO UNIDAD</th>
+          <th scope="col"> OCULTAR INDICADORES EGRESO</th>
+          <th scope="col"> PORCENTAJE TARJETAS</th>
+          <th scope="col"> FACTURA M</th>
+          <th scope="col"> OCULTAR DELETE INGRESOS</th>
+          <th scope="col"> ENVIAR COMPROBANTES POR WS</th>
+          <th scope="col"> FATMAN</th>
+          <th scope="col"> MOSTRADOR2</th>
+          <th scope="col"> COMPROBANTE ESPEJO</th>
+          <th scope="col"> IMPRIMIR ETIQUETAS JPG</th>
+          <th scope="col"> MEDINOR</th>
+          <th scope="col">MOSTRAR DATOS MEDINOR</th>
+          <th scope="col">REPARTO POR DEFECTO</th>
+          <th scope="col">OCULTAR ALGUNOS DATOS GENERALES</th>
+          
+          
+
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listRol; let i = index">
+        <tr>
+          <td><a routerLink="/cliente/rol/editar/{{item?.Id}}"><span class="pointer">Editar</span></a></td>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item?.Name}}</td>
+          <td><span class="fas" [class.fa-check]="item?.CLIENTES" [class.fa-times]="!item?.CLIENTES"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ZONAS" [class.fa-times]="!item?.ZONAS"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.EMPLEADOS" [class.fa-times]="!item?.EMPLEADOS"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ComprasProveedor" [class.fa-times]="!item?.ComprasProveedor"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.EliminarComprasProveedor" [class.fa-times]="!item?.EliminarComprasProveedor"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.PEDIDOS" [class.fa-times]="!item?.PEDIDOS"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ModificarPedidos" [class.fa-times]="!item?.ModificarPedidos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.EliminarPedidos" [class.fa-times]="!item?.EliminarPedidos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarPedidos" [class.fa-times]="!item?.VisualizarPedidos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.PRECIOS" [class.fa-times]="!item?.PRECIOS"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.PRODUCTOS" [class.fa-times]="!item?.PRODUCTOS"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ModificarProductos" [class.fa-times]="!item?.ModificarProductos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ROLES" [class.fa-times]="!item?.ROLES"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.GASTOS" [class.fa-times]="!item?.GASTOS"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.TOTALES" [class.fa-times]="!item?.TOTALES"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.TRANSFERENCIAS" [class.fa-times]="!item?.TRANSFERENCIAS"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarReportes" [class.fa-times]="!item?.VisualizarReportes"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.DESPACHO" [class.fa-times]="!item?.DESPACHO"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Proveedores" [class.fa-times]="!item?.Proveedores"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.FiltroCaja" [class.fa-times]="!item?.FiltroCaja"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.StockValor" [class.fa-times]="!item?.StockValor"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.FINANZAS" [class.fa-times]="!item?.FINANZAS"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Aumentodescuentomonto" [class.fa-times]="!item?.Aumentodescuentomonto"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarStock" [class.fa-times]="!item?.VisualizarStock"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarCodigo" [class.fa-times]="!item?.VisualizarCodigo"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarCodDesc" [class.fa-times]="!item?.VisualizarCodDesc"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VenderConStock" [class.fa-times]="!item?.VenderConStock"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarListaPrecios" [class.fa-times]="!item?.VisualizarListaPrecios"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarCaja" [class.fa-times]="!item?.VisualizarCaja"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarConfiguraciones" [class.fa-times]="!item?.VisualizarConfiguraciones"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarStockProveedor" [class.fa-times]="!item?.VisualizarStockProveedor"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarAumentoDescuentoLista" [class.fa-times]="!item?.VisualizarAumentoDescuentoLista"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarCantXPack" [class.fa-times]="!item?.VisualizarCantXPack"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarIDEstado" [class.fa-times]="!item?.VisualizarIDEstado"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarMarcaRemito" [class.fa-times]="!item?.VisualizarMarcaRemito"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarCantidadXPackRemito" [class.fa-times]="!item?.VisualizarCantidadXPackRemito"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.EliminarClientes" [class.fa-times]="!item?.EliminarClientes"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarUsuarioRemito" [class.fa-times]="!item?.VisualizarUsuarioRemito"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarOfertas" [class.fa-times]="!item?.VisualizarOfertas"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarCategoria" [class.fa-times]="!item?.VisualizarCategoria"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.FiltroPedidos" [class.fa-times]="!item?.FiltroPedidos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.MostrarPorcentajeLista" [class.fa-times]="!item?.MostrarPorcentajeLista"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarCodigoArticulo" [class.fa-times]="!item?.VisualizarCodigoArticulo"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.HabilitarHome" [class.fa-times]="!item?.HabilitarHome"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarPorcentaje" [class.fa-times]="!item?.VisualizarPorcentaje"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarImpresionBT" [class.fa-times]="!item?.VisualizarImpresionBT"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarComprobanteYFactura" [class.fa-times]="!item?.VisualizarComprobanteYFactura"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarPesables" [class.fa-times]="!item?.VisualizarPesables"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarReporteVencimiento" [class.fa-times]="!item?.VisualizarReporteVencimiento"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarListaArticulos" [class.fa-times]="!item?.VisualizarListaArticulos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarRentabilidad" [class.fa-times]="!item?.VisualizarRentabilidad"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarFechaEstadoFactura" [class.fa-times]="!item?.VisualizarFechaEstadoFactura"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarLogoNegotis" [class.fa-times]="!item?.VisualizarLogoNegotis"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarTalle" [class.fa-times]="!item?.VisualizarTalle"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarLogo" [class.fa-times]="!item?.VisualizarLogo"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarActualizarPrecios" [class.fa-times]="!item?.VisualizarActualizarPrecios"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarColor" [class.fa-times]="!item?.VisualizarColor"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarObjetivo" [class.fa-times]="!item?.VisualizarObjetivo"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.CargarDuplicados" [class.fa-times]="!item?.CargarDuplicados"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.OcultarDatosE" [class.fa-times]="!item?.OcultarDatosE"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.ModificarUnidades" [class.fa-times]="!item?.ModificarUnidades"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.FiltroVendedor" [class.fa-times]="!item?.FiltroVendedor"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.VisualizarEstadosPedidos" [class.fa-times]="!item?.VisualizarEstadosPedidos"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.VisualizarDatosFiscales" [class.fa-times]="!item?.VisualizarDatosFiscales"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.PreciosCostosAdicionales" [class.fa-times]="!item?.PreciosCostosAdicionales"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.VisualizarPrecioDolar" [class.fa-times]="!item?.VisualizarPrecioDolar"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.VisualizarDescuentos" [class.fa-times]="!item?.VisualizarDescuentos"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.VisualizarRubroCategoria" [class.fa-times]="!item?.VisualizarRubroCategoria"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.ImprimirDuplicado" [class.fa-times]="!item?.ImprimirDuplicado"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.VisualizarDatosEstetica" [class.fa-times]="!item?.VisualizarDatosEstetica"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.EditarPrecios" [class.fa-times]="!item?.EditarPrecios"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.FiltroUsuario" [class.fa-times]="!item?.FiltroUsuario"></span></td>          
+          <td><span class="fas" [class.fa-check]="item?.FiltroTotalesGastos" [class.fa-times]="!item?.FiltroTotalesGastos"></span></td>   
+          <td><span class="fas" [class.fa-check]="item?.FiltroEnter" [class.fa-times]="!item?.FiltroEnter"></span></td>   
+          <td><span class="fas" [class.fa-check]="item?.VisualizarDescuentoComprobante" [class.fa-times]="!item?.VisualizarDescuentoComprobante"></span></td>   
+          <td><span class="fas" [class.fa-check]="item?.OcultarRubro" [class.fa-times]="!item?.OcultarRubro"></span></td>   
+          <td><span class="fas" [class.fa-check]="item?.OrdernarPorRubro" [class.fa-times]="!item?.OrdernarPorRubro"></span></td>   
+          <td><span class="fas" [class.fa-check]="item?.VisualizarAumentoPorcentaje" [class.fa-times]="!item?.VisualizarAumentoPorcentaje"></span></td>   
+          <td><span class="fas" [class.fa-check]="item?.VisualizarPrecioLista" [class.fa-times]="!item?.VisualizarPrecioLista"></span></td>   
+          <td><span class="fas" [class.fa-check]="item?.ImprimirArticulosOrdenado" [class.fa-times]="!item?.ImprimirArticulosOrdenado"></span></td>   
+          <td><span class="fas" [class.fa-check]="item?.ComboOferta" [class.fa-times]="!item?.ComboOferta"></span></td>   
+          <td><span class="fas" [class.fa-check]="item?.RolExcel" [class.fa-times]="!item?.RolExcel"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarAcciones" [class.fa-times]="!item?.VisualizarAcciones"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.SinicronizarExcel" [class.fa-times]="!item?.SinicronizarExcel"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.MostrarPrecioOferta" [class.fa-times]="!item?.MostrarPrecioOferta"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ImprimirEtiquetas" [class.fa-times]="!item?.ImprimirEtiquetas"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarDatosTaller" [class.fa-times]="!item?.VisualizarDatosTaller"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.FiltroClienteSucursal" [class.fa-times]="!item?.FiltroClienteSucursal"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarDatosSucursal" [class.fa-times]="!item?.VisualizarDatosSucursal"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarCategoriaRubroPedidos" [class.fa-times]="!item?.VisualizarCategoriaRubroPedidos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarCodigosBarraArticulos" [class.fa-times]="!item?.OcultarCodigosBarraArticulos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarDescripcion" [class.fa-times]="!item?.VisualizarDescripcion"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.SincronizarApi" [class.fa-times]="!item?.SincronizarApi"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.CompraMinima" [class.fa-times]="!item?.CompraMinima"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarPrecios" [class.fa-times]="!item?.OcultarPrecios"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarPresupuesto" [class.fa-times]="!item?.OcultarPresupuesto"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarCodigoUnidades" [class.fa-times]="!item?.OcultarCodigoUnidades"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarFiltrosArticulos" [class.fa-times]="!item?.OcultarFiltrosArticulos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.pedidoVendedor" [class.fa-times]="!item?.pedidoVendedor"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.SincronizarPedidos" [class.fa-times]="!item?.SincronizarPedidos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ImpresionComandera" [class.fa-times]="!item?.ImpresionComandera"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarPreciosComprobante" [class.fa-times]="!item?.OcultarPreciosComprobante"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarComprobante" [class.fa-times]="!item?.OcultarComprobante"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.LimitarConfiguracion" [class.fa-times]="!item?.LimitarConfiguracion"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Produccion" [class.fa-times]="!item?.Produccion"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ArticulosMP" [class.fa-times]="!item?.ArticulosMP"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.MPStock" [class.fa-times]="!item?.MPStock"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OrdenarPorNumero" [class.fa-times]="!item?.OrdenarPorNumero"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarPreciosProduccion" [class.fa-times]="!item?.OcultarPreciosProduccion"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VerCodigoCliente" [class.fa-times]="!item?.VerCodigoCliente"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Ubicaciones" [class.fa-times]="!item?.Ubicaciones"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarTotalesSinPrecios" [class.fa-times]="!item?.OcultarTotalesSinPrecios"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarActivarLista" [class.fa-times]="!item?.VisualizarActivarLista"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarFiltroMultiple" [class.fa-times]="!item?.VisualizarFiltroMultiple"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ModificarPreciosMP" [class.fa-times]="!item?.ModificarPreciosMP"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.CargarCodigoBarra" [class.fa-times]="!item?.CargarCodigoBarra"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ControlEntregas" [class.fa-times]="!item?.ControlEntregas"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ComprobanteUnificado" [class.fa-times]="!item?.ComprobanteUnificado"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarIVA" [class.fa-times]="!item?.VisualizarIVA"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.SaldoAFavor" [class.fa-times]="!item?.SaldoAFavor"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ImagenesRubro" [class.fa-times]="!item?.ImagenesRubro"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.UbicacionArticuloPedido" [class.fa-times]="!item?.UbicacionArticuloPedido"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarPreciosPedido" [class.fa-times]="!item?.OcultarPreciosPedido"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.AgregarLista" [class.fa-times]="!item?.AgregarLista"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ComboArticulos" [class.fa-times]="!item?.ComboArticulos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Distancia" [class.fa-times]="!item?.Distancia"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Imprimir80mm" [class.fa-times]="!item?.Imprimir80mm"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.FichaMedica" [class.fa-times]="!item?.FichaMedica"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.MostradorEfectivo" [class.fa-times]="!item?.MostradorEfectivo"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarFiltrosCompras" [class.fa-times]="!item?.OcultarFiltrosCompras"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ModificarLista" [class.fa-times]="!item?.ModificarLista"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.MensajeAplicacion" [class.fa-times]="!item?.MensajeAplicacion"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Iva27" [class.fa-times]="!item?.Iva27"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Iva10" [class.fa-times]="!item?.Iva10"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.CodigoQR" [class.fa-times]="!item?.CodigoQR"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarCambioEstados" [class.fa-times]="!item?.VisualizarCambioEstados"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarFacturas" [class.fa-times]="!item?.OcultarFacturas"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarQR" [class.fa-times]="!item?.OcultarQR"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarPreciosEtiquetas" [class.fa-times]="!item?.OcultarPreciosEtiquetas"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.MostrarCodigoEtiquetas" [class.fa-times]="!item?.MostrarCodigoEtiquetas"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarFacturasComandera" [class.fa-times]="!item?.OcultarFacturasComandera"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.RevertirOrdenPedidos" [class.fa-times]="!item?.RevertirOrdenPedidos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarLibros" [class.fa-times]="!item?.VisualizarLibros"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarDatosGenerales" [class.fa-times]="!item?.OcultarDatosGenerales"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.MostrarRubroEtiqueta" [class.fa-times]="!item?.MostrarRubroEtiqueta"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Etiquetas80mm" [class.fa-times]="!item?.Etiquetas80mm"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.TurnosCaja" [class.fa-times]="!item?.TurnosCaja"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ObservacionArticulos" [class.fa-times]="!item?.ObservacionArticulos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.CrearDuplicado" [class.fa-times]="!item?.CrearDuplicado"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarGanancias" [class.fa-times]="!item?.OcultarGanancias"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarCompras" [class.fa-times]="!item?.OcultarCompras"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ImpresionDoble" [class.fa-times]="!item?.ImpresionDoble"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarEditarDepositos" [class.fa-times]="!item?.OcultarEditarDepositos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarFechaPedido" [class.fa-times]="!item?.OcultarFechaPedido"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.PedidoEntregado" [class.fa-times]="!item?.PedidoEntregado"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Prestamos" [class.fa-times]="!item?.Prestamos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarFPFactura" [class.fa-times]="!item?.OcultarFPFactura"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.CostoCheck" [class.fa-times]="!item?.CostoCheck"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ActivoSucursal" [class.fa-times]="!item?.ActivoSucursal"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.RolOxy" [class.fa-times]="!item?.RolOxy"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.BloquearEditarCompras" [class.fa-times]="!item?.BloquearEditarCompras"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.BloquearPrecios" [class.fa-times]="!item?.BloquearPrecios"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarCodigoArticuloComprobante" [class.fa-times]="!item?.VisualizarCodigoArticuloComprobante"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.AutoAsignarCodigoBarra" [class.fa-times]="!item?.AutoAsignarCodigoBarra"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OrdenarArticulosPorCodigo" [class.fa-times]="!item?.OrdenarArticulosPorCodigo"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ComprobanteSinAzul" [class.fa-times]="!item?.ComprobanteSinAzul"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.BloqueoPedidos" [class.fa-times]="!item?.BloqueoPedidos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.CategoriaLibros" [class.fa-times]="!item?.CategoriaLibros"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.EsconderDeleteArt" [class.fa-times]="!item?.EsconderDeleteArt"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.VisualizarSucursalConfig" [class.fa-times]="!item?.VisualizarSucursalConfig"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.SaldoAFavorCompras" [class.fa-times]="!item?.SaldoAFavorCompras"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarAprobadoAfip" [class.fa-times]="!item?.OcultarAprobadoAfip"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarFantasia" [class.fa-times]="!item?.OcultarFantasia"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Footer" [class.fa-times]="!item?.Footer"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarIndicadorVentas" [class.fa-times]="!item?.OcultarIndicadorVentas"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.CrearPedidoDirecto" [class.fa-times]="!item?.CrearPedidoDirecto"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.RecalculoUnidad" [class.fa-times]="!item?.RecalculoUnidad"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarIndicadorEgreso" [class.fa-times]="!item?.OcultarIndicadorEgreso"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.PorcentajeTarjetas" [class.fa-times]="!item?.PorcentajeTarjetas"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.FacturaM" [class.fa-times]="!item?.FacturaM"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarDeleteIngresos" [class.fa-times]="!item?.OcultarDeleteIngresos"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.PDFWS" [class.fa-times]="!item?.PDFWS"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Mostrador2" [class.fa-times]="!item?.Mostrador2"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.ComprobanteEspejo" [class.fa-times]="!item?.ComprobanteEspejo"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.etiquetasJPG" [class.fa-times]="!item?.etiquetasJPG"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.Medinor" [class.fa-times]="!item?.Medinor"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.DatosMedinor" [class.fa-times]="!item?.DatosMedinor"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.RepartoXDefecto" [class.fa-times]="!item?.RepartoXDefecto"></span></td>
+          <td><span class="fas" [class.fa-check]="item?.OcultarAlgunosDatosGenerales" [class.fa-times]="!item?.OcultarAlgunosDatosGenerales"></span></td>
+          <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

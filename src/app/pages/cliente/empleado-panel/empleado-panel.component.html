@@ -1,0 +1,124 @@
+<toolbar-two></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Usuario Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a routerLink="/cliente/empleado/crear">
+        <mat-card class="pointer">
+          Agregar Usuario
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Nombre de Usuario</label>
+          <input type="text" class="form-control" [(ngModel)]="userNameFiltro" [matAutocomplete]="autoUserName"
+            [formControl]="userNameCtrl">
+          <mat-autocomplete #autoUserName="matAutocomplete">
+            <mat-option *ngFor="let item of filteredUserName | async" [value]="item.UserName">
+              <span>{{item.UserName}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" class="form-control" [(ngModel)]="nombreFiltro" [matAutocomplete]="autoNombre"
+            [formControl]="nombresCtrl">
+          <mat-autocomplete #autoNombre="matAutocomplete">
+            <mat-option *ngFor="let item of filteredNombres | async" [value]="item.Nombres">
+              <span>{{item.Nombres}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Apellido</label>
+          <input type="text" class="form-control" [(ngModel)]="apellidoFiltro" [matAutocomplete]="autoApellidos"
+            [formControl]="apellidosCtrl">
+          <mat-autocomplete #autoApellidos="matAutocomplete">
+            <mat-option *ngFor="let item of filteredApellidos | async" [value]="item.Apellidos">
+              <span>{{item.Apellidos}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>CUIL</label>
+          <input type="text" class="form-control" [(ngModel)]="cuilFiltro" [matAutocomplete]="autoCuil"
+            [formControl]="cuilCtrl">
+          <mat-autocomplete #autoCuil="matAutocomplete">
+            <mat-option *ngFor="let item of filteredCuil | async" [value]="item.CUIL">
+              <span>{{item.CUIL}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre de Usuario</th>
+          <th scope="col">Rol</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">CUIL</th>
+          <th scope="col">Comisión %</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of empleadoList; let i = index">
+        <tr *ngIf="item?.ClienteNegotis != true">
+          <th scope="row">{{i+1}}</th>
+          <td>{{item?.UserName}}</td>
+          <td>{{item?.Rol?.Name}}</td>
+          <td>{{item?.Nombres}}</td>
+          <td>{{item?.Apellidos}}</td>
+          <td>{{item?.CUIL}}</td>
+          <td>{{item?.PorcentajeComision}}</td>
+          <td><a routerLink="/cliente/empleado/editar/{{item?.Id}}"><span class="pointer">Editar</span></a></td>
+          <td>
+            <span (click)="bloquearDesbloquear(item)" class="pointer" *ngIf="item?.Bloqueado != true">Bloquear</span>
+            <span (click)="bloquearDesbloquear(item)" class="pointer" *ngIf="item?.Bloqueado == true">Desbloquear</span>
+          </td>
+          <td style="color:blue" class="pointer" (click)="resetPasswordModal(item)">Reset Password</td>
+          <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination class="mb-3"
+    (goPage)="goToPage($event)"
+    (goNext)="onNext()"
+    (goPrev)="onPrev()"
+    [pagesToShow]="20"
+    [page]="page"
+    [perPage]="limit"
+    [count]="total">
+    </app-pagination>
+  </div>
+</div>

@@ -1,0 +1,757 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Pedido Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a routerLink="/cliente/pedido/crear">
+        <mat-card class="pointer">
+          Agregar Pedido (+)
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-6" *ngIf="visualizarPedidosHabilitado">
+      <div *ngIf="!tieneRolCliente">
+      <mat-card>
+        Id° Pedido (F4)
+
+        <div style="display:flex">
+          <input #numFactura type="number" class="form-control" [(ngModel)]="numFactEdit">
+          <a *ngIf="numFactEdit != null && numFactEdit != ''" routerLink="/cliente/pedido/editar/{{numFactEdit}}" class="btn btn-warning ml-2">
+            Ir a Pedido
+          </a>
+          <a *ngIf="numFactEdit != null && numFactEdit != ''" (click)="crearNotaCredito(numFactEdit)" class="btn btn-primary ml-2">
+            Nota de Credito (Cancelacion)
+          </a>
+          <a *ngIf="numFactEdit != null && numFactEdit != ''" (click)="crearNotaDebito(numFactEdit)" class="btn btn-primary ml-2">
+            Nota de Debito
+          </a>
+           <a  (click)="crearNotaCreditoDefault(numFactEdit)" class="btn btn-primary ml-2">
+            Nota de Credito Presupuesto
+          </a>
+        </div>
+      </mat-card>
+    </div>
+    </div>
+    <div class="col-md-4" *ngIf="sincroPedidos">
+      <label class="btn btn-info">
+         Adjuntar Excel
+         <input id="fileCliente"  type='file' value="{{fileName}}"
+                     (change)="fileChanged($event)" style="display: none;">
+      </label>
+    </div>
+
+    <div class="col-md-4" *ngIf = "turnoCaja">
+      <label style="color: blue"> Turno : {{this.turno}}</label>
+    </div>
+    <div class="col-md-4" *ngIf = "turnoCaja">
+      <div class="form-group">
+        <label>Turnos</label>
+        <select   [(ngModel)]="turno" >
+          <option [ngValue]="null">Seleccionar</option>
+          <option *ngFor="let item of turnos" [ngValue]="item.Nombre">{{item.Nombre}}</option>
+        </select>
+      </div>
+      <div (click)="guardarTurno()" *ngIf="this.turno != null" class="input-group-append">
+        <span class="input-group-text" id="basic-addon2-monto">Guardar Turno</span>
+      </div>
+    </div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel *ngIf="visualizarPedidosHabilitado">
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <div>
+            <label (click)="fechaVtaFunc($event)"><input type="radio" name="fecha" [checked]="fechaTipoVta"> Fecha
+              Venta</label>
+          </div>
+          <div>
+            <label (click)="fechaEntregaFunc($event)"><input type="radio" name="fecha" [checked]="fechaTipoEntrega">
+              Fecha
+              de Entrega</label>
+          </div>
+          <!--
+          <div>
+            <label (click)="vtasTodasSuc($event)">
+              <input type="checkbox">
+              Vtas/Entreg. de Todas las Suc.
+            </label>
+          </div>
+          -->
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!--vendedor-->
+      <div class="col-md-3" *ngIf="this.tieneRolCliente != true">
+        <div class="form-group">
+          <label>Vendedor</label>
+          <input type="text" (keyup)="resetVendedor()" class="form-control" [matAutocomplete]="autoVendedor"
+            [formControl]="vendedorCtrl" [(ngModel)]="vendedor" (ngModelChange)="filtrarVendedor()">
+          <mat-autocomplete #autoVendedor="matAutocomplete">
+            <mat-option (click)="getVendedor(item)" *ngFor="let item of filteredVendedor | async" [value]="ApellidoVendedor || RazonSocialVendedor">
+              <span>{{item.RazonSocial}} </span><span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span><span>
+                ({{item.UserName}})</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <!--cliente-->
+      <div class="col-md-3"  *ngIf="this.tieneRolCliente != true">
+        <div class="form-group">
+          <label>Cliente</label>
+          <input type="text" (keyup)="resetCliente()" class="form-control" [matAutocomplete]="autoCliente"
+            [formControl]="clienteCtrl" [(ngModel)]="cliente" (ngModelChange)="filtrarCliente()">
+          <mat-autocomplete #autoCliente="matAutocomplete">
+            <mat-option (click)="getCliente(item)" *ngFor="let item of filteredCliente | async" [value]="item.RazonSocial">
+              <span>{{item.RazonSocial}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <!--sucursal cliente-->
+      <div *ngIf="clienteSucursales != null && this.tieneRolCliente != true" class="col-md-3">
+        <div class="form-group">
+          <label>Sucursal Cliente</label>
+          <select class="form-control" [(ngModel)]="idSucursalCliente">
+            <option value="">Seleccionar</option>
+            <option *ngFor="let item of clienteSucursales?.ListSucursal" value="{{item.Id}}">{{item.Calle}}</option>
+          </select>
+        </div>
+      </div>
+      <!--sucursal empresa-->
+      <!--<div class="col-md-3">
+        <div class="form-group">
+          <label>Sucursal Empresa</label>
+          <select class="form-control" [(ngModel)]="idSucursalEmpresa">
+            <option value="">Seleccionar</option>
+            <option title="{{item.Calle}} {{item.Numero}}, {{item.Barrio}} ({{item.Zona?.Region?.Nombre}})" *ngFor="let item of infoGeneral?.SucursalesEmpresa"
+              value="{{item.Id}}">{{item.Calle}} {{item.Numero}}, {{item.Barrio}} ({{item.Zona?.Region?.Nombre}})</option>
+          </select>
+        </div>
+      </div>-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Forma de Pago</label>
+          <select class="form-control" [(ngModel)]="formaPago" (ngModelChange)="ajustarFechas()">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of formasPago" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-3" *ngIf="formaPago == 9">
+        <div class="form-group">
+          <label>Tipo Tarjeta</label>
+          <select class="form-control" [(ngModel)]="tipoTarjeta" (change)="getTarjetas()">
+            <option [ngValue]="null">Seleccionar</option>
+            <option value="Credito" >Crédito</option>
+            <option value="Debito" >Débito</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-3" *ngIf="formaPago == 9">
+        <div class="form-group">
+          <label>Tarjetas</label>
+          <select class="form-control" [(ngModel)]="tarjeta" >
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of listaTarjetas" [ngValue]="item.Id">{{item.Nombre}}</option>
+          </select>
+        </div>
+      </div>
+
+
+
+      <!--Estado Pago-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Pago</label>
+          <select type="text" class="form-control" [(ngModel)]="estadoPago" >
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosPago" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div><!--Estado Entrega-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Entrega</label>
+          <select class="form-control" [(ngModel)]="estadoEntrega">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosEntrega" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+
+      <!--Estado Comisión-->
+      <div class="col-md-3" *ngIf="VisualizarFiltroMultiple && this.tieneRolCliente != true">
+        <div class="form-group">
+          <label>Estado Comisión</label>
+          <select class="form-control" [(ngModel)]="estadoComision">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosComision" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Origen Pedido</label>
+          <select class="form-control" [(ngModel)]="origenPedido">
+            <option [ngValue]="null">Seleccionar</option>
+            <option [ngValue]="false">App </option>
+            <option [ngValue]="true">Ecommerce </option>
+          </select>
+        </div>
+      </div>
+      <!--Estado Confirmación
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Confirmación</label>
+          <select class="form-control" [(ngModel)]="estadoConfirmacion">
+            <option value="">Seleccionar</option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="CONFIRMADO">CONFIRMADO</option>
+          </select>
+        </div>
+      </div>-->
+      <!--Fecha Desde-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Desde</label>
+          <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+        </div>
+      </div>
+      <!--Fecha Hasta-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Hasta</label>
+          <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+        </div>
+      </div>
+      <!--Estado Preparacion
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Preparación</label>
+          <select class="form-control" [(ngModel)]="estadoPreparacion">
+            <option value="">Seleccionar</option>
+            <option value="SIN ASIGNAR">SIN ASIGNAR</option>
+            <option value="LISTO">LISTO</option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="RECHAZADA">RECHAZADA</option>
+            <option value="FALTA CONFIRMAR">FALTA CONFIRMAR</option>
+          </select>
+        </div>
+      </div>-->
+      <!--Prioridad
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Prioridad</label>
+          <select class="form-control" [(ngModel)]="prioridad">
+            <option value="">Seleccionar</option>
+            <option value="BAJA">BAJA</option>
+            <option value="MEDIA">MEDIA</option>
+            <option value="ALTA">ALTA</option>
+          </select>
+        </div>
+      </div>-->
+      <!--Estado Pedido
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado de Pedido</label>
+          <select class="form-control" [(ngModel)]="estadoPedido">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosPedido" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>   -->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado de Pedido</label>
+          <select class="form-control" [(ngModel)]="estadoPedido">
+            <option [ngValue]="null">Seleccionar</option>
+            <option [disabled]="pedidoActivo" value="{{estadoPedidoActivo}}">CONFIRMADO</option>
+            <option [disabled]="pedidosCerrado" value="{{estadoPedidoCerrado}}">CERRADO</option>
+            <option [disabled]="pedidoPendiente" value="{{estadoPedidoPendiente}}">PRESUPUESTO</option>
+            <option [disabled]="pedidoAnulado" value="{{estadoPedidoAnulado}}">ANULADO</option>
+          </select>
+        </div>
+      </div>
+      <!--Zona (Cliente)-->
+      <div class="col-md-3" *ngIf="this.tieneRolCliente != true">
+        <div class="form-group">
+          <label>Zona (Cliente)</label>
+          <input type="text" (keyup)="resetZona()" class="form-control" [matAutocomplete]="autoZona" [formControl]="zonaCtrl"
+            [(ngModel)]="zona">
+          <mat-autocomplete #autoZona="matAutocomplete">
+            <mat-option (click)="getZona(item)" *ngFor="let item of filteredZona | async" [value]="item.Nombre">
+              <span>{{item.Nombre}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <!--Región (Cliente)-->
+      <div class="col-md-3" *ngIf="this.tieneRolCliente != true">
+        <div class="form-group">
+          <label>Región (Cliente)</label>
+          <input type="text" (keyup)="resetRegion()" class="form-control" [matAutocomplete]="autoRegion" [formControl]="regionCtrl"
+            [(ngModel)]="region">
+          <mat-autocomplete #autoRegion="matAutocomplete">
+            <mat-option (click)="getRegion(item)" *ngFor="let item of filteredRegion | async" [value]="item.Nombre">
+              <span>{{item.Nombre}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+      <!--Multiple (Vendedor)-->
+      <div class="col-md-3" *ngIf="VisualizarFiltroMultiple && this.tieneRolCliente != true">
+        <div class="form-group">
+          <label>FILTRO M&Uacute;LTIPLE</label>
+          <input type="text" class="form-control" [(ngModel)]="multiple">
+        </div>
+      </div>
+
+      <!--Tipo Comprobante-->
+      <div class="col-md-3" *ngIf="this.tieneRolCliente != true">
+        <div class="form-group">
+          <label>Tipo de Comprobante</label>
+          <select class="form-control" [(ngModel)]="tipoComprobante">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of tiposComprobante" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Entregas Parciales</label>
+          <select class="form-control" [(ngModel)]="estadoEntregas">
+            <option [ngValue]="null">Seleccionar</option>
+            <option  [ngValue]="true">SI</option>
+            <option  [ngValue]="false">NO</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3" >
+        <div class="form-group">
+          <label>Filtro N° Factura</label>
+          <input type="text" class="form-control" [(ngModel)]="filtroFactura">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Vencimiento</label>
+          <input type="text" class="form-control" (click)="fechaVencFunc()" [(ngModel)]="fechaVencimiento" readonly>
+        </div>
+      </div>
+
+    </div>
+
+
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+      <button style="margin-left: 10px;" *ngIf="this.idCliente" (click)="buscar2()" class="btn btn-warning">Ver Pagos</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <div style="float:right;" class="col-md-3" *ngIf="formaPago == 10 && rolSaldoAFavor && idCliente != undefined">
+    <div class="form-group">
+      <label>Ingresar Monto Pago</label>
+      <input type="number"  class="form-control"  [(ngModel)]="cancelarPedidos">
+    </div>
+    <button (click)="CancelarPedidos()" class="btn btn-warning">Cancelar Pedidos</button>
+  </div>
+  <!--totales-->
+  <div class="row" *ngIf="visualizarPedidosHabilitado && !tieneRolCliente && visualizarCantidadVentas">
+    <div class="col-md-4">
+      <!--totales del día-->
+      <mat-card *ngIf="submittedTipoVta == true && ocultarIndicadorVentas == false">
+        <div>Totales del {{submittedFechaDesde}} al {{submittedFechaHasta}}</div>
+        <table class="table-totales">
+          <tr *ngIf="!tieneRolCliente">
+            <td>Ventas</td>
+            <td>${{montoVtas | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="!tieneRolCliente && flagPagosParciales == 0 ">
+            <td>Comisiones</td>
+            <td>${{montoComision | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="flagPagosParciales == 0">
+            <td>Total Vtas</td>
+            <td>${{montototalVtas | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="validarMultipleFiltro()">
+            <td>Total Vtas ({{multiple}})</td>
+            <td>${{montototalVtasFiltroMultiple | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Cantidad de Ventas</td>
+            <td>{{total}}</td>
+          </tr>
+          <tr>
+            <td>Total de Articulos vendidos</td>
+            <td>{{montoTotalArticulos}}</td>
+          </tr>
+<!--           <tr>
+            <td>Resto a Cobrar</td>
+            <td>{{restoACobrar}}</td>
+          </tr> -->
+
+          <tr *ngIf="saldoAFavor != 0">
+            <td>Saldo a Favor</td>
+            <td>{{saldoAFavor}}</td>
+          </tr>
+          <tr *ngIf="tieneObjetivo">
+            <td>Objetivo</td>
+            <td>${{objetivo | number:'1.1-2'}}</td>
+          </tr>
+        </table>
+      </mat-card>
+      <!--total reparto (entrega)-->
+      <mat-card *ngIf="submittedTipoEntrega == true">
+        <div>Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}</div>
+        <table class="table-total">
+          <tr>
+            <td>Total Entrega</td>
+            <td>${{montototalVtas | number:'1.1-2'}}</td>
+          </tr>
+        </table>
+      </mat-card>
+    </div>
+  </div>
+  <!--tabla-->
+
+
+
+  <div *ngIf="visualizarPedidosHabilitado">
+
+    <div style="display:flex; margin-top: 50px;" *ngIf="pedidosPendientesIndices.length > 0 && pedidosPendientesMonto > 0">
+      <a (click)="abrirPagarPedidosPendientes()"
+         class="btn btn-primary pdf-btn mb-2" style="color: white !important;">Pagar {{pedidosPendientesMonto === 0 ? '' : '($' + pedidosPendientesMonto + ')'}}
+      </a>
+    </div>
+    <div style="display:flex; margin-top: 50px;" *ngIf="this.visualizarCambioEstados">
+      <a (click)="abrirCambiarEstado($event)"
+         class="btn btn-primary pdf-btn mb-2" style="color: white !important;">Cambiar Estado/s
+      </a>
+    </div>
+    <div style="display:flex; margin-top: 50px;" *ngIf="this.crearDuplicado">
+      <button (click)="duplicarSeleccionado()" class="btn btn-warning">Duplicar Seleccionado</button>
+    </div>
+
+
+    <table class="table" [ngClass]="{'pagar-pendientes-habilitado': pedidosPendientesIndices.length > 0}">
+      <thead>
+        <tr>
+          <th scope="col" *ngIf="validarCliente() && validarEstadoPagoEstadoEntrega()"><input type="checkbox" [(ngModel)]="seleccionarTodos" (change)="seleccionarTodosPedidosPendientes($event)"></th>
+          <th scope="col" ><input type="checkbox" (change)="seleccionarTodosPedidosCambioEstado($event)"></th>
+          <th scope="col">#</th>
+          <th *ngIf="modificarPedidosHabilitado" scope="col">*</th>
+          <th *ngIf="eliminarPedidosHabilitado" scope="col">*</th>
+          <th scope="col">Id° Pedido</th>
+          <th scope="col">N° Fact.</th>
+          <th scope="col">Fecha Pedido</th>
+          <th scope="col">Hora Pedido</th>
+          <th scope="col">Vendedor</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Sucursal Cli.</th>
+          <th scope="col" *ngIf="ocultarIndicadorVentas == false">Total de Pedido</th>
+          <th scope="col">Forma Pago</th>
+          <th scope="col">Estado Pago</th>
+          <th scope="col">Fecha Pago</th>
+          <th scope="col">Origen Pedido</th>
+          <th scope="col">Estado Entrega</th>
+          <th scope="col">Descripción</th>
+
+        <!--<th scope="col">Sucursal Empresa</th>-->
+         <!-- <th scope="col">Prioridad</th>-->
+          <th scope="col">Fecha Entrega</th>
+          <th scope="col">Estado Pedido</th>
+         <!-- <th scope="col">Estado Preparacion</th>-->
+         <!-- <th scope="col">Estado Comisión</th>-->
+         <!-- <th scope="col">Estado Confirmación</th>-->
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of pedidoLista?.Pedidos; let i = index">
+        <tr *ngIf="item.esPago == true && !item.esParcial" style="color: rgb(94, 176, 187);">
+          <th scope="row" *ngIf="validarCliente() && validarEstadoPagoEstadoEntrega()"><input *ngIf="!item.esParcial && !item.NotaCredito" type="checkbox" [(ngModel)]="item.pedidosPendienteChecked" (change)="agregarPagoPendiente($event, i)"></th>
+          <th scope="row"  ><input  type="checkbox" [(ngModel)]="item.pedidosPendienteChecked" (change)="cambiarEstado($event, i)"></th>
+          <!-- *ngIf="filtradoEstadoEntregaPago" -->
+          <th scope="row">{{i+1}}</th>
+          <td *ngIf="modificarPedidosHabilitado && !item.esParcial"><a routerLink="/cliente/pedido/editar/{{item.Id}}"><span style="color: rgb(94, 176, 187);">Ver</span></a></td>
+          <td *ngIf="modificarPedidosHabilitado && item.esParcial != null && item.esParcial"></td>
+          <td *ngIf="eliminarPedidosHabilitado && item.FacturaElectronica != true"><span (click)="delete(item, i)" style="color: rgb(94, 176, 187);" class="fas fa-trash-alt pointer"></span></td>
+          <td *ngIf="eliminarPedidosHabilitado && item.FacturaElectronica == true"><span></span></td>
+          <td style="text-align:center;">{{item.Id}}</td>
+          <td style="text-align:center; " ><span *ngIf="item.NumeroFactura != null">{{item.NumeroFactura}}</span></td>
+          <td>{{item.FechaPedidoAsString}}</td>
+          <td>{{item.horaPedido}}</td>
+          <td>
+            <span *ngIf="item.ClienteNegotis != true">
+              {{item.ApellidoVendedor}} {{item.NombreVendedor}}
+            </span>
+            <span *ngIf="item.ClienteNegotis == true">{{item.RazonSocialVendedor}}</span>
+          </td>
+          <td>{{item.RazonSocial}}</td>
+          <td>
+            <span *ngIf="item.RazonSocial != 'Mostrador'">{{item.DireccionSucursalCliente}}</span>
+          </td>
+          <span *ngIf="ocultarIndicadorVentas == false">
+          <td *ngIf="!item.esParcial">{{item.PrecioTotal}}<div *ngIf="item.pagoFinal" style="display: inline;"><br><span style="font-size: .8rem;">Resto a Pagar</span><br><span style="font-size: .8rem;">({{item.pagoFinal}})</span></div>
+            <div *ngIf="multiple !== ''"><br><span style="font-size: .8rem;">{{multiple}}</span><br><span style="font-size: .8rem;">({{item.MontoTotalArticulos}})</span></div>
+          </td>
+          <td *ngIf="item.esParcial" style="color:blue">{{item.PrecioTotal}}
+          </span>
+          <td >{{item.UltimaFormaPago}}</td>
+          <td *ngIf="item.esParcial" style="color:blue">{{item.UltimoEstadoPago}}</td>
+          <td *ngIf="!item.esParcial">{{item.UltimoEstadoPago}}</td>
+          <td >
+
+            <span *ngIf="item.fechaPago != null"> {{item.fechaPago}} </span>
+            <span *ngIf="item.fechaPago == null">--</span>
+          </td>
+          <td>
+            <span *ngIf="item.PedidoEcommerce == true">Ecommerce </span>
+            <span *ngIf="item.PedidoEcommerce != true">App</span>
+          </td>
+          <td>{{item.EstadoEntrega}}</td>
+          <td>{{item.Observacion}}</td>
+          <td>{{item.FechaEntrega}}</td>
+          <td *ngIf="item.EstadoPedido == 'ACTIVO'">CONFIRMADO</td>
+          <td *ngIf="item.EstadoPedido == 'PENDIENTE'">PRESUPUESTO</td>
+          <td *ngIf="item.EstadoPedido != 'PENDIENTE' && item.EstadoPedido != 'ACTIVO'">{{item.EstadoPedido}}</td>
+
+         <!-- <td>{{item.EstadoComision}}</td>-->
+          <!--<td>{{item.DireccionSucursal}}</td>
+          <td>{{item.Prioridad}}</td>
+          <td>{{item.FechaEntrega}}</td>
+          <td>{{item.EstadoPedido}}</td>-->
+         <!-- <td>{{item.EstadoPreparacion}}</td>
+          <td>{{item.EstadoComision}}</td>-->
+         <!-- <td>{{item.EstadoConfirmacion}}</td>-->
+        </tr>
+        <tr *ngIf="item.UltimaFormaPago != 'CTA CTE' && item.esPago != true && item.esParcial" style="background-color: rgba(23, 55, 182, 0.781);color:white;">
+          <th scope="row" *ngIf="validarCliente() && validarEstadoPagoEstadoEntrega()"><input *ngIf="!item.esParcial && !item.NotaCredito" type="checkbox" [(ngModel)]="item.pedidosPendienteChecked" (change)="agregarPagoPendiente($event, i)"></th>
+          <th scope="row" *ngIf="this.flag == false && filtradoEstadoEntregaPago != true"></th>
+          <th scope="row" *ngIf="filtradoEstadoEntregaPago" ><input  type="checkbox" [(ngModel)]="item.pedidosPendienteChecked" (change)="cambiarEstado($event, i)"></th>
+          <th scope="row">{{i+1}}</th>
+          <td *ngIf="modificarPedidosHabilitado && !item.esParcial"><a routerLink="/cliente/pedido/editar/{{item.Id}}"><span class="pointer">Ver</span></a></td>
+          <td *ngIf="modificarPedidosHabilitado && item.esParcial != null && item.esParcial"></td>
+          <td *ngIf="eliminarPedidosHabilitado && item.FacturaElectronica != true"><span (click)="delete(item, i)" class="fas fa-trash-alt pointer"></span></td>
+          <td *ngIf="eliminarPedidosHabilitado && item.FacturaElectronica == true"></td>
+          <td style="text-align:center;">{{item.Id}}</td>
+          <td style="text-align:center;"><span *ngIf="item.NumeroFactura != null">{{item.NumeroFactura}}</span></td>
+          <td>{{item.FechaPedidoAsString}}</td>
+          <td>{{item.horaPedido}}</td>
+          <td>
+            <span *ngIf="item.ClienteNegotis != true">
+              {{item.ApellidoVendedor}} {{item.NombreVendedor}}
+            </span>
+            <span *ngIf="item.ClienteNegotis == true">{{item.RazonSocialVendedor}}</span>
+          </td>
+          <td>{{item.RazonSocial}}</td>
+          <td>
+            <span *ngIf="item.RazonSocial != 'Mostrador'">{{item.DireccionSucursalCliente}}</span>
+          </td>
+          <span *ngIf="ocultarIndicadorVentas == false">
+          <td *ngIf="!item.esParcial">{{item.PrecioTotal}}<div *ngIf="item.pagoFinal" style="display: inline;"><br><span style="font-size: .8rem;">Resto a Pagar</span><br><span style="font-size: .8rem;">({{item.pagoFinal}})</span></div>
+            <div *ngIf="multiple !== ''"><br><span style="font-size: .8rem;">{{multiple}}</span><br><span style="font-size: .8rem;">({{item.MontoTotalArticulos}})</span></div>
+          </td>
+          <td *ngIf="item.esParcial">{{item.PrecioTotal}}
+          </span>
+          <td >{{item.UltimaFormaPago}}</td>
+          <td *ngIf="item.esParcial" >{{item.UltimoEstadoPago}}</td>
+          <td *ngIf="!item.esParcial">{{item.UltimoEstadoPago}}</td>
+          <td >
+            <span *ngIf="item.fechaPago != null"> {{item.fechaPago}} </span>
+            <span *ngIf="item.fechaPago == null">--</span>
+          </td>
+          <td>
+            <span *ngIf="item.PedidoEcommerce == true">Ecommerce </span>
+            <span *ngIf="item.PedidoEcommerce != true">App</span>
+          </td>
+          <td>{{item.EstadoEntrega}}</td>
+          <td>{{item.Observacion}}</td>
+          <td>{{item.FechaEntrega}}</td>
+          <td *ngIf="item.EstadoPedido == 'ACTIVO'">CONFIRMADO</td>
+          <td *ngIf="item.EstadoPedido == 'PENDIENTE'">PRESUPUESTO</td>
+          <td *ngIf="item.EstadoPedido != 'PENDIENTE' && item.EstadoPedido != 'ACTIVO'">{{item.EstadoPedido}}</td>
+
+         <!-- <td>{{item.EstadoComision}}</td>-->
+          <!--<td>{{item.DireccionSucursal}}</td>
+          <td>{{item.Prioridad}}</td>
+          <td>{{item.FechaEntrega}}</td>
+          <td>{{item.EstadoPedido}}</td>-->
+         <!-- <td>{{item.EstadoPreparacion}}</td>
+          <td>{{item.EstadoComision}}</td>-->
+         <!-- <td>{{item.EstadoConfirmacion}}</td>-->
+        </tr>
+
+        <tr *ngIf="item.UltimaFormaPago == 'CTA CTE' && item.esPago != true && !item.esParcial" style="color: red;">
+          <th scope="row" *ngIf="validarCliente() && validarEstadoPagoEstadoEntrega()"><input *ngIf="!item.esParcial && !item.NotaCredito" type="checkbox" [(ngModel)]="item.pedidosPendienteChecked" (change)="agregarPagoPendiente($event, i)"></th>
+          <th scope="row"  ><input  type="checkbox" [(ngModel)]="item.pedidosPendienteChecked" (change)="cambiarEstado($event, i)"></th>
+          <!-- *ngIf="filtradoEstadoEntregaPago" -->
+          <th scope="row">{{i+1}}</th>
+          <td *ngIf="modificarPedidosHabilitado && !item.esParcial"><a routerLink="/cliente/pedido/editar/{{item.Id}}"><span style="color: red;">Ver</span></a></td>
+          <td *ngIf="modificarPedidosHabilitado && item.esParcial != null && item.esParcial"></td>
+          <td *ngIf="eliminarPedidosHabilitado && item.FacturaElectronica != true"><span (click)="delete(item, i)" style="color: red;" class="fas fa-trash-alt pointer"></span></td>
+          <td *ngIf="eliminarPedidosHabilitado && item.FacturaElectronica == true"><span></span></td>
+          <td style="text-align:center;">{{item.Id}}</td>
+          <td style="text-align:center; " ><span *ngIf="item.NumeroFactura != null">{{item.NumeroFactura}}</span></td>
+          <td>{{item.FechaPedidoAsString}}</td>
+          <td>{{item.horaPedido}}</td>
+          <td>
+            <span *ngIf="item.ClienteNegotis != true">
+              {{item.ApellidoVendedor}} {{item.NombreVendedor}}
+            </span>
+            <span *ngIf="item.ClienteNegotis == true">{{item.RazonSocialVendedor}}</span>
+          </td>
+          <td>{{item.RazonSocial}}</td>
+          <td>
+            <span *ngIf="item.RazonSocial != 'Mostrador'">{{item.DireccionSucursalCliente}}</span>
+          </td>
+          <span *ngIf="ocultarIndicadorVentas == false">
+          <td *ngIf="!item.esParcial">{{item.PrecioTotal}}<div *ngIf="item.pagoFinal" style="display: inline;"><br><span style="font-size: .8rem;">Resto a Pagar</span><br><span style="font-size: .8rem;">({{item.pagoFinal}})</span></div>
+            <div *ngIf="multiple !== ''"><br><span style="font-size: .8rem;">{{multiple}}</span><br><span style="font-size: .8rem;">({{item.MontoTotalArticulos}})</span></div>
+          </td>
+          <td *ngIf="item.esParcial" style="color:rgba(0, 0, 255, 0.685)">{{item.PrecioTotal}}
+          </span>
+          <td >{{item.UltimaFormaPago}}</td>
+          <td *ngIf="item.esParcial" style="color:rgba(0, 0, 255, 0.685)">{{item.UltimoEstadoPago}}</td>
+          <td *ngIf="!item.esParcial">{{item.UltimoEstadoPago}}</td>
+          <td >
+
+            <span *ngIf="item.fechaPago != null"> {{item.fechaPago}} </span>
+            <span *ngIf="item.fechaPago == null">--</span>
+          </td>
+          <td>
+            <span *ngIf="item.PedidoEcommerce == true">Ecommerce </span>
+            <span *ngIf="item.PedidoEcommerce != true">App</span>
+          </td>
+          <td>{{item.EstadoEntrega}}</td>
+          <td>{{item.Observacion}}</td>
+          <td>{{item.FechaEntrega}}</td>
+          <td *ngIf="item.EstadoPedido == 'ACTIVO'">CONFIRMADO</td>
+          <td *ngIf="item.EstadoPedido == 'PENDIENTE'">PRESUPUESTO</td>
+          <td *ngIf="item.EstadoPedido != 'PENDIENTE' && item.EstadoPedido != 'ACTIVO'">{{item.EstadoPedido}}</td>
+
+         <!-- <td>{{item.EstadoComision}}</td>-->
+          <!--<td>{{item.DireccionSucursal}}</td>
+          <td>{{item.Prioridad}}</td>
+          <td>{{item.FechaEntrega}}</td>
+          <td>{{item.EstadoPedido}}</td>-->
+         <!-- <td>{{item.EstadoPreparacion}}</td>
+          <td>{{item.EstadoComision}}</td>-->
+         <!-- <td>{{item.EstadoConfirmacion}}</td>-->
+        </tr>
+
+        <tr *ngIf="item.UltimaFormaPago != 'CTA CTE' && item.esPago != true && !item.esParcial">
+          <th scope="row" *ngIf="validarCliente() && validarEstadoPagoEstadoEntrega()"><input *ngIf="!item.esParcial && !item.NotaCredito" type="checkbox" [(ngModel)]="item.pedidosPendienteChecked" (change)="agregarPagoPendiente($event, i)"></th>
+          <th scope="row" *ngIf="this.flag == false && filtradoEstadoEntregaPago != true"></th>
+          <th scope="row" *ngIf="filtradoEstadoEntregaPago" ><input  type="checkbox" [(ngModel)]="item.pedidosPendienteChecked" (change)="cambiarEstado($event, i)"></th>
+          <th scope="row">{{i+1}}</th>
+          <td *ngIf="modificarPedidosHabilitado && !item.esParcial"><a routerLink="/cliente/pedido/editar/{{item.Id}}"><span class="pointer">Ver</span></a></td>
+          <td *ngIf="modificarPedidosHabilitado && item.esParcial != null && item.esParcial"></td>
+          <td *ngIf="eliminarPedidosHabilitado && item.FacturaElectronica != true"><span (click)="delete(item, i)" class="fas fa-trash-alt pointer"></span></td>
+          <td *ngIf="eliminarPedidosHabilitado && item.FacturaElectronica == true"></td>
+          <td style="text-align:center;">{{item.Id}}</td>
+          <td style="text-align:center;"><span *ngIf="item.NumeroFactura != null">{{item.NumeroFactura}}</span></td>
+          <td>{{item.FechaPedidoAsString}}</td>
+          <td>{{item.horaPedido}}</td>
+          <td>
+            <span *ngIf="item.ClienteNegotis != true">
+              {{item.ApellidoVendedor}} {{item.NombreVendedor}}
+            </span>
+            <span *ngIf="item.ClienteNegotis == true">{{item.RazonSocialVendedor}}</span>
+          </td>
+          <td>{{item.RazonSocial}}</td>
+          <td>
+            <span *ngIf="item.RazonSocial != 'Mostrador'">{{item.DireccionSucursalCliente}}</span>
+          </td>
+          <span *ngIf="ocultarIndicadorVentas == false">
+          <td *ngIf="!item.esParcial">{{item.PrecioTotal}}<div *ngIf="item.pagoFinal" style="display: inline;"><br><span style="font-size: .8rem;">Resto a Pagar</span><br><span style="font-size: .8rem;">({{item.pagoFinal}})</span></div>
+            <div *ngIf="multiple !== ''"><br><span style="font-size: .8rem;">{{multiple}}</span><br><span style="font-size: .8rem;">({{item.MontoTotalArticulos}})</span></div>
+          </td>
+          <td *ngIf="item.esParcial" style="color:rgba(0, 0, 255, 0.685)">{{item.PrecioTotal}}
+          </span>
+          <td >{{item.UltimaFormaPago}}</td>
+          <td *ngIf="item.esParcial" style="color:rgba(0, 0, 255, 0.685)">{{item.UltimoEstadoPago}}</td>
+          <td *ngIf="!item.esParcial">{{item.UltimoEstadoPago}}</td>
+          <td >
+            <span *ngIf="item.fechaPago != null"> {{item.fechaPago}} </span>
+            <span *ngIf="item.fechaPago == null">--</span>
+          </td>
+          <td>
+            <span *ngIf="item.PedidoEcommerce == true">Ecommerce </span>
+            <span *ngIf="item.PedidoEcommerce != true">App</span>
+          </td>
+          <td>{{item.EstadoEntrega}}</td>
+          <td>{{item.Observacion}}</td>
+          <td>{{item.FechaEntrega}}</td>
+          <td *ngIf="item.EstadoPedido == 'ACTIVO'">CONFIRMADO</td>
+          <td *ngIf="item.EstadoPedido == 'PENDIENTE'">PRESUPUESTO</td>
+          <td *ngIf="item.EstadoPedido != 'PENDIENTE' && item.EstadoPedido != 'ACTIVO'">{{item.EstadoPedido}}</td>
+
+         <!-- <td>{{item.EstadoComision}}</td>-->
+          <!--<td>{{item.DireccionSucursal}}</td>
+          <td>{{item.Prioridad}}</td>
+          <td>{{item.FechaEntrega}}</td>
+          <td>{{item.EstadoPedido}}</td>-->
+         <!-- <td>{{item.EstadoPreparacion}}</td>
+          <td>{{item.EstadoComision}}</td>-->
+         <!-- <td>{{item.EstadoConfirmacion}}</td>-->
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination class="mb-3"
+    (goPage)="goToPage($event)"
+    (goNext)="onNext()"
+    (goPrev)="onPrev()"
+    [pagesToShow]="20"
+    [page]="page"
+    [perPage]="limit"
+    [count]="total">
+    </app-pagination>
+    <div style="display:flex" *ngIf="tieneRolCliente != true && (this.formaPago != 10 || this.cliente == '')" >
+      <a target="_blank"
+          href="{{urlImprimir}}"
+          class="btn btn-primary pdf-btn mb-2">Imprimir Ruta
+        </a>
+        <a  style="margin-left: 10px;"  target="_blank"
+        href="{{urlImprimir2}}"
+        class="btn btn-primary pdf-btn mb-2">Imprimir Ruta 80mm
+      </a>
+        <a style="margin-left: 10px;" target="_blank"
+        href="{{urlImprimir}}"
+        class="btn btn-primary pdf-btn mb-2">Imprimir Pagos
+      </a>
+    </div>
+    <div style="display:flex" *ngIf="tieneRolCliente != true && this.formaPago == 10 && this.cliente != ''" >
+      <a target="_blank"
+          href="{{urlImprimir}}"
+          class="btn btn-primary pdf-btn mb-2">Imprimir Cuenta
+        </a>
+        <a style="margin-left: 10px;" target="_blank"
+        href="{{urlImprimir}}"
+        class="btn btn-primary pdf-btn mb-2">Imprimir Pagos
+      </a>
+    </div>
+    <div *ngIf="filtradoEstadoEntregaPago">
+      <a
+      target="_blank" href="{{globalService?.urlApi}}/ApiPedido/Get/Pdf/Listado/Imprimir?pedidosCambiarEstadoIndices={{pedidosImprimir}}&idClienteNegotis={{idClienteNegotis}}&imprimirDuplicado=false&idUser={{idUser}}&imprimirDoble=false&token={{token}}" class="btn btn-primary pdf-btn mb-2">
+      <span >Imprimir Seleccionados</span>
+      </a>
+      </div>
+
+
+  </div>
+</div>

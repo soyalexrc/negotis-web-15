@@ -1,0 +1,39 @@
+.buttons {
+    display: flex;
+    font-family: Helvetica;
+    font-weight: 400;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    /*margin: 0 auto;*/
+    /*width: 310px;*/
+  }
+  
+  .button {
+    border: 1px solid #006494;
+    border-radius: 50px;
+    color: #006494;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 26px;
+    height: 40px;
+    line-height: 40px;
+    margin: 10px;
+    text-align: center;
+    width: 40px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #006494;
+    color: #FFFFFF;
+  }
+
+  .boton-box{
+    margin-top: 10px;
+    width: 100%;
+}
+
+.btn-danger{
+    margin-right: 10px;
+}

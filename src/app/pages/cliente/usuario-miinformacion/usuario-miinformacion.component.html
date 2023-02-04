@@ -1,0 +1,53 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3>Mis Datos</h3>
+
+        <div class="form-group">
+          <label class="atributo">User Name:</label>
+          {{userInfo?.User.UserName}}
+        </div>
+        <div *ngIf="userInfo?.User.Empleado == true && userInfo?.User.ClienteNegotis != true" class="form-group">
+          <label class="atributo">Nombres:</label>
+          {{userInfo?.User.Nombres}}
+        </div>
+        <div *ngIf="userInfo?.User.Empleado == true && userInfo?.User.ClienteNegotis != true" class="form-group">
+          <label class="atributo">Apellidos:</label>
+          {{userInfo?.User.Apellidos}}
+        </div>
+        <div *ngIf="userInfo?.User.ClienteNegotis == true" class="form-group">
+          <label class="atributo">Razon Social:</label>
+          {{userInfo?.User.RazonSocial}}
+        </div>
+        <div *ngIf="userInfo?.User.ClienteNegotis == true" class="form-group">
+          <label class="atributo">Nombre Fantasia:</label>
+          {{userInfo?.User.NombreFantasia}}
+        </div>
+        <div *ngIf="userInfo?.User.ClienteNegotis == true" class="form-group">
+          <label class="atributo">CUIT:</label>
+          {{userInfo?.User.CUIT}}
+        </div>
+        <div *ngIf="userInfo?.User.Empleado == true && userInfo?.User.ClienteNegotis != true" class="form-group">
+          <label class="atributo">CUIL:</label>
+          {{userInfo?.User.CUIL}}
+        </div>
+        <div *ngIf="userInfo?.User.Empleado == true" class="form-group">
+          <label class="atributo">Porcentaje Comision (%):</label>
+          {{userInfo?.User.PorcentajeComision}}
+        </div>
+        <div class="form-group">
+          <label class="atributo">Rol:</label>
+          <span *ngIf="userInfo?.User.Empleado == true"> {{userInfo?.Rol?.Name}}</span>
+          <span *ngIf="userInfo?.User.ClienteNegotis == true"> El "Cliente Negotis" tiene acceso a todos los roles</span>
+        </div>
+
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

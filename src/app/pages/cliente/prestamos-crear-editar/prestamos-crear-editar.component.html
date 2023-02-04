@@ -1,0 +1,81 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idPrestamo == 0">Crear</span>
+          <span *ngIf="idPrestamo != 0">Editar</span>
+          Préstamo
+        </h3>
+        <form  [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <div class="form-group">
+            <label>Fecha Préstamo</label>
+            <input type="text" class="form-control" (click)="fechaFunc()" [(ngModel)]="fechaPrestamo" formControlName="fechaPrestamo" readonly>
+          </div>
+
+
+          <div class="form-group">
+            <label>Monto</label>
+            <input type="number" formControlName="monto" class="form-control" [(ngModel)]="monto">
+            <small *ngIf="(myForm.get('monto')?.hasError('required') || myForm.get('monto')?.hasError('pattern'))
+            && submitted==true" class="form-text text-muted">
+              Ingrese monto mayor o igual a 0
+            </small>
+          </div>
+
+
+            <div class="form-group" *ngIf="idPrestamo == 0">
+              <label>Cliente</label>
+              <input type="text" (keyup)="resetCliente()" class="form-control" [matAutocomplete]="autoCliente"
+                [formControl]="clienteCtrl" [(ngModel)]="cliente" (ngModelChange)="filtrarCliente()">
+              <mat-autocomplete #autoCliente="matAutocomplete">
+                <mat-option (click)="getCliente(item)" *ngFor="let item of filteredCliente | async" [value]="item.RazonSocial">
+                  <span>{{item.RazonSocial}}</span>
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+
+            <div class="form-group" *ngIf="idPrestamo != 0">
+              <label>Cliente</label>
+              <input type="text" formControlName="formontrol"
+              [(ngModel)]="clienteNombre"  [disabled]="true">
+            </div>
+
+
+          <div class="form-group">
+            <label>Cantidad Cuotas</label>
+            <input type="number" formControlName="cantCuotas" class="form-control" [(ngModel)]="cantCuotas" (change)="onChangeCuotas()">
+          </div>
+          <div class="form-group">
+            <label>Porcentaje Interés</label>
+            <input type="number" formControlName="interes" class="form-control" [(ngModel)]="interes" (change)="onChangeInteres()">
+          </div>
+
+          <div class="form-group">
+            <label>Cuotas</label>
+            <input type="number" formControlName="cuotas" class="form-control"
+              [(ngModel)]="cuotas"  [disabled]="true">
+          </div>
+
+          <div class="form-group" *ngIf="idPrestamo != 0">
+            <label>Resto A Pagar</label>
+            <input type="number" class="form-control" formControlName="restoApagar"
+              [(ngModel)]="restoApagar">
+          </div>
+          <button type="submit" class="btn btn-warning">Guardar</button>
+
+        </form>
+
+<!--         <div *ngIf="turnoCaja">
+          <label style="color: blue">Turno : {{this.turno}}</label>
+        </div> -->
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

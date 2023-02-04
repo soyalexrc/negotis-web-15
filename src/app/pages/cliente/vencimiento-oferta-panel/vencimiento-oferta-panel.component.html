@@ -1,0 +1,71 @@
+<toolbar-two></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Vencimiento Ofertas
+  </h3>
+  <!--filtro-->
+  <div class="margin-filtro">
+    <mat-action-row>
+        <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+      </mat-action-row>
+  </div>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>   
+          <th scope="col">ArtÍculo</th>
+          <th scope="col">Marca</th>
+          <th scope="col" >Precio Costo</th>
+          <th scope="col">Precio Base</th>
+          <th scope="col" >Precio Oferta</th>
+          <th scope="col" >Unidades</th>
+          <th scope="col">Rubro</th>
+          <th scope="col">Proveedor</th>
+          <th scope="col">Categoría Rubro</th>
+          <th scope="col" *ngIf="visualizarCantidadXPackHabilitado">Cant. x Pack</th>
+          <th scope="col" *ngIf="visualizarIDEstadoHabilitado">Estado</th>          
+          <th scope="col">Código</th>
+          <th scope="col">Vencimiento</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of VencidosLista; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.Nombre}}</td>
+          <td>{{item.Marca}}</td>
+
+          <td >
+            {{item.PrecioCosto}}
+          </td>
+
+          <td (click)="openPrecioBaseModal(item,i)" class="cant-art">
+            {{item.PrecioBase | number:'1.1-2'}}
+          </td>   
+          <td (click) = "openPrecioOfertaModal(item,1)" class="cant-art" >
+            {{item.PrecioXBulto}}
+          </td>       
+          <td>
+            {{item.CantidadArticulo}}
+          </td>
+          <td>{{item.Rubro}}</td>
+          <td >{{item.Proveedor}}</td>
+          <td>{{item.CategoriaRubro}}</td>
+          <td *ngIf="visualizarCantidadXPackHabilitado"><span >{{item.CantidadPorPack}}</span></td>
+          <td *ngIf="visualizarIDEstadoHabilitado">
+            <span *ngIf="item.Activo == true">Activo</span>
+            <span *ngIf="item.Activo != true">Inactivo</span>
+          </td>
+          <td>
+            {{item.CodigoDeBarras}}
+          </td>
+          <td>
+            {{item.FechaOferta}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

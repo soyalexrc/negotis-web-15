@@ -1,0 +1,19 @@
+<form [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+  <h1 mat-dialog-title>{{data.title}}</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="myForm">
+      <div class="form-group">
+        <label>{{data.valueName}}</label>
+        <input type="number" formControlName="value" #myInput (focus)="$event.target" class="form-control" [(ngModel)]="data.value">
+        <small *ngIf="myForm.get('value')?.hasError('required')|| myForm.get('value')?.hasError('pattern')" class="form-text text-muted">
+          Ingrese {{data.valueName}}
+        </small>
+      </div>
+    </form>
+
+  </div>
+  <div mat-dialog-actions>
+    <div (click)="cancel()" class="btn btn-danger" style="margin-right:5px">Cancelar</div>
+    <button class="btn btn-warning">Guardar</button>
+  </div>
+</form>

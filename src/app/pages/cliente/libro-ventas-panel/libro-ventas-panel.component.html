@@ -1,0 +1,166 @@
+<toolbar-two ></toolbar-two>
+<div class="container">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-lg-12">
+    <mat-card>
+        
+    
+            
+             
+            
+                <div class="row">
+                  <!--Fecha Desde-->
+                  
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Fecha Desde</label>
+                      <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+                    </div>
+                  </div>
+    
+                  <!--Fecha Hasta-->
+                  
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Fecha Hasta</label>
+                      <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Filtrar Mes</label>
+                      <select class="form-control" [(ngModel)]="filtroMes">
+                        <option [ngValue]="1">Enero</option>
+                        <option [ngValue]="2">Febrero</option>
+                        <option [ngValue]="3">Marzo</option>
+                        <option [ngValue]="4">Abril</option>
+                        <option [ngValue]="5">Mayo</option>
+                        <option [ngValue]="6">Junio</option>
+                        <option [ngValue]="7">Julio</option>
+                        <option [ngValue]="8">Agosto</option>
+                        <option [ngValue]="9">Septiembre</option>
+                        <option [ngValue]="10">Octubre</option>
+                        <option [ngValue]="11">Noviembre</option>
+                        <option [ngValue]="12">Diciembre</option>                 
+                      </select>
+                    </div>   
+                  </div> 
+                </div>
+    
+
+                <div class="col-md-3" *ngIf="totalNeto > 0">
+                  <div class="form-group">
+                    <label>Total Neto</label>
+                    <td>${{totalNeto | number:'1.1-2'}}</td>
+                  </div>
+                </div>
+                <div class="col-md-3" *ngIf="totalIva > 0">
+                  <div class="form-group">
+                    <label>Total Iva</label>
+                    <td>${{totalIva | number:'1.1-2'}}</td>
+                  </div>
+                </div>
+                <div class="col-md-3" *ngIf="totalPedidos > 0">
+                  <div class="form-group">
+                    <label>Total</label>
+                    <td>${{totalPedidos | number:'1.1-2'}}</td>
+                  </div>
+                </div>
+            <mat-action-row>
+              <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+              <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+            </mat-action-row>
+          
+          
+
+          
+          <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>            
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Tipo Comprobante</th>  
+                  <th scope="col">Punto de Venta</th>  
+                  <th scope="col">Nro. Comprobante</th>            
+                  <th scope="col">Cliente</th>
+                  <th scope="col">CUIT</th>
+                  <th scope="col">Neto Gravado</th>
+                  <th scope="col">IVA 21%</th>
+                  <th scope="col">IVA 10.5%</th>
+                  <th scope="col">IVA 27%</th>                   
+                  <th scope="col">IVA R. MONOT.</th>  
+                  <th scope="col">IVA R. INSCRIPTO.</th>
+                  <th scope="col">RET. PERC. IVA</th>  
+                  <th scope="col">RET. PERC. MUNICIPALIDAD</th>  
+                  <th scope="col">RET. PERC. INGR. BRUTOS</th>    
+                  <th scope="col">OP. NO GRAV Y OP. IMPU</th>    
+                  <th scope="col">OTROS TRIBUTOS</th>    
+                  <th scope="col">IMPUESTOS INTERNOS</th>    
+                  <th scope="col">TOTAL</th>    
+                  <th scope="col" *ngIf="tieneRolCategoria">CATEGORIA</th>    
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of this.listado; let i = index">
+                <tr>
+                  <th scope="row">{{i+1}}</th>
+                  <td>{{item.FechaPedidoAsString}}</td>
+                  <td style="text-align:center;"><span>{{item.tipoComprobante}}</span></td>
+                  <td style="text-align:center;"><span>{{item.puntoVenta}}</span></td>
+                  <td style="text-align:center;"*ngIf="item.NumeroFactura == null">{{item.Id}}</td>
+                  <td style="text-align:center;"*ngIf="item.NumeroFactura != null"><span *ngIf="item.NumeroFactura != null">{{item.NumeroFactura}}</span></td>                  
+                  <td>{{item.RazonSocial}}</td>
+                  <td>{{item.CUIT}}</td>
+                  <td>{{item.netoGravado}}</td>
+                  <td>{{item.iva21}}</td>
+                  <td>{{item.iva10}}</td>
+                  <td>{{item.iva27}}</td>                 
+                  <td>{{item.ivaRMonot}}</td>
+                  <td>{{item.ivaRI}}</td>
+                  <td>{{item.RetencionesPercepciones}}</td>
+                  <td>{{item.RetencionesPercepcionesMUN}}</td>
+                  <td>{{item.RetencionesPercepcionesIB}}</td>
+                  <td>{{item.OPGravado}}</td>
+                  <td>{{item.OtrosTributos}}</td>
+                  <td>{{item.ImpuestosInternos}}</td>
+                  <td>{{item.total}}</td>
+                  <td *ngIf="tieneRolCategoria">{{item.Categoria}}</td>
+
+                  
+                </tr>
+              </tbody>
+            </table>
+            <app-pagination class="mb-3"
+            (goPage)="goToPage($event)"
+            (goNext)="onNext()"
+            (goPrev)="onPrev()"
+            [pagesToShow]="20"
+            [page]="page"
+            [perPage]="limit"
+            [count]="total">
+            </app-pagination>
+            <div class="btn btn-info">
+              <a  (click)="exportarExcel2()">
+              <span>Exportar Excel</span>
+              
+            </a>
+          </div>
+          <div class="btn btn-info" style="margin-left:10px">
+            <a  (click)="exportarAlicuotas()">
+            <span>Exportar Ventas Alicuotas </span>
+            
+          </a>
+        </div>
+        <div class="btn btn-info" style="margin-left:10px">
+          <a  (click)="exportarTxtVentas()">
+          <span>Exportar Ventas Comprobantes</span>
+          
+        </a>
+      </div>
+
+
+        </mat-card>
+        </div>
+      <div class="col"></div>
+    </div>
+</div>

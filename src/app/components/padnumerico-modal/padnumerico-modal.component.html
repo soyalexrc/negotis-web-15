@@ -1,0 +1,42 @@
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <form [formGroup]="myForm" novalidate>
+        <div>
+          <small *ngIf="myForm.get('cantidad')?.hasError('required') && submitted == true"   class="form-text text-muted">
+            Ingrese cantidad
+          </small>
+          <small *ngIf="valEntero == true" class="form-text text-muted">
+            Ingrese solo números enteros
+          </small>
+          <small *ngIf="valDecimales == true" class="form-text text-muted">
+            Ingrese solo 2 decimales
+          </small>
+          <input type="number" (keyup)="resetValEntero()" #myInput (focus)="$event.target" class="form-control" formControlName="cantidad" [(ngModel)]="cantidad">
+        </div>
+      </form>
+      <div class="buttons">
+        <div (click)="add(1)" class="button">1</div>
+        <div (click)="add(2)" class="button">2</div>
+        <div (click)="add(3)" class="button">3</div>
+        <div (click)="add(4)" class="button">4</div>
+        <div (click)="add(5)" class="button">5</div>
+        <div (click)="add(6)" class="button">6</div>
+        <div (click)="add(7)" class="button">7</div>
+        <div (click)="add(8)" class="button">8</div>
+        <div (click)="add(9)" class="button">9</div>
+        <div (click)="add(0)" class="button">0</div>
+        <div (click)="clean()" class="button"><span class="fas fa-recycle"></span></div>
+        <div (click)="borrarUltimo()" class="button"><span class="fas fa-backspace"></span></div>
+      </div>
+      <hr />
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+
+</div>
+<div mat-dialog-actions class="row boton-box">
+  <button (click)="close()" class="btn btn-danger">Cancelar</button>
+  <button (click)="aceptar(myForm.value)" class="btn btn-warning">Aceptar</button>
+</div>

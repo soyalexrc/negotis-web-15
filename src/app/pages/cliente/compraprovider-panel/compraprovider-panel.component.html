@@ -1,0 +1,252 @@
+<toolbar-two (GetSucursalEmit)="getSucursal($event)"></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Compra a Proveedor Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a routerLink="/cliente/compras/crear">
+        <mat-card class="pointer">
+          Agregar Compra (+)
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-6">
+      <div>
+        <mat-card>
+          Id° Compra (F4)
+          <div style="display:flex">
+            <input #numFactura type="number" class="form-control" [(ngModel)]="idCompra">
+            <a *ngIf="idCompra != null && idCompra != ''" routerLink="/cliente/compras/editar/{{idCompra}}"
+              class="btn btn-warning ml-2">
+              Ir a Compra
+            </a>
+            <a *ngIf="idCompra != null && idCompra != ''" (click)="crearNotaCredito(idCompra)" class="btn btn-primary ml-2">
+              Nota de Credito
+            </a>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro" *ngIf="ocultarFiltroCompras == false">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <div>
+            <label><input type="radio" (click)="setCompra(true)" [checked]="filtro.chkCompra ==true?true:false"> Fecha
+              de Compra</label>
+          </div>
+          <div>
+            <label><input type="radio" (click)="setCompra(false)" [checked]="filtro.chkCompra==false?true:false">Fecha
+              de Entrega</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" >
+      <!--Proveedor-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Proveedor</label>
+          <input type="text" class="form-control" [formControl]="ctrlProveedor" [(ngModel)]="proveedor"
+            (input)=resetProveedor() [matAutocomplete]="autoProveedor" matInput>
+          <mat-autocomplete #autoProveedor="matAutocomplete" (optionSelected)="selectProveedor($event)"
+            [displayWith]="displayProveedorSelected">
+            <mat-option *ngFor="let option of filteredProveedor | async" [value]="option">
+              {{ displayProveedorOption(option) }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+
+      <!--Fecha Desde-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Desde</label>
+          <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="filtro.fechaDesde" readonly>
+        </div>
+      </div>
+      <!--Fecha Hasta-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Hasta</label>
+          <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="filtro.fechaHasta" readonly>
+        </div>
+      </div>
+
+      <!--Forma Pago-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Forma de Pago</label>
+          <select class="form-control" [(ngModel)]="filtro.formaPago">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of formasPago" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+      <!--Estado Pago-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Pago</label>
+          <select type="text" class="form-control" [(ngModel)]="filtro.estadoPago">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosPago" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+      <!--Estado Entrega-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado Entrega</label>
+          <select class="form-control" [(ngModel)]="filtro.estadoEntrega">
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of estadosEntrega" [ngValue]="item.Id">{{item.Valor}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Nro Comprobante</label>
+          <input type="text" class="form-control" [(ngModel)]="filtro.numeroComprobante">              
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Tipo Comprobante</label>
+          <select class="form-control" [(ngModel)]="filtro.tipoComprobante">
+            <option value="null">Seleccionar</option>
+            <option value="PRESUPUESTO">PRESUPUESTO</option>
+            <option value="FACTURA">FACTURA</option>
+            <option value="NOTA DEBITO">NOTA DEBITO</option>       
+            <option value="NOTA CREDITO">NOTA CREDITO</option>        
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+ 
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</div>
+  <!--totales-->
+  <div class="row">
+    <div class="col-md-4">
+      <mat-card>
+        <div class="text-center">Totales</div>
+        <table class="table-totales">
+          <tr>
+            <td>Compra</td>
+            <td>${{montoTotalCompras | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Deuda</td>
+            <td>${{(montoTotalCompras-montoTotalPagado) | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Cantidad de Compras Totales</td>
+            <td>{{total}}</td>
+          </tr>
+        </table>
+      </mat-card>
+    </div>
+  </div>
+
+  <div *ngIf="turnoCaja">
+    <label style="color: blue">Turno : {{this.turno}}</label>
+  </div>
+
+  <!--tabla {{'($' + deudaCalculada + ')'}}-->
+  <div>
+
+    <div style="display:flex; margin-top: 50px;" *ngIf="deudaCalculada > 0 && this.visualizarCambioEstados">
+      <a (click)="cambiarEstados($event)" class="btn btn-primary pdf-btn mb-2" style="color: white !important;">
+        Cambiar Estado/s 
+      </a>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">
+            <input type="checkbox" (change)="seleccionarTodosPedidosPendientes($event)">
+          </th>
+          <th scope="col">#</th>
+          <th scope="col">*</th>
+          <th scope="col">Id° Compra</th>
+          <th scope="col">Nro Comprobante</th>
+          <th scope="col">Fecha Compra</th>
+          <th scope="col">Proveedor</th>
+          <th scope="col">Forma Pago</th>
+          <th scope="col">Estado Pago</th>
+          <th scope="col">Total Compra</th>
+          <th scope="col">Estado Entrega</th>
+          <th scope="col">Fecha Entrega</th>
+          <th scope="col">Estado Compra</th>
+          <th scope="col">Observación</th>
+          <th scope="col" *ngIf="rolEliminarCompra">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listaCompra; let i = index">
+        <tr>
+          <th scope="row">
+            <input *ngIf="esCompraPagable(item) && !item.esParcial" type="checkbox" (change)="recalcularDeuda()" [(ngModel)]="item.compraChecked">
+          </th>
+          <th scope="row">{{i+1}}</th>
+          <td>
+            <a routerLink="/cliente/compras/editar/{{item.idCompra}}">
+              <span class="pointer">Ver</span>
+            </a>
+          </td>
+          <td style="text-align:center;" >{{item.idCompra}}</td>
+          <td style="text-align:center;" >{{item.numeroComprobante}}</td>
+
+          <td>{{item.fechaCompra}}</td>
+          <td>{{getProveedorName(item.idProveedor)}}</td>
+          <td *ngIf="item.UltimaFormaPago != null">{{item.UltimaFormaPago}}</td>
+          <td *ngIf="item.UltimaFormaPago == null">{{getFormaDePago(item.datosPago)}}</td>
+          <td *ngIf="item.UltimoEstadoPago != null">
+            <span *ngIf="item.esParcial" style="color:blue">{{item.UltimoEstadoPago}}</span>
+            <span *ngIf="!item.esParcial">{{item.UltimoEstadoPago}}</span>
+          </td>
+          <td *ngIf="item.UltimoEstadoPago == null">{{getEstadoDePago(item.datosPago)}}</td>
+          <td *ngIf="item.esParcial == null">{{item.totalCompra}} 
+            <div *ngIf="item.PagoFinal" style="display: inline;"><br><span style="font-size: .8rem;">Resto a Pagar</span><br><span style="font-size: .8rem;">({{item.PagoFinal}})</span></div>
+          </td>
+          <td *ngIf="item.esParcial != null" style="color:blue">{{item.PrecioTotal}}            
+          </td>
+          <td>{{getEstadoEntrega(item.estadoEntrega)}}</td>
+          <td>{{item.fechaEntrega}}</td>
+          <td>{{getEstadoCompra(item)}}</td>
+          <td>{{item.observacion}}</td>
+          
+          <td *ngIf="rolEliminarCompra">
+            <span (click)="delete(item)" class="fas fa-trash-alt pointer"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-pagination class="mb-3" (goPage)="goToPage($event)" (goNext)="onNext()" (goPrev)="onPrev()" [pagesToShow]="20"
+      [page]="page" [perPage]="limit" [count]="total">
+    </app-pagination>
+    <div style="display:flex" >
+      <a target="_blank"
+          href="{{urlImprimir}}"
+          class="btn btn-primary pdf-btn mb-2">Imprimir Compras
+        </a>      
+    </div>
+  </div>
+</div>

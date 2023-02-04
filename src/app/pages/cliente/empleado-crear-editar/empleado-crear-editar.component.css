@@ -1,0 +1,14 @@
+.active-select{
+    background: #4d96e4;
+    color: white;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.sucursal{
+    margin: 5px 5px 5px 5px;
+    cursor: pointer;
+    padding-left: 10px;
+    padding-right: 10px;
+}

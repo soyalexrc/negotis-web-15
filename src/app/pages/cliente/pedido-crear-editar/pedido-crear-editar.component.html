@@ -1,0 +1,927 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-12">
+      <mat-card>
+        <h3 *ngIf="postPedido?.Resultado != true">
+          <span *ngIf="idPedido == 0">Crear</span>
+          <span *ngIf="idPedido != 0">Editar</span>
+          Pedido
+        </h3>
+        <form *ngIf="postPedido?.Resultado != true" [formGroup]="myForm" novalidate>
+
+          <!--datos generales
+          -->
+          <div class="margin-filtro"></div>
+          <mat-expansion-panel [hidden]="datosGeneralesOculto || this.ocultarDatosGenerales">
+            <mat-expansion-panel-header>
+              Datos Generales
+            </mat-expansion-panel-header>
+            <div class="row">
+              <!--Cliente (Razon Social)-->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Cliente (Razon Social/Nombre Fantasia)</label>
+                  <input [readonly]="readOnlyCliente" class="form-control" (keyup)="resetCliente()" [matAutocomplete]="autoClient"
+                         [formControl]="razonSocialCtrl" [(ngModel)]="cliente" (ngModelChange)="filtrarCliente()">
+                  <mat-autocomplete #autoClient="matAutocomplete">
+                    <mat-option (click)="getCliente(item)" *ngFor="let item of filteredRazonSocial | async" [value]="item.RazonSocial">
+                      <span>{{item.RazonSocial}} {{formatNombreFantasia(item.NombreFantasia)}}</span>
+                    </mat-option>
+                  </mat-autocomplete>
+                  <small *ngIf="idCliente == null && submitted == true" class="form-text text-muted">
+                    Ingrese cliente
+                  </small>
+                  <br>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="pedidoVendedor">
+                <div class="form-group">
+                  <label>Vendedor</label>
+                  <input type="text"  class="form-control" [(ngModel)]="vendedorNombres" [matAutocomplete]="autoVendedor"
+                  [formControl]="vendedorCtrl" (ngModelChange)="filtrarVendedor()">
+                  <mat-autocomplete #autoVendedor="matAutocomplete">
+                    <mat-option (click)="getVendedor(item)" *ngFor="let item of filteredVendedor | async" [value]="item.Apellidos || item.RazonSocial">
+                      <span>{{item.RazonSocial}} </span><span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span><span>
+                        ({{item.UserName}})</span>
+                    </mat-option>
+                  </mat-autocomplete>
+                </div>
+              </div>
+              <!--Sucursal (Cliente)-->
+              <div *ngIf="cliente != 'Mostrador'" class="col-md-4">
+                <div class="form-group">
+                  <label>Sucursal (Cliente)</label>
+                  <select formControlName="idSucursalCliente" class="form-control" [(ngModel)]="idSucursalCliente">
+                    <option value="">Seleccionar</option>
+                    <option title="{{item.Calle}} {{item.Numero}}, {{item.Barrio}} ({{item.Zona?.Region?.Nombre}})"
+                      *ngFor="let item of clienteSucursales?.ListSucursal" value="{{item.Id}}">{{item.Calle}}
+                      {{item.Numero}}, {{item.Barrio}} ({{item.Zona?.Region?.Nombre}})</option>
+                  </select>
+                  <small *ngIf="clienteSucursales?.ListSucursal.length == 0" class="form-text text-muted">
+                    Cliente sin sucursal
+                  </small>
+                  <small *ngIf="myForm.get('idSucursalCliente')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese sucursal
+                  </small>
+                </div>
+              </div>
+              <div  *ngIf="telefonoCliente != null" class="col-md-3">
+                <div class="form-group">
+                 <label>Telefono Cliente</label>
+                  <div>
+                     <input formControlName="telefonoCliente"  type="number"
+                     class="form-control" value="{{telefonoCliente}}" [(ngModel)]="telefonoCliente" [disabled]="true">
+                 </div>
+                </div>
+              </div>
+
+
+
+               <!--tiene rol arlema-->
+                <div  *ngIf="tieneRolDistancia" class="col-md-3">
+                 <div class="form-group">
+                  <label>Distancia</label>
+                   <div>
+                      <input formControlName="distancia"  type="number"
+                      class="form-control" value="{{distancia}}" [(ngModel)]="distancia" [disabled]="true">
+                  </div>
+                 </div>
+               </div>
+                   <!--Forma de Pago-->
+                   <div class="col-md-3">
+                    <div class="form-group">
+                      <label><span (click)="verPagos()" *ngIf="idPedido != 0" class="fas fa-list-ol pointer"></span> Forma de Pago</label>
+                      <select (change)="selectFormaPago()" formControlName="formaPago" class="form-control" [(ngModel)]="formaPago">
+                        <option *ngFor="let item of formasPago" [ngValue]="item.Id">{{item.Valor}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- [disabled]="formaPagoGuardada != formaPagoCtaCte  && idPedido != 0 && estadoPago == 1" -->
+
+
+                  <div class="col-md-3" *ngIf="formaPago == 33 && tieneRolOcultarDatosGeneralesXDefecto != true">
+                    <div class="form-group">
+                      <label>Número Operacion</label>
+                      <input type="text"  class="form-control" formControlName="nroOperacion" [(ngModel)]="nroOperacion">
+                    </div>
+                  </div>
+                  <div class="col-md-3" *ngIf="formaPago == 33 && tieneRolOcultarDatosGeneralesXDefecto != true">
+                    <div (click)="fechaOperacionDatePicker()" class="form-group">
+                      <label>Fecha Operacion</label>
+                      <input type="text"  class="form-control" formControlName="fechaOperacion"  [(ngModel)]="fechaOperacion" readonly>
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-3" *ngIf="formaPago == 9 ">
+                    <div class="form-group">
+                      <label>Tipo Tarjeta</label>
+                      <select class="form-control" formControlName="tipoTarjeta" [(ngModel)]="tipoTarjeta" (change)="getTarjetas()">
+                        <option [ngValue]="null">Seleccionar</option>
+                        <option value="Credito" >Crédito</option>
+                        <option value="Debito" >Débito</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3" *ngIf="formaPago == 9">
+                    <div class="form-group">
+                      <label>Tarjetas</label>
+                      <select class="form-control" formControlName="tarjeta" [(ngModel)]="tarjeta" (change)="getPorcentajes()">
+                        <option [ngValue]="null">Seleccionar</option>
+                        <option *ngFor="let item of listaTarjetas" [ngValue]="item.Id">{{item.Nombre}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3" *ngIf="formaPago == 35 || formaPago == 38">
+                    <div class="form-group">
+                      <label>Nro Cheque</label>
+                      <input type="text"  class="form-control" formControlName="numeroCheque" [(ngModel)]="numeroCheque">
+                    </div>
+                  </div>
+                  <div class="col-md-3" *ngIf="formaPago == 35 || formaPago == 38">
+                    <div class="form-group">
+                      <label>Banco</label>
+                      <input type="text"  class="form-control" formControlName="banco" [(ngModel)]="banco">
+                    </div>
+                  </div>
+                  <div class="col-md-3" *ngIf="formaPago == 35 || formaPago == 38">
+                    <div class="form-group">
+                      <label>Plaza</label>
+                      <input type="text"  class="form-control" formControlName="plaza" [(ngModel)]="plaza">
+                    </div>
+                  </div>
+                  <div class="col-md-3" *ngIf="formaPago == 35 || formaPago == 38">
+                    <div (click)="fechaPedidoDatePickerCheque()" class="form-group">
+                      <label>Vencimiento</label>
+                      <input type="text"  class="form-control" formControlName="vencimientoCheque"  [(ngModel)]="vencimientoCheque" readonly>
+                    </div>
+
+                  </div>
+                  <div class="col-md-3" *ngIf="formaPago == 35 || formaPago == 38">
+                    <div class="form-group">
+                      <label>Librador</label>
+                      <input type="text"  class="form-control" formControlName="libradorCheque"  [(ngModel)]="libradorCheque">
+                    </div>
+                  </div>
+                  <div class="col-md-3" *ngIf="formaPago == 35 || formaPago == 38">
+                    <div class="form-group">
+                      <label>Nro Cuenta</label>
+                      <input type="text"  class="form-control" formControlName="numeroCuentaCheque"  [(ngModel)]="numeroCuentaCheque">
+                    </div>
+                  </div>
+                  <div class="col-md-3" *ngIf="formaPago == 35 || formaPago == 38">
+                    <div class="form-group">
+                      <label>CUIT</label>
+                      <input type="text"  class="form-control" formControlName="cuitCheque"  [(ngModel)]="cuitCheque">
+                    </div>
+                  </div>
+
+                        <!--Estado de Pago-->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label><span (click)="verPagos()" *ngIf="idPedido != 0" class="fas fa-list-ol pointer"></span> Estado de Pago</label>
+                  <select formControlName="estadoPago" class="form-control" [(ngModel)]="estadoPago">
+                    <option [disabled]="validarCondicionParcial()" value="{{estadoPagoParcial}}">PARCIAL</option>
+                    <option [disabled]="onlyPendiente" value="{{estadoPagoTotal}}">TOTAL</option>
+                    <option [disabled]="noPendiente" value="{{estadoPagoPendiente}}">PENDIENTE</option>
+                  </select>
+                  <small *ngIf="myForm.get('estadoPago')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese estado de pago
+                  </small>
+                </div>
+              </div>
+
+
+               <!--pago parcial-->
+
+               <div class="col-md-3" *ngIf="estadoPago == estadoPagoParcial">
+                <label>Pago Parcial: (F4)</label>
+                <input (keyup)="calcularResto()" #pagoCliente type="number" formControlName="pagoParcial" class="form-control" [(ngModel)]="pagoParcial">
+                <small *ngIf="!pagoParcialValido()" class="form-text text-muted">
+                  Ingrese pago parcial mayor a 0 y no superior/igual al monto total
+                </small>
+              </div>
+
+              <div class="col-md-3" *ngIf="estadoPago == estadoPagoParcial">
+                <div *ngIf="pagoParcial >= 0 || pagoParcial <= totalPrecio">
+                  <br>
+                  Resto a Pagar: ${{restoApagarPagoParcial | number:'1.1-2'}}
+                </div>
+              </div>
+
+
+              <div class="col-md-3" *ngIf="estadoPago == estadoPagoParcial">
+                <div class="form-group">
+                  <label><span (click)="verPagos()" *ngIf="idPedido != 0" class="fas fa-list-ol pointer"></span>Segunda Forma de Pago</label>
+                  <select  formControlName="formaPago2" class="form-control" [(ngModel)]="formaPago2">
+                    <option *ngFor="let item of formasPago" [ngValue]="item.Id">{{item.Valor}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-3" *ngIf="estadoPago == estadoPagoParcial">
+                <label>Segundo Pago Parcial: (F4)</label>
+                <input (keyup)="calcularResto()" #pagoCliente type="number" formControlName="pagoParcial"  class="form-control" [(ngModel)]="pagoParcial2">
+                <small *ngIf="!pagoParcialValido2()" class="form-text text-muted">
+                  Ingrese pago parcial mayor a 0 y no superior/igual al monto total
+                </small>
+              </div>
+
+              <div class="col-md-3" *ngIf="formaPago2 == 9">
+                <div class="form-group">
+                  <label>Tipo Tarjeta</label>
+                  <select class="form-control" formControlName="tipoTarjeta" [(ngModel)]="tipoTarjeta" (change)="getTarjetas()">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option value="Credito" >Crédito</option>
+                    <option value="Debito" >Débito</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-3" *ngIf="formaPago2 == 9">
+                <div class="form-group">
+                  <label>Tarjetas</label>
+                  <select class="form-control" formControlName="tarjeta" [(ngModel)]="tarjeta" (change)="getPorcentajes()">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let item of listaTarjetas" [ngValue]="item.Id">{{item.Nombre}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-3" *ngIf="formaPago2 == 35 || formaPago2 == 38">
+                <div class="form-group">
+                  <label>Nro Cheque</label>
+                  <input type="text"  class="form-control" formControlName="numeroCheque" [(ngModel)]="numeroCheque">
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="formaPago2 == 35 || formaPago2 == 38">
+                <div class="form-group">
+                  <label>Banco</label>
+                  <input type="text"  class="form-control" formControlName="banco" [(ngModel)]="banco">
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="formaPago2 == 35 || formaPago2 == 38">
+                <div class="form-group">
+                  <label>Plaza</label>
+                  <input type="text"  class="form-control" formControlName="plaza" [(ngModel)]="plaza">
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="formaPago2 == 35 || formaPago2 == 38">
+                <div (click)="fechaPedidoDatePickerCheque()" class="form-group">
+                  <label>Vencimiento</label>
+                  <input type="text"  class="form-control" formControlName="vencimientoCheque"  [(ngModel)]="vencimientoCheque" readonly>
+                </div>
+
+              </div>
+              <div class="col-md-3" *ngIf="formaPago2 == 35 || formaPago2 == 38">
+                <div class="form-group">
+                  <label>Librador</label>
+                  <input type="text"  class="form-control" formControlName="libradorCheque"  [(ngModel)]="libradorCheque">
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="formaPago2 == 35 || formaPago2 == 38">
+                <div class="form-group">
+                  <label>Nro Cuenta</label>
+                  <input type="text"  class="form-control" formControlName="numeroCuentaCheque"  [(ngModel)]="numeroCuentaCheque">
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="formaPago2 == 35 || formaPago2 == 38">
+                <div class="form-group">
+                  <label>CUIT</label>
+                  <input type="text"  class="form-control" formControlName="cuitCheque"  [(ngModel)]="cuitCheque">
+                </div>
+              </div>
+
+
+
+
+
+
+              <div class="col-md-3" *ngIf="estadoPago == estadoPagoParcial">
+                <div *ngIf="pagoParcial2 >= 0 || pagoParcial2 <= totalPrecio">
+                  <br>
+                  Resto a Pagar: ${{restoApagarPagoParcial | number:'1.1-2'}}
+                </div>
+              </div>
+
+
+
+
+                 <!--Aumento de Resto (%)-->
+                <div class="col-md-3" *ngIf="estadoPago == estadoPagoParcial">
+                <div class="form-group" *ngIf="editMode">
+                  <label>Aument./Desc. en Resto (%)</label>
+                  <div class="input-group mb-3 pointer">
+                    <input formControlName="aumentoResto" (keyup)="cambiarAumentoResto()" type="number"
+                      class="form-control" value="{{aumentoResto}}" [(ngModel)]="aumentoResto">
+                  </div>
+                  <small *ngIf="myForm.get('aumentoResto')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese aumento
+                  </small>
+                </div>
+              </div>
+                 <!--Estado de Entrega-->
+                 <div   class="col-md-3">
+                  <div class="form-group">
+                    <label>Estado de Entrega</label>
+                    <select formControlName="estadoEntrega" class="form-control" [(ngModel)]="estadoEntrega">
+                      <option *ngFor="let item of estadosEntrega" [ngValue]="item.Id">{{item.Valor}}</option>
+                    </select>
+                    <!-- *ngIf="cliente != 'Mostrador'"
+                      <small *ngIf="myForm.get('estadoEntrega')?.hasError('required') && submitted == true" class="form-text text-muted">
+                      Ingrese estado de entrega
+                    </small>-->
+                  </div>
+                </div>
+              <!--Fecha Pedido *ngIf="bloquearFecha == false"-->
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Fecha Pedido</label>
+                  <div (click)="fechaPedidoDatePicker()" class="input-group mb-3 pointer">
+                    <input formControlName="fechaPedido" readonly type="text" class="form-control" value="{{fechaPedido}}"
+                      [(ngModel)]="fechaPedido">
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2"><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <small *ngIf="myForm.get('fechaPedido')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese fecha pedido
+                  </small>
+                </div>
+              </div>
+           <!--   <div class="col-md-3" *ngIf="bloquearFecha == true" >
+                <div class="form-group">
+                  <label>Fecha Pedido</label>
+                  <div  class="input-group mb-3 pointer">
+                    <input formControlName="fechaPedido' readonly type="text" class="form-control" value="{{fechaPedido}}"
+                      [(ngModel)]="fechaPedido" disabled>
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2"><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <small *ngIf="myForm.get('fechaPedido')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese fecha pedido
+                  </small>
+                </div>
+              </div>
+
+
+
+              Estado de Comisión
+              <div *ngIf="idPedido != 0" class="col-md-3">
+                <div class="form-group">
+                  <label>Estado de Comisión</label>
+                  <select formControlName="estadoComision' class="form-control" [(ngModel)]="estadoComision">
+                    <option value="">Seleccionar</option>
+                    <option value="PARCIAL">PARCIAL</option>
+                    <option value="TOTAL">TOTAL</option>
+                    <option value="PENDIENTE">PENDIENTE</option>
+                  </select>
+                </div>
+              </div>
+              Comisión (%)
+              <div *ngIf="isDesktopVersion" class="col-md-3">
+                <div class="form-group">
+                  <label>Comisión (%)</label>
+                  <input type="number" class="form-control" formControlName="comision' value="{{comision}}"
+                    [(ngModel)]="comision" [readonly]="true">
+                  <small *ngIf="myForm.get('comision')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese comisión
+                  </small>
+                </div>
+              </div>-->
+              <!--Estado de Confirmación
+              <div *ngIf="cliente != 'Mostrador' && idPedido != 0" class="col-md-3">
+                <div class="form-group">
+                  <label>Estado de Confirmación</label>
+                  <select formControlName="estadoConfirmacion' class="form-control" [(ngModel)]="estadoConfirmacion">
+                    <option value="">Seleccionar</option>
+                    <option value="PENDIENTE">PENDIENTE</option>
+                    <option value="CONFIRMADO">CONFIRMADO</option>
+                  </select>-->
+                  <!-- <small *ngIf="myForm.get('estadoConfirmacion')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese estado confirmación
+                  </small>
+                </div>
+              </div>-->
+              <!--Fecha Entrega *ngIf="cliente != 'Mostrador'"*ngIf="bloquearFecha == false"-->
+              <div  class="col-md-3" *ngIf="tieneRolOcultarDatosGeneralesXDefecto != true">
+                <div class="form-group">
+                  <label>Fecha Entrega</label>
+                  <div (click)="datePicker()" class="input-group mb-3 pointer">
+                    <input formControlName="fechaEntrega" readonly type="text" class="form-control" value="{{fechaEntrega}}"
+                      [(ngModel)]="fechaEntrega">
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2"><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <small *ngIf="myForm.get('fechaEntrega')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese fecha entrega
+                  </small>
+                </div>
+              </div>
+              <div  class="col-md-3" *ngIf="tieneRolOcultarDatosGeneralesXDefecto != true">
+                <div class="form-group">
+                  <label>Fecha Vencimiento</label>
+                  <div (click)="datePickerVencimiento()" class="input-group mb-3 pointer">
+                    <input formControlName="fechaVencimiento" readonly type="text" class="form-control" value="{{fechaVencimiento}}"
+                      [(ngModel)]="fechaVencimiento">
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2"><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          <!--    <div  class="col-md-3" *ngIf="bloquearFecha == true">
+                <div class="form-group">
+                  <label>Fecha Entrega</label>
+                  <div class="input-group mb-3 pointer">
+                    <input formControlName="fechaEntrega' readonly type="text" class="form-control" value="{{fechaEntrega}}"
+                      [(ngModel)]="fechaEntrega" disabled>
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2"><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <small *ngIf="myForm.get('fechaEntrega')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese fecha entrega
+                  </small>
+                </div>
+              </div>
+              Estado de Preparación
+              <div *ngIf="cliente != 'Mostrador' && idPedido != 0 && !tieneRolCliente" class="col-md-3">
+                <div class="form-group">
+                  <label>Estado de Preparación</label>
+                  <select formControlName="estadoPreparacion' class="form-control" [(ngModel)]="estadoPreparacion">
+                    <option value="">Seleccionar</option>
+                    <option value="SIN ASIGNAR">SIN ASIGNAR</option>
+                    <option value="LISTO">LISTO</option>
+                    <option value="PENDIENTE">PENDIENTE</option>
+                    <option value="RECHAZADA">RECHAZADA</option>
+                    <option value="FALTA CONFIRMAR">FALTA CONFIRMAR</option>
+                  </select>
+                </div>
+              </div>-->
+              <!--Prioridad
+              <div *ngIf="cliente != 'Mostrador' && isDesktopVersion" class="col-md-3">
+                <div class="form-group">
+                  <label>Prioridad</label>
+                  <select formControlName="prioridad' class="form-control" [(ngModel)]="prioridad">
+                    <option value="">Seleccionar</option>
+                    <option value="BAJA">BAJA</option>
+                    <option value="MEDIA">MEDIA</option>
+                    <option value="ALTA">ALTA</option>
+                  </select>
+                  <small *ngIf="myForm.get('prioridad')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese prioridad
+                  </small>
+                </div>
+              </div>-->
+              <!--Estado de Pedido cliente != 'Mostrador'-->
+              <div  *ngIf="tieneRolEstadoPedidos && tieneRolOcultarDatosGeneralesXDefecto != true" class="col-md-3">
+                <div class="form-group">
+                  <label>Estado de Pedido</label>
+                  <select (click)="validarEstados()" formControlName="estadoPedido" class="form-control" [(ngModel)]="estadoPedido">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option [disabled]="pedidoActivo" value="{{estadoPedidoActivo}}">CONFIRMADO</option>
+                    <option [disabled]="pedidosCerrado" value="{{estadoPedidoCerrado}}">CERRADO</option>
+                    <option [disabled]="pedidoPendiente" value="{{estadoPedidoPendiente}}">PRESUPUESTO</option>
+                    <option [disabled]="pedidoAnulado" value="{{estadoPedidoAnulado}}">ANULADO</option>
+                  </select>
+                </div>
+              </div>
+
+              <div  class="col-md-3" *ngIf="tieneRolOcultarDatosGeneralesXDefecto != true">
+                <div class="form-group">
+                 <label>Retención</label>
+                  <div>
+                     <input formControlName="retencion"  type="number"
+                     class="form-control" value="{{retencion}}" [(ngModel)]="retencion">
+                 </div>
+                </div>
+              </div>
+              <!--Aumento de Lista (%)-->
+              <div class="col-md-3" >
+                <div class="form-group" *ngIf="modificarLista == false">
+                  <label [ngClass]="{'advertencia':!activaListaAumento}"> Lista Precios</label>
+                  <div class="input-group mb-3 pointer"*ngIf="permisoAumentoDescuentoLista; else elseBlock">
+                    <input formControlName="aumentoLista" (keyup)="aumentoListaGuardar()" type="text"
+                      class="form-control" value="{{aumentoListaNombre}}" [(ngModel)]="aumentoLista" [disabled]="true">
+                    <div (click)="cambiarAumnetoList(aumentoLista)" *ngIf="guardarAumentoLista == true" class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2">Guardar</span>
+                    </div>
+                  </div>
+                  <ng-template #elseBlock>
+                    <div class="input-group mb-3 pointer">
+                      <input formControlName="aumentoLista" (keyup)="aumentoListaGuardar()" type="text"
+                      class="form-control" value="{{aumentoListaNombre}}" [(ngModel)]="aumentoLista" [disabled]="true">
+                    </div>
+                  </ng-template>
+                  <small *ngIf="activaListaAumento == false" class="form-text text-muted">
+                  Lista no activa
+                  </small>
+                  <small *ngIf="myForm.get('aumentoLista')?.hasError('required') && submitted == true" class="form-text text-muted">
+                    Ingrese aumento lista
+                  </small>
+                </div>
+                <div  *ngIf="modificarLista">
+
+                  <div class="form-group">
+                    <label>Cambiar Lista Precios</label>
+                    <input type="text"  class="form-control" [(ngModel)]="listaNombres" [matAutocomplete]="autoLista"
+                           [formControl]="listaCtrl">
+                    <mat-autocomplete #autoLista="matAutocomplete">
+                      <mat-option (click)="cambiarLista(item)" *ngFor="let item of filteredLista | async" [value]="item.Nombre">
+                        <span>{{item.Nombre}} </span>
+                      </mat-option>
+                    </mat-autocomplete>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="permisoAumentoDescuentoPorcentaje">
+                <div class="form-group">
+                  <label>Aument./Desc.(Porcentaje)</label>
+                  <div class="input-group mb-3 pointer">
+                    <input formControlName="aumentoListaPorcentaje" (keyup)="aumentoListaPorcentajeGuardar()" type="number"
+                      class="form-control" value="{{aumentoListaPorcentaje}}" [(ngModel)]="aumentoListaPorcentaje">
+                    <div (click)="cambiarAumentoListPorcentaje(aumentoListaPorcentaje)" *ngIf="guardarAumentoListaPorcentaje == true" class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2-monto">Guardar</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div  *ngIf="cuitCliente != null" class="col-md-3">
+                <div class="form-group">
+                 <label>CUIT Cliente</label>
+                  <div>
+                     <input formControlName="cuitCliente"  type="text"
+                     class="form-control" value="{{cuitCliente}}" [(ngModel)]="cuitCliente" [disabled]="true">
+                 </div>
+                </div>
+              </div>
+
+              <!--iva-->
+              <div *ngIf="isDesktopVersion" class="col-md-3">
+                <div class="form-group">
+                  <label>IVA</label>
+                  <div>
+                    <input class="iva" (change)="ivaFunc($event)" type="checkbox" [disabled]="idPedido != 0" [checked]="iva">
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>
+          </mat-expansion-panel>
+          <!---->
+          <div class="row">
+            <!--Código de Barras-->
+            <div class="col-md-6">
+              <mat-card *ngIf="this.esNotaDebito == true || pedidoCerrado != true && facturaAfip != true ">
+
+                  <div class="form-group">
+                    <label>Agregar Artículos</label>
+                    <div>
+                      <label (click)="agregarArticuloPorNombre()" class="btn btn-secondary btn-carro" style="background-color:white;">
+                        <i class="fas fa-cart-plus fa-2x" style ="color :blue;" fa-lg ></i>
+                      </label>
+                    </div>
+                    <small *ngIf="listaArticulo.length == 0 && submitted == true" class="form-text text-muted">
+                      Ingrese articulo/s
+                    </small>
+                  </div>
+
+                <div class="form-group" [hidden]="datosGeneralesOculto">
+                  <label>Código de Barra / Articulo (F2)</label>
+                  <input  formControlName="codigo"  type="text" #codigoBarras class="form-control" [(ngModel)]="codigo">
+                  <small *ngIf="listaArticulo.length == 0 && submitted == true" class="form-text text-muted">
+                    Ingrese articulo/s
+                  </small>
+                  <span *ngIf="tieneRolPesables" style="margin-left:10px">
+                    <label>
+                      <input (change)="pesableClick($event)" type="checkbox" [checked]="pesable">
+                       Pesable (F8)
+                    </label>
+                  </span>
+                  <span *ngIf="tieneRolQR" style="margin-left:10px">
+                    <label>
+                      <input (change)="qrClick($event)" type="checkbox" [checked]="codigoQR">
+                       Codigo QR
+                    </label>
+                  </span>
+                </div>
+<!--                 <div class="form-group" *ngIf="tieneRolQR" [hidden]="datosGeneralesOculto">
+                  <label>Código QR</label>
+                  <input  formControlName="codigoQR'  type="text"  class="form-control" [(ngModel)]="codigoQR">
+                </div> -->
+              </mat-card>
+              <br>
+
+              <div class="form-group" *ngIf="rolMensajeAplicacion">
+                <label style="color: red;">NOVEDADES</label>
+                <textarea style="border-color: red;"rows="4" formControlName="mensajeAplicacion"  class="form-control" [(ngModel)]="mensajeAplicacion" [disabled]="true"></textarea>
+              </div>
+              <div *ngIf = "turnoCaja">
+                <label style="color: blue">Turno : {{this.turno}}</label>
+              </div>
+
+           <!-- </div>
+            add por artículo-->
+          </div>
+            <!--Totales-->
+            <div #totales class="col-md-6">
+
+                <mat-card>
+                    <div>
+                      <div class="form-group">
+                        <label>Observación</label>
+                        <textarea rows="2" formControlName="observacion" class="form-control" [(ngModel)]="observacion"></textarea>
+                      </div>
+                  </div>
+
+
+
+
+                <div class="form-group">
+                  <div>
+                    <label>Total Artículos: {{totalArticulos}}</label>
+                  </div>
+                  <div *ngIf="datosEsteticaHabilitado">
+                    <label>Sesiones Realizadas: {{sesionesRealizadas}} de {{sesionesTratamiento}} </label>
+                    <span *ngIf="sesionesRealizadas == sesionesTratamiento-1" class="form-text text-muted">
+                      Ultima Sesión
+                    </span>
+
+                    <div class="col-md-4">
+                    <label>Tipo Sesion:</label>
+                    <select  formControlName="tipoSesion" class="form-control" [(ngModel)]="tipoSesion">
+                      <option value="">Seleccionar</option>
+                      <option value="Cara">Cara</option>
+                      <option value="Pecho">Pecho</option>
+                      <option value="Brazo">Brazo</option>
+                      <option value="Pierna">Pierna</option>
+                    </select>
+                    <select  formControlName="tipoSesion2" class="form-control" [(ngModel)]="tipoSesion2">
+                      <option value="">Seleccionar</option>
+                      <option value="Cara">Cara</option>
+                      <option value="Pecho">Pecho</option>
+                      <option value="Brazo">Brazo</option>
+                      <option value="Pierna">Pierna</option>
+                    </select>
+                    </div>
+                  </div>
+                  <div *ngIf="ocultarPrecios == false">
+                    <label style="font-weight: bold; font-size:larger;">Total Precio: ${{totalPrecio | number:'1.1-2'}}</label>
+                  </div>
+                  <div *ngIf="permisoAumentoDescuentoMonto">
+                    <div class="form-group">
+                      <label>Aument./Desc. de Lista (monto)</label>
+                      <div class="input-group mb-3 pointer">
+                        <input formControlName="aumentoListaMonto" (keyup)="aumentoListaMontoGuardar()" type="number"
+                          class="form-control" value="{{aumentoListaMonto}}" [(ngModel)]="aumentoListaMonto">
+                        <div (click)="cambiarAumnetoListMonto(aumentoListaMonto)" *ngIf="guardarAumentoListaMonto == true" class="input-group-append">
+                          <span class="input-group-text" id="basic-addon2-monto">Guardar</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <tr *ngIf="tieneRolRentabilidad && ocultarPrecios == false">
+                    <td>Rentabilidad({{porcentajeRentabilidad | number:'1.1-2'}}%): ${{rentabilidad | number:'1.1-2'}}</td>
+                  </tr>
+                 <!-- pago total
+                  pago con-->
+                  <div *ngIf="estadoPago == estadoPagoTotal">
+                    <label>Pago Con: (F6)</label>
+                    <input (keyup)="calcularVuelto()" #vueltoCliente type="number" class="form-control" formControlName="pagoCantidad" [(ngModel)]="pagoCantidad">
+                  </div>
+                  <!--Vuelto-->
+                  <div *ngIf="estadoPago == estadoPagoTotal">
+                    <label>Vuelto: ${{ vuelto | number:'1.1-2'}}</label>
+                  </div>
+
+                  <div *ngIf="estadoPago != estadoPagoParcial && contienePagoParcial == true && idPedido != 0">
+                    Resto a Pagar: ${{restoApagarPagoParcial | number:'1.1-2'}}
+                  </div>
+                </div>
+              </mat-card>
+            </div>
+
+          </div>
+          <!--articulos-->
+          <table class="table">
+            <thead>
+              <tr>
+                <th *ngIf="tieneRolVisualizarCodigo" scope="col" class="sticky">#</th>
+                <th  scope="col" class="sticky"></th>
+                <th *ngIf="tieneRolVisualizarCodigo" scope="col" class="sticky">Código</th>
+                <th scope="col" class="sticky">Nombre</th>
+                <th scope="col" class="sticky" *ngIf="ubicacionArticulo">Ubicación Articulo</th>
+                <th scope="col" class="sticky" *ngIf="ubicacionArticulo">Ubicación Depósito</th>
+                <th scope="col" class="sticky" *ngIf="tieneRolVisualizarDescripcion">Descripcion</th>
+                <th scope="col" class="sticky" *ngIf="tieneRolObservacionArticulos">Observación</th>
+                <th scope="col" class="sticky">Unidades</th>
+                <th scope="col" class="sticky" *ngIf="tieneRolControlEntregas">Entrega</th>
+                <th scope="col" class="sticky" *ngIf="tieneRolControlEntregas">Pendiente</th>
+                <th scope="col" class="sticky" *ngIf="tieneRolCompraMinima">Compra Minima</th>
+                <th scope="col" class="sticky">Marca</th>
+                <th scope="col" class="sticky" *ngIf="visualizarCategoriaRubro">Categoria</th>
+                <th scope="col" class="sticky" *ngIf="visualizarCategoriaRubro">Rubro</th>
+                <th scope="col" class="sticky" *ngIf="medinor">Fecha Ingreso</th>
+                <th scope="col" class="sticky" *ngIf="medinor">Lote</th>
+                <th scope="col" class="sticky" *ngIf="medinor">Fecha Vencimiento</th>
+                <th scope="col" class="sticky" *ngIf="medinor">Fecha Egreso</th>
+                <th scope="col" *ngIf="puedeVisualizarColor" class="sticky">Color</th>
+                <th scope="col" class="sticky">Cant. x Pack</th>
+                <th scope="col" class="sticky" *ngIf="tieneRolVisualizarOfertas">Descripción</th>
+                <th *ngIf="!tieneRolCliente && !tieneRolVisualizarDescuentos && ocultarPrecios == false" scope="col" class="sticky">Desc. (%)</th>
+                <th *ngIf="!tieneRolCliente && !tieneRolVisualizarDescuentos && ocultarPrecios == false" scope="col" class="sticky">Desc. (Monto)</th>
+                <th scope="col" *ngIf="(visualizarPrecioOferta || comboOferta) && ocultarPrecios == false" class="sticky">Precio Oferta</th>
+                <th scope="col" class="sticky" *ngIf="ocultarPrecios == false" style="font-weight: bolder;">Precio x U.</th>
+                <th scope="col" class="sticky" *ngIf="ocultarPrecios == false" style="font-weight: bolder;">Precio Final</th>
+                <th *ngIf="!tieneRolCliente" scope="col" class="sticky">Stock</th>
+                <th scope="col" class="sticky">*</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of this.listaArticulo let i = index">
+              <tr>
+                <th *ngIf="tieneRolVisualizarCodigo" scope="row">{{i+1}}</th>
+                <th scope="row"><span (click)="fotoModal(item.Id)" class="fas fa-image pointer"></span> </th>
+                <td *ngIf="tieneRolVisualizarCodigo"> {{item.CodigoDeBarras}}</td>
+                <td>{{item.Nombre}}</td>
+                <td *ngIf="ubicacionArticulo">{{item.UbicacionDeposito}}</td>
+                <td *ngIf="ubicacionArticulo">{{item.UbicacionArticulo}}</td>
+
+                <td class="pointer" style="color:blue;" (click)="descModal(item)" *ngIf="tieneRolVisualizarDescripcion">Descripcion</td>
+                <td class="pointer" style="color:blue;" (click)="obsModal(item)" *ngIf="tieneRolObservacionArticulos && item.Observacion != null">{{item.Observacion}}</td>
+                <td class="pointer" style="color:blue;" (click)="obsModal(item)" *ngIf="tieneRolObservacionArticulos && item.Observacion == null">Observación</td>
+                <!-- <td class="pointer"   *ngIf="tieneRolObservacionArticulos"><input  type="text" class="form-control" value="item?.Observacion"  formControlName="observacionArt' (keyup)="guardarObservacionArt(item)" [(ngModel)]="observacionArt"></td> -->
+
+
+                <td class="pointer cantidad" *ngIf="facturaAfip != true" (click)="cambiarCantidad(item)">{{item.Cantidad | number:'1.0'}}</td>
+                <td class="pointer cantidad" *ngIf="facturaAfip == true">{{item.Cantidad | number:'1.0'}}</td>
+                <td class="pointer cantidad" *ngIf="tieneRolControlEntregas" (click)="cambiarCantidadPendiente(item)">{{item.Entrega | number:'1.0'}}</td>
+                <td class="pointer cantidad" *ngIf="tieneRolControlEntregas" >{{item.Pendiente | number:'1.0'}}</td>
+                <td *ngIf="tieneRolCompraMinima">{{item.CompraMinima}}</td>
+                <td>{{item.Marca.Nombre}}</td>
+                <td *ngIf="visualizarCategoriaRubro">{{item.Rubro.CategoriaRubro.Nombre}}</td>
+                <td *ngIf="visualizarCategoriaRubro">{{item.Rubro.Nombre}}</td>
+                <td *ngIf="medinor">{{displayFechaOption(item.FechaIngreso)}}</td>
+                <td *ngIf="medinor">{{item.Lote}}</td>
+                <td *ngIf="medinor">{{displayFechaOption(item.FechaEgreso)}}</td>
+                <td *ngIf="medinor">{{displayFechaOption(item.FechaVencimiento)}}</td>
+                <td *ngIf="puedeVisualizarColor">{{item.Color}}</td>
+                <td><span *ngIf="item.CantidadPorPack != 0 ">{{item.CantidadPorPack}}</span></td>
+                <td class="pointer" style="color:blue;" (click)="especModal(item?.EspecificacionArt)" *ngIf="tieneRolVisualizarOfertas">Ver</td>
+                <td *ngIf="!tieneRolCliente && !tieneRolVisualizarDescuentos && ocultarPrecios == false && facturaAfip != true" class="pointer cantidad" (click)="cambiarDescuento(item)">{{item.DescuentoPorcentaje}}</td>
+                <td *ngIf="!tieneRolCliente && !tieneRolVisualizarDescuentos && ocultarPrecios == false && facturaAfip != true" class="pointer cantidad" (click)="cambiarDescuentoMonto(item)">{{item.DescuentoMonto}}</td>
+                <td *ngIf="!tieneRolCliente && !tieneRolVisualizarDescuentos && ocultarPrecios == false && facturaAfip == true" class="pointer cantidad" >{{item.DescuentoPorcentaje}}</td>
+                <td *ngIf="!tieneRolCliente && !tieneRolVisualizarDescuentos && ocultarPrecios == false && facturaAfip == true" class="pointer cantidad" >{{item.DescuentoMonto}}</td>
+                <td *ngIf="(comboOferta || visualizarPrecioOferta) && ocultarPrecios == false" >{{item.PrecioXBulto}}</td>
+
+                <td class="pointer" *ngIf="tieneRolEditarPrecios && ocultarPrecios == false && facturaAfip != true && ((bloqueoPedidos != true) || (bloqueoPedidos == true && this.formaPago == 10))" style="color:blue;font-weight: bolder;"  (click)="cambiarPrecioUnitario(item)">${{item.PrecioUnidad | number:'1.1-2'}}</td>
+                <td class="pointer" *ngIf="tieneRolEditarPrecios && ocultarPrecios == false && facturaAfip == true" style="color:blue;font-weight: bolder;" >${{item.PrecioUnidad | number:'1.1-2'}}</td>
+                <td  *ngIf="tieneRolEditarPrecios == false && ocultarPrecios == false" style="font-weight: bolder;">${{item.PrecioUnidad | number:'1.1-2'}}</td>
+                <td *ngIf="ocultarPrecios == false" style="font-weight: bolder;">${{item.PrecioFinal | number:'1.1-2'}}</td>
+                <td> <span *ngIf="!tieneRolCliente">{{item.Stock}}</span></td>
+                <td><span *ngIf="pedidoCerrado != true && (esconderDeleteArt != true || idPedido == 0) && ((bloqueoPedidos != true) || (bloqueoPedidos == true && this.formaPago == 10))" (click)="deleteArt(item)" class="fas fa-trash-alt pointer"></span></td>
+
+              </tr>
+            </tbody>
+          </table>
+
+        </form>
+
+
+
+        <div *ngIf="postPedido?.Resultado != true" >
+          <div *ngIf="tieneRolIva" style="margin-left:10px">
+            <label>
+              <input  (change)="ivaClick($event)" type="checkbox" [checked]="ivaCheck">
+               Mostrar Iva
+            </label>
+          </div>
+          <div *ngIf="tieneRolControlEntregas" style="margin-left:10px">
+            <label>
+              <input  (change)="entregasClick($event)" type="checkbox" [checked]="entregasCheck">
+               Visualizar Control de Entregas
+            </label>
+          </div>
+            <button #submit *ngIf="pedidoCerrado != true " type="button" (click)="onSubmit(myForm.value)" class="btn btn-warning"><span *ngIf="idPedido == 0">Confirmar(F9)</span><span
+              *ngIf="idPedido != 0">Actualizar</span>
+          </button>
+
+<!--           <div *ngIf="idClienteNegotis == '8255f933-443f-459d-91f9-0d00ebebdc46'">
+            <a href="{{globalServ?.urlApi}}/ApiPedido/Get/Pdf/Listado/Imprimir?pedidosCambiarEstadoIndices={{pedidosImprimir}}&idClienteNegotis={{idClienteNegotis}}&imprimirDuplicado=true&ivaCheck={{ivaCheck}}&rolCE={{entregasCheck}}&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span *ngIf="facturaAfip == true && tieneRolEsconderFactura == false">Imprimir Factura Duplicado Oxy</span>
+              <span *ngIf="facturaAfip != true">Imprimir Comprobante Duplicado Oxy</span>
+            </a>
+          </div> -->
+
+          <div *ngIf="tieneRolEsconderComprobante == false">
+            <a href="{{globalServ?.urlApi}}/ApiPedido/get/Factura?idPedido={{idPedido}}&idClienteNegotis={{idClienteNegotis}}&idUser={{idUser}}&ivaCheck={{ivaCheck}}&rolCE={{entregasCheck}}&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span *ngIf="facturaAfip == true && tieneRolEsconderFactura == false">Imprimir Factura</span>
+              <span *ngIf="facturaAfip != true">Imprimir Comprobante</span>
+            </a>
+          </div>
+          <div *ngIf="imprimirDoble == false">
+            <a href="{{globalServ?.urlApi}}/ApiPedido/get/Factura?idPedido={{idPedido}}&idClienteNegotis={{idClienteNegotis}}&idUser={{idUser}}&ivaCheck={{ivaCheck}}&rolCE={{entregasCheck}}&remito=true&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span >Imprimir Remito</span>
+
+            </a>
+          </div>
+          <div *ngIf="imprimirDoble">
+            <a href="{{globalServ?.urlApi}}/ApiPedido/Get/Pdf/Listado/Imprimir?pedidosCambiarEstadoIndices={{pedidosImprimir}}&idClienteNegotis={{idClienteNegotis}}&imprimirDuplicado=false&ivaCheck={{ivaCheck}}&rolCE={{entregasCheck}}&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span >Imprimir Doble (Remito)</span>
+
+            </a>
+          </div>
+          <div *ngIf="rolPC && tieneRolEsconderFactura == false">
+            <a href="{{globalServ?.urlApi}}/ApiPedido/get/Factura?idPedido={{idPedido}}&idClienteNegotis={{idClienteNegotis}}&idUser={{idUser}}&rolPC={{rolPC}}&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span *ngIf="facturaAfip == true">Imprimir Factura sin Precios</span>
+              <span *ngIf="facturaAfip != true">Imprimir Comprobante sin Precios</span>
+            </a>
+          </div>
+          <div *ngIf="tieneRolVisualizarImpresionBT" >
+            <a href="{{globalServ?.urlApi}}/ApiPedido/get/Factura?idPedido={{idPedido}}&idClienteNegotis={{idClienteNegotis}}&is58mmPrinter=true&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span >Imprimir Comprobante 58mm</span>
+
+            </a>
+          </div>
+          <div *ngIf="tieneRolVisualizarImpresionComandera" >
+            <a href="{{globalServ?.urlApi}}/ApiPedido/get/Factura?idPedido={{idPedido}}&idClienteNegotis={{idClienteNegotis}}&is58mmComandera=true&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span >Imprimir Comprobante 58mm Comandera</span>
+
+            </a>
+          </div>
+          <div *ngIf="tieneRolVisualizarImpresion80mm" >
+            <a href="{{globalServ?.urlApi}}/ApiPedido/get/Factura?idPedido={{idPedido}}&idClienteNegotis={{idClienteNegotis}}&is80mmPrinter=true&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span >Imprimir Comprobante 80mm</span>
+
+            </a>
+          </div>
+          <div *ngIf="tieneRolImprimirEspejo && tieneRolEsconderFactura == false" >
+            <a href="{{globalServ?.urlApi}}/ApiPedido/Get/Pdf/Listado/Imprimir?pedidosCambiarEstadoIndices={{pedidosImprimir}}&idClienteNegotis={{idClienteNegotis}}&imprimirDuplicado=true&ivaCheck={{ivaCheck}}&rolCE={{entregasCheck}}&comprobanteEspejo={{true}}&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span *ngIf="facturaAfip == true">Imprimir Factura Espejo</span>
+              <span *ngIf="facturaAfip != true">Imprimir Comprobante Espejo</span>
+            </a>
+          </div>
+          <div *ngIf="tieneRolImprimirDuplicado && tieneRolEsconderFactura == false" >
+            <a href="{{globalServ?.urlApi}}/ApiPedido/Get/Pdf/Listado/Imprimir?pedidosCambiarEstadoIndices={{pedidosImprimir}}&idClienteNegotis={{idClienteNegotis}}&imprimirDuplicado=true&ivaCheck={{ivaCheck}}&rolCE={{entregasCheck}}&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span *ngIf="facturaAfip == true">Imprimir Factura Con Duplicado</span>
+              <span *ngIf="facturaAfip != true">Imprimir Comprobante Con Duplicado</span>
+            </a>
+          </div>
+          <div *ngIf="tieneRolImprimirUnificado && tieneRolEsconderFactura == false" >
+            <a href="{{globalServ?.urlApi}}/ApiPedido/Get/Pdf/Listado/Imprimir?pedidosCambiarEstadoIndices={{pedidosImprimir}}&idClienteNegotis={{idClienteNegotis}}&imprimirUnificado=true&ivaCheck={{ivaCheck}}&rolCE={{entregasCheck}}&token={{token}}"
+              target="_blank" *ngIf="idPedido != 0" class="btn btn-success btn-factura">
+              <span *ngIf="facturaAfip == true">Imprimir Factura Unificado</span>
+              <span *ngIf="facturaAfip != true">Imprimir Comprobante Unificado</span>
+            </a>
+          </div>
+          <div *ngIf="facturaAfip == true && tieneRolEsconderFactura == false" class="col-6"><a target="_blank" href="{{globalServ?.urlApi}}/ApiPedido/Get/Pdf/Recibo?listaImprimir={{pedidosImprimirRecibo}}&idClienteNegotis={{idClienteNegotis}}&token={{token}}" class="btn btn-primary">
+            Ver Recibo
+           </a></div>
+
+          <a  (click)="generarFactEdit()" href="{{globalServ?.urlApi}}/ApiPedido/get/Factura?idPedido={{idPedido}}&idClienteNegotis={{idClienteNegotis}}&generarFactAfip=true&token={{token}}"
+          target="_blank" *ngIf="idPedido != 0 && facturaAfip != true && pedidoCerrado == true && tieneRolEsconderFactura == false" class="btn btn-success btn-factura-afip">
+          <span>Generar Factura</span>
+          </a>
+          <div *ngIf="this.tieneRolWSPDF">
+          <div class=".col-md-3">
+            <label>Teléfono (Código de Área necesario "351")</label>
+            <input type="number"  class="form-control"
+              [(ngModel)]="phone">
+          </div>
+          <div class=".col-md-6" >
+            <a href="https://wa.me/{{phone}}?text={{globalServ?.urlApi}}/ApiPedido/Get/Factura/WhatsApp?token={{token}}/{{idPedido}}/{{idClienteNegotis}}"  style="background-color: rgb(94, 128, 0);"  class="btn btn-primary" target="_blank">Confirmar Envio WS</a>
+          </div>
+<!--           <div class=".col-md-6"><a  *ngIf="data?.pedidoCerrado == true && tieneRolVisualizarImpresion80mm && tieneRolEsconderFacturaComandera == false" target="_blank" href="https://wa.me/send?phone={{phone}}&text={{globalServ?.urlApi}}/ApiPedido/Get/Factura/WhatsApp?token={{token}}/{{idPedido}}/{{idClienteNegotis}}/true/80mm"  style="background-color: rgb(94, 128, 0);"   (click)="aceptarAfip()" class="btn btn-primary">
+           Envio Factura Afip Comandera 80mm WS
+          </a></div>
+          <div  *ngIf="tieneRolVisualizarImpresionComandera" class=".col-md-3"><a target="_blank" href="https://wa.me/send?phone={{phone}}&text={{globalServ?.urlApi}}/ApiPedido/Get/Factura/WhatsApp?token={{token}}/{{idPedido}}/{{idClienteNegotis}}/true/58mm" (click)="generar()"  style="background-color: rgb(94, 128, 0);"  class="btn btn-warning">Comprobante 58mm Comandera</a></div>-->
+          <div class=".col-md-6"><a *ngIf="data?.pedidoCerrado == true && tieneRolEsconderFactura == false" target="_blank" href="https://wa.me/{{phone}}?text={{globalServ?.urlApi}}/ApiPedido/Get/Factura/WhatsApp?token={{token}}/{{idPedido}}/{{idClienteNegotis}}/true"   style="background-color: rgb(94, 128, 0);"   class="btn btn-primary">
+            Envio Factura Afip WS
+          </a></div>
+        </div>
+        </div>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

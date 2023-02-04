@@ -1,0 +1,34 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-box">
+      <a [routerLink]="['/cliente/caja/totales']">
+        <mat-card class="box pointer">
+          Totales
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4 col-box">
+      <a [routerLink]="['/cliente/gasto/panel']">
+        <mat-card class="box pointer">
+          Gastos
+        </mat-card>
+      </a>
+    </div>
+    <div *ngIf="rolClienteNegotis == 'true' || roles?.TRANSFERENCIAS == true" class="col-md-4 col-box">
+      <a [routerLink]="['/cliente/transferencia/deposito/dinero/panel']">
+        <mat-card class="box pointer">
+          Ingreso / Depósitos / Egreso
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4 col-box">
+      <a [routerLink]="['/cliente/caja/configuracion/panel']">
+        <mat-card class="box pointer">
+          Configuracion
+        </mat-card>
+      </a>
+    </div>
+  </div>
+</div>

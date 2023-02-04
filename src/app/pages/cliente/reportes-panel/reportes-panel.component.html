@@ -1,0 +1,97 @@
+<toolbar-two></toolbar-two>
+
+<div class="container" >
+    <h3 class="title">
+        Reportes Panel
+    </h3>
+    <!--<div class="row" *ngIf="modificarProductosHabilitado">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/reportes/comision/panel']">
+                <mat-card class="box pointer">
+                    Comisiones
+                </mat-card>
+            </a>
+        </div>
+    </div>-->
+    <div class="row">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/reportes/consolidado/panel']">
+                <mat-card class="box pointer">
+                    Consolidado - Ventas
+                </mat-card>
+            </a>
+        </div>
+    </div>
+    <div class="row" *ngIf="produccionHabilitado">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/reportes/consolidadoMP/panel']">
+                <mat-card class="box pointer">
+                    Consolidado Materia Prima 
+                </mat-card>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/reportes/alarma-stock/panel']">
+                <mat-card class="box pointer">
+                    Alarma de Stock
+                </mat-card>
+            </a>
+        </div>
+    </div>
+    <div class="row"  *ngIf="tieneRolVencimiento">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/reportes/vencimiento-stock/panel']">
+                <mat-card class="box pointer">
+                    Vencimiento Stock
+                </mat-card>
+            </a>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/reportes/vencimiento-oferta/panel']">
+                <mat-card class="box pointer">
+                    Vencimiento Oferta
+                </mat-card>
+            </a>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/reportes/rank-clientes/panel']">
+                <mat-card class="box pointer">
+                    Ranking Clientes
+                </mat-card>
+            </a>
+        </div>
+    </div>
+    <div class="row" *ngIf="tieneRolLibros">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/reportes/libro-ventas/panel']">
+                <mat-card class="box pointer">
+                    Libro Ventas 
+                </mat-card>
+            </a>
+        </div>
+    </div>
+    <div class="row" *ngIf="tieneRolLibros">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/reportes/libro-compras/panel']">
+                <mat-card class="box pointer">
+                    Libro Compras 
+                </mat-card>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/reportes/cuentas/panel']">
+                <mat-card class="box pointer">
+                    Reporte Cuentas
+                </mat-card>
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<form [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+    <h1 mat-dialog-title>Ingresar Combo Artículo</h1>
+    <div mat-dialog-content>
+      <form [formGroup]="myForm">
+        <div class="row">
+          <div >
+            <div class="form-group">
+              <label>Filtro (nombre, código, marca, rubro)</label>
+              <input type="text"  class="form-control" formControlName="filtroDescripcionArticulo"  [(ngModel)]="filtroDescripcionArticulo"  >
+            </div>
+          </div>
+        </div>
+        <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+        <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+
+        <div class="form-group">
+          <label>Cantidad</label>
+          <input type="number" formControlName="cantidad" #myInput (focus)="$event.target" class="form-control" [(ngModel)]="cantidad">
+          <small *ngIf="myForm.get('cantidad')?.hasError('required') || errorEntero == true" class="form-text text-muted">
+            Ingrese cantidad <span *ngIf="errorEntero == true"> (Entero)</span></small>
+          <small *ngIf="myForm.get('cantidad')?.hasError('pattern')" class="form-text text-muted">
+            Ingrese número positivo</small>
+        </div>
+      </form>
+
+
+        <div>
+
+
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="sticky">#</th>
+              <th scope="col" class="sticky">ArtÍculo</th>
+              <th scope="col" class="sticky">Marca</th>
+              <th scope="col" class="sticky">Precio Costo</th>
+              <th scope="col"  class="sticky" >Unidades</th>
+              <th scope="col" class="sticky">Rubro</th>
+              <th scope="col"  class="sticky">Proveedor</th>
+              <th scope="col" class="sticky">Categoría Rubro</th>
+              <th scope="col"  class="sticky">Estado</th>
+              <th scope="col" class="sticky">Código</th>
+            </tr>
+          </thead>
+          <tbody  *ngFor="let item of listadoArticulo; let i = index">
+            <tr>
+              <th scope="row" >{{i+1}}</th>
+              <td (click)="seleccionar(item)">{{item.nombre}}</td>
+              <td (click)="seleccionar(item)">{{item.nombreMarca}}</td>
+
+
+              <td (click)="seleccionar(item)">
+                {{item.precioCosto}}
+              </td>
+
+              <td  (click)="seleccionar(item)" class="cant-art">
+                {{item.cantidad}}
+                <span *ngIf="item.kilogramo == true">Kilogramo</span>
+                <span *ngIf="item.unidad == true">Unidad</span>
+                <span *ngIf="item.gramo == true">Gramos</span>
+                <span *ngIf="item.metro == true">Metros</span>
+              </td>
+              <td (click)="seleccionar(item)">{{item.nombreRubro}}</td>
+              <td (click)="seleccionar(item)">{{item.nombreProveedor}}</td>
+              <td (click)="seleccionar(item)">{{item.nombreCategoriaRubro}}</td>
+              <td (click)="seleccionar(item)">
+                <span *ngIf="item.activo == true">Activo</span>
+                <span *ngIf="item.activo != true">Inactivo</span>
+              </td>
+
+              <td (click)="seleccionar(item)">
+                {{item.codigoDeBarras}}
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+        <app-pagination class="mb-3" (goPage)="goToPage($event)" (goNext)="onNext()" (goPrev)="onPrev()" [pagesToShow]="20"
+          [page]="page" [perPage]="limit" [count]="total">
+        </app-pagination>
+      </div>
+
+
+    </div>
+    <div mat-dialog-actions>
+      <button (click)="cerrar()" class="btn btn-danger">Volver</button>
+    </div>
+  </form>

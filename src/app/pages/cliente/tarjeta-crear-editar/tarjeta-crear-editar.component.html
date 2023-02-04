@@ -1,0 +1,52 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idTarjeta == 0">Crear</span>
+          <span *ngIf="idTarjeta != 0">Editar</span>
+          Tarjeta
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <div class="form-group">
+            <label>Tarjeta</label>
+            <input type="text" formControlName="nombre" class="form-control" [(ngModel)]="nombre">
+            <small *ngIf="myForm.get('nombre')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese nombre de tarjeta
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo Tarjeta</label>
+            <select type="text" formControlName="tipoTarjeta" class="form-control" [(ngModel)]="tipoTarjeta">
+                <option value="">Seleccionar</option>
+                <option value="Credito">Credito</option>
+                <option value="Debito">Debito</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label>Porcentaje</label>
+            <input type="text" formControlName="porcentaje" class="form-control" [(ngModel)]="porcentaje">
+          </div>
+
+          <!--
+          <div class="form-group">
+            <label>Código</label>
+            <input type="text" formControlName="mcodigo" class="form-control" [(ngModel)]="codigo">
+            <small *ngIf="post?.RepetidoCodigo == true" class="form-text text-muted">Código de rubro existente</small>
+          </div>
+          -->
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

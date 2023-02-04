@@ -1,0 +1,66 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Zona Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a routerLink="/cliente/zona/crear">
+        <mat-card class="pointer">
+          Agregar Zona
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>zona</label>
+          <input type="text" class="form-control" [(ngModel)]="zonaFiltro" [matAutocomplete]="autoZona"
+          [formControl]="zonaCtrl">
+          <mat-autocomplete #autoZona="matAutocomplete">
+            <mat-option *ngFor="let item of filteredZona | async" [value]="item.Nombre">
+              <span>{{item.Nombre}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Zona</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listadoZonas; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.Nombre}}</td>
+          <td><a routerLink="/cliente/zona/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
+          <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

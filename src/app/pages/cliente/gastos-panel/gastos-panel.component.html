@@ -1,0 +1,131 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Gasto Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a [routerLink]="['/cliente/gasto/crear']">
+        <mat-card class="pointer">
+          Agregar Gasto
+        </mat-card>
+      </a>
+    </div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <!--Fecha Desde-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Desde</label>
+          <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+        </div>
+      </div>
+      <!--Fecha Hasta-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Hasta</label>
+          <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+        </div>
+      </div>
+      <!-- Categoria -->
+     
+        <div class="form-group">
+          <label>Categoria</label>
+          <select class="form-control" [(ngModel)]="filtroCategoria" >
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of listaCategoriaGasto" [ngValue]="item.Nombre">{{item.Nombre}}</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Usuario</label>
+            <input type="text"  class="form-control" [(ngModel)]="vendedorNombres" [matAutocomplete]="autoVendedor"
+            [formControl]="vendedorCtrl">
+            <mat-autocomplete #autoVendedor="matAutocomplete">
+              <mat-option (click)="getVendedor(item)" *ngFor="let item of filteredVendedor | async" [value]="item.Apellidos || item.RazonSocial">
+                <span>{{item.RazonSocial}} </span><span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span><span>
+                  ({{item.UserName}})</span>
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+      
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <!--Gastos en Todas las Sucursales-->
+  <div class="row">
+    <div class="col-md-4" *ngIf="bloquearFiltroTotales == false">
+      <mat-card>
+        <div>Gastos de Todas las Sucursales</div>
+        <div>Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}</div>
+        <div>
+          <div>Total Gastos: ${{listadoGasto?.TotalGastoTodasSucursales | number:'1.1-2'}}</div>
+        </div>
+      </mat-card>
+    </div>
+    <!--total Sucursal-->
+    <div class="col-md-4">
+      <mat-card>
+        <div>Gastos de Sucursal: {{sucursal?.Calle}} {{sucursal?.Numero}} {{sucursal?.Barrio}}<strong>
+            {{sucursal?.Zona?.Nombre}}</strong><strong>
+            {{sucursal?.Zona?.Region?.Nombre}}</strong></div>
+        <div>Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}</div>
+        <div>
+          <div>Total Gastos: ${{totalGastos | number:'1.1-2'}}</div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Gasto</th>
+          <th scope="col">Empleado</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Categoria</th>
+          <th scope="col" *ngIf="editarDepositos == false">*</th>
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listadoGasto?.ListGasto; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.Nombre}}</td>
+          <td *ngIf="item.User.Nombres != null">{{item.User.Nombres}} {{item.User.Apellido}}</td>
+          <td *ngIf="item.User.Nombres == null">{{item.User.NombreFantasia}}</td>
+          <td>{{item.Descripcion}}</td>
+          <td>${{item.Monto}}</td>
+          <td>{{item.FechaCracion}}</td>
+          <td>{{getNameFromCategoriaGastoId(item.IdCategoriaGasto)}}</td>
+          <td *ngIf="editarDepositos == false"><a routerLink="/cliente/gasto/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
+          <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <a target="_blank"
+      href="{{urlImprimir}}" 
+      class="btn btn-primary pdf-btn mb-2">
+      <span>Imprimir Gastos</span>
+    </a>
+  </div>
+  </div>
+</div>

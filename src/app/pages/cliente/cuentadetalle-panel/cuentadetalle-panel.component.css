@@ -1,0 +1,13 @@
+.table-totales{
+    height: 100px;
+    margin-top: 10px;
+    overflow-y:hidden!important;
+}
+
+.withoutTopMargin{
+    margin-top: 5px;
+}
+
+.WithTopMargin{
+    margin-top: 50px;
+}

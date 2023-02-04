@@ -1,0 +1,215 @@
+<toolbar-two></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Cliente Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a routerLink="/cliente/crear">
+        <mat-card class="pointer">
+          Agregar Cliente
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4" >
+      <a (click)="sincronizarExcel2()">
+        <mat-card class="pointer">
+         Sincronizar Excel
+        </mat-card>
+      </a>
+     
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Razon social</label>
+          <input type="text" class="form-control" [(ngModel)]="razonSocFiltro" [matAutocomplete]="autoRS"
+            [formControl]="rsCtrl" (ngModelChange)="page = 1">
+          <mat-autocomplete #autoRS="matAutocomplete">
+            <mat-option *ngFor="let item of filteredRS | async" [value]="item.RazonSocial">
+              <span>{{item.RazonSocial}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Nombre Fantasía</label>
+          <input type="text" class="form-control" [(ngModel)]="nombreFantasiaFiltro" [matAutocomplete]="autoFant"
+            [formControl]="fantCtrl" (ngModelChange)="page = 1">
+          <mat-autocomplete #autoFant="matAutocomplete">
+            <mat-option *ngFor="let item of filteredFant | async" [value]="item.NombreFantasia">
+              <span>{{item.NombreFantasia}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>CUIT</label>
+          <input type="text" class="form-control" [(ngModel)]="cuitFiltro" [matAutocomplete]="autoCuit"
+          [formControl]="cuitCtrl" (ngModelChange)="page = 1">
+          <mat-autocomplete #autoCuit="matAutocomplete">
+            <mat-option *ngFor="let item of filteredCuit | async" [value]="item.CUIT">
+              <span>{{item.CUIT}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Zonas</label>
+          <select [formControl]="zonaCtrl" class="form-control" [(ngModel)]="zonaFiltro" (change)="selectOptionZona($event)">
+            <option value="">Seleccionar</option>
+            <option *ngFor="let option of listaZonasOrig" value="{{option.Id}}">{{option.Nombre}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Rutas</label>
+          <select [formControl]="rutaCtrl" class="form-control" [(ngModel)]="rutaNgModel" (change)="selectOptionRuta($event)">
+            <option value="">Seleccionar</option>
+            <option *ngFor="let option of listaRutasOrig" value="{{option.Id}}">{{option.Nombre}}</option>
+          </select>
+        </div>
+      </div>
+    
+      <div class="col-md-3" *ngIf="verDatosTaller">
+        <div class="form-group">
+          <label>Patente</label>
+          <input type="text" [(ngModel)]="filtroPatente"   class="form-control">
+        </div>
+      </div>
+
+      <div class="col-md-3" *ngIf="verDatosTaller">
+        <div class="form-group">
+          <label>Número Siniestro</label>
+          <input type="text" [(ngModel)]="filtroNroSiniestro"   class="form-control">
+        </div>
+      </div>
+    
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Vendedor</label>
+          <input type="text"  class="form-control" [(ngModel)]="vendedorNombres" [matAutocomplete]="autoVendedor"
+          [formControl]="vendedorCtrl" (ngModelChange)="page = 1">
+          <mat-autocomplete #autoVendedor="matAutocomplete">
+            <mat-option (click)="getVendedor(item)" *ngFor="let item of filteredVendedor | async" [value]="item.Apellidos || item.RazonSocial">
+              <span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Categoria Cliente</label>
+          <input type="text"  class="form-control" [(ngModel)]="categoriaClientes" [matAutocomplete]="autoCategoria"
+          [formControl]="categoriaCCtrl">
+          <mat-autocomplete #autoCategoria="matAutocomplete">
+            <mat-option (click)="getCategoria(item)" *ngFor="let item of filteredCategoria | async" [value]="item.Id">
+             <span>{{item.Nombre}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+    </div>
+
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <div class="row">
+    <div class="col-md-4">
+      <mat-card>        
+        <table class="table-totales">
+          <tr>
+            <td>Total Clientes</td>
+            <td>{{totalClientes}}</td>
+          </tr>
+        </table>
+      </mat-card>
+    </div>
+  </div>
+
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">*</th>
+          <th scope="col" *ngIf="fichaMedica">*</th>
+          <th scope="col">Razon social</th>
+          <th scope="col">Nombre Fantasía</th>
+          <th scope="col">Domicilio</th>
+          <th scope="col">Zona</th>
+          <th scope="col">CUIT</th>
+          <th scope="col">Tel.</th>
+          <th scope="col" *ngIf="datosEsteticaHabilitado">Nro Total de Sesiones</th>
+          <th scope="col" *ngIf="datosEsteticaHabilitado">Nro Sesión del Tratamiento</th>          
+          <th scope="col">*</th>
+          <th scope="col" *ngIf="eliminarClientesHabilitado">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listCliente; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td><a routerLink="/cliente/editar/{{item?.Id}}"><span class="pointer">Editar</span></a></td>
+          <td *ngIf="fichaMedica">
+            <a *ngIf="item?.RazonSocial != 'Mostrador'" routerLink="/cliente/fichamedica/listado/{{item?.Id}}">
+              <span class="pointer">Ficha Medica</span>
+            </a>
+          </td>
+          <td>{{item?.RazonSocial}}</td>
+          <td>{{item?.NombreFantasia}}</td>
+          <td>{{item?.Sucursal}}</td>
+          <td>{{item?.Zona}}</td>
+          <td>{{item?.CUIT}}</td>
+          <td>{{item?.Telefono}}</td>
+          <td *ngIf="datosEsteticaHabilitado">{{item?.totalSesiones}}</td>
+          <td *ngIf="datosEsteticaHabilitado">{{item?.sesionesRealizadas}} de {{item?.sesionesTratamiento}}</td>
+          <td>
+            <a *ngIf="item?.RazonSocial != 'Mostrador'" routerLink="/cliente/sucursal/listado/{{item?.Id}}">
+              <span class="pointer">Sucursal</span>
+            </a>
+          </td>
+          <!-- <td>
+            <a *ngIf="item?.RazonSocial != 'Mostrador'" (click)="openCrearUsuarioClienteModal(item, i)">
+              <span class="pointer">Crear Usuario</span>
+            </a>
+          </td> -->          
+          <td  *ngIf="eliminarClientesHabilitado"><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination class="mb-3"
+    (goPage)="goToPage($event)"
+    (goNext)="onNext()"
+    (goPrev)="onPrev()"
+    [pagesToShow]="20"
+    [page]="page"
+    [perPage]="limit"
+    [count]="total">
+</app-pagination>
+    <div style="display:flex">
+      <a target="_blank"
+          href="{{urlImprimir}}"
+          class="btn btn-primary pdf-btn mb-2">Imprimir
+        </a>
+    </div>
+  </div>
+</div>

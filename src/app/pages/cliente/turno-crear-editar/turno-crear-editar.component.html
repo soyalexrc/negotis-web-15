@@ -1,0 +1,34 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idTurno == 0">Crear</span>
+          <span *ngIf="idTurno != 0">Editar</span>
+          Turno
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <div class="form-group">
+            <label>Turno</label>
+            <input type="text" formControlName="nombre" class="form-control" [(ngModel)]="nombre">
+            <small *ngIf="myForm.get('nombre')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese nombre de turno
+            </small>
+          </div>
+
+
+
+
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

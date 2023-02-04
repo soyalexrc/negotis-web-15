@@ -1,0 +1,184 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container" *ngIf="roles?.FINANZAS == true || rolClienteNegotis == 'true'">
+  <h3 class="title">
+    Panel Cuentas
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a [routerLink]="['/cliente/finanzas/cuentadetalle/crear']">
+        <mat-card class="pointer">
+          Agregar Movimiento de Cuenta
+        </mat-card>
+      </a>
+    </div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <!--Fecha Desde-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Desde</label>
+          <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+        </div>
+      </div>
+      <!--Fecha Hasta-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Hasta</label>
+          <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Cliente</label>
+
+          <input type="text" class="form-control" [formControl]="textControl" [(ngModel)]="nombreCliente"
+            (input)=resetKey() [matAutocomplete]="auto" matInput>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOption($event.option.value)"
+            [displayWith]="displayWith">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{ option.RazonSocial }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Estado</label>
+          <input type="text" [formControl]="textControlEstado" class="form-control" (input)=resetKeyEstado()
+            [matAutocomplete]="auto1" matInput>
+          <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectOptionEstado($event.option.value)"
+            [displayWith]="displayWithEstado">
+            <mat-option *ngFor="let option of filteredOptionsEstado | async" [value]="option">
+              {{ option.key }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <!--Gastos en Todas las Sucursales-->
+  <!--
+    <div class="row">
+    <div class="col-md-4">
+      <mat-card>
+        <div>Gastos de Todas las Sucursales</div>
+        <div>Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}</div>
+        <div>
+          <div>Total Gastos: ${{listadoGasto?.TotalGastoTodasSucursales | number:'1.1-2'}}</div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  -->
+
+
+  <div class="row">
+    <div class="col-md-4">
+      <!--totales del día-->
+      <mat-card>
+        <div>Totales del {{fechaDesde}} al {{fechaHasta}}</div>
+        <table class="table-totales">
+          <tr>
+            <td>Valores</td>
+            <td>${{calcularValores()}}</td>
+          </tr>
+          <tr>
+            <td>Retenciones</td>
+            <td>${{calcularRetencionesTotales()}}</td>
+          </tr>
+          <tr>
+            <td>Impagos</td>
+            <td>${{calcularImpagos()}}</td>
+          </tr>
+          <tr>
+            <td>Pagos</td>
+            <td>${{calcularPagos()}}</td>
+          </tr>
+        </table>
+      </mat-card>
+    </div>
+  </div>
+
+
+
+  <div class="WithTopMargin">
+    <!--tabla-->
+    <div class="row">
+      <div class="col-md-4">
+        <button (click)="ProcessSelectedItems()" class="btn btn-primary">Pagar (${{getSelectedAmount()}})</button>
+      </div>
+    </div>
+    <table class="table withoutTopMargin">
+      <thead>
+        <tr>
+          <th scope="col">
+            <input (change)="selectAll()" type="checkbox" [(ngModel)]="this.isAllSelected"
+              *ngIf="getSelectableCount()!=0">
+            <input (change)="selectAll()" type="checkbox" [(ngModel)]="this.isAllSelected" *ngIf="getSelectableCount()==0"
+              disabled>
+          </th>
+          <th scope="col">#</th>
+          <th scope="col">*</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Fecha de Recibo</th>
+          <th scope="col">Fecha de Pago</th>
+          <th scope="col">Fecha de Emision</th>
+          <th scope="col">Fecha de Vencimiento</th>
+          <th scope="col">Demora al Deposito</th>
+          <th scope="col">Dias al Deposito</th>
+          <th scope="col">Tasa(%)</th>
+          <th scope="col">Monto Tasa</th>
+          <th scope="col">Imp. Bancario(%)</th>
+          <th scope="col">Monto Imp. Bancario</th>
+          <th scope="col">Retencion</th>
+          <th scope="col">Subtotal</th>
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listado; let i = index">
+        <tr>
+          <td class="text-center" *ngIf="item.canSelect">
+            <input type="checkbox" [(ngModel)]="item.selected">
+          </td>
+          <td class="text-center" *ngIf="!item.canSelect">
+            <input type="checkbox" [checked]="false" disabled>
+          </td>
+          <th scope="row">{{i+1}}</th>
+          <td><a routerLink="/cliente/finanzas/cuentadetalle/editar/{{item.item.id}}"><span
+                class="pointer">Editar</span></a>
+          </td>
+          <td>{{getClienteNombre(item.item.idCliente)}}</td>
+          <td>{{getEstadoNombre(item.item.idEstadoCompra)}}</td>
+          <td>{{item.item.fechaIngresoValor}}</td>
+          <td>{{item.item.fechaEgresoEfectivo}}</td>
+          <td>{{item.item.fechaEmision}}</td>
+          <td>{{item.item.fechaVencimiento}}</td>
+          <td>{{item.item.demoraDeposito}}</td>
+          <td>{{calcularDiasDeposito(item.item)}}</td>
+          <td>{{fixedTasa(item.item)}}</td>
+          <td>{{fixedMontoTasa(item.item)}}</td>
+          <td>{{fixedImpuestoBancario(item.item)}}</td>
+          <td>{{fixedMontoImpuestoBancario(item.item)}}</td>
+          <td>{{fixedRetencion(item.item)}}</td>
+          <td>{{fixedSubtotal(item.item)}}</td>
+          <td><span (click)="delete(item.item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

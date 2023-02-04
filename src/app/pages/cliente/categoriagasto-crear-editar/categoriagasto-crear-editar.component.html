@@ -1,0 +1,30 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="id == 0">Crear</span>
+          <span *ngIf="id != 0">Editar</span>
+          Categoría Gasto
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+          <small *ngIf="post?.Repetido == true" class="form-text text-muted">Nombre de categoría rubro existente</small>
+
+          <div class="form-group">
+            <label>Categoría</label>
+            <input type="text" formControlName="categoria" class="form-control" [(ngModel)]="categoria">
+            <small *ngIf="myForm.get('categoria')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese categoría</small>
+          </div>
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

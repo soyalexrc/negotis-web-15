@@ -1,0 +1,89 @@
+<toolbar-one></toolbar-one>
+<div class="container">
+  <h3 class="title">
+    Panel Cliente
+  </h3>
+  <div class="row">
+    <div class="col-md-11">
+    <div class="col-md-4">
+      <a [routerLink]="['/superadmin/clientenegotis/crear']">
+      <mat-card class="pointer">
+        Agregar cliente
+      </mat-card>
+    </a>
+    </div>
+    <div class="col-md-6">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        Filtro
+      </mat-expansion-panel-header>
+          <div class="form-group">
+           <label>Filtro libre(Nombre Fantasia, Razon Social)</label>
+             <input type="text" [(ngModel)]="filtroDescripcionUsuario" class="form-control">
+          </div>
+          <div class="col-md-6" >
+            <div class="form-group">
+              <label>Filtro Rubro</label>
+               <select type="text" [(ngModel)]="gastronomico" class="form-control">
+                <option [ngValue]="null">Seleccionar</option>
+                <option [ngValue]="true">Socios</option>
+                <option [ngValue]="false">Otros</option>
+              </select>
+            </div>
+          </div>
+
+      <mat-action-row>
+        <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+        <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+    <div class="row">
+      <div class="col-md-4">
+        <mat-card>                             
+              <td>Total Clientes:</td>
+              <td>{{totalClientes}}</td>                     
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Razon Social</th>
+          <th scope="col">Nombre Fantasia</th>
+          <th scope="col">CUIT</th>
+          <th scope="col">User Name</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of cleinteList ; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.RazonSocial}}</td>
+          <td>{{item.NombreFantasia}}</td>
+          <td>{{item.CUIT}}</td>
+          <td>{{item.UserName}}</td>
+          <td><a routerLink="/superadmin/clientenegotis/sucursal/listado/{{item.Id}}"><span class="pointer">Sucursales</span></a></td>
+          <td><a routerLink="/superadmin/clientenegotis/afip/panel/{{item.Id}}"><span class="pointer">Afip</span></a></td>
+          <td><a routerLink="/superadmin/clientenegotis/editar/{{item.Id}}"
+            [queryParams]="{ panelQuery: this.filtroDescripcionUsuario}"><span class="pointer">Editar</span></a></td>
+          <td style="color:blue" class="pointer" (click)="toogleEnable(item)">Habilitar/Deshabilitar</td>
+          <td style="color:blue" class="pointer" (click)="resetPasswordModal(item)">Reset Password</td>
+          <td style="color:red" class="pointer" (click)="Remove(item)">Eliminar</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

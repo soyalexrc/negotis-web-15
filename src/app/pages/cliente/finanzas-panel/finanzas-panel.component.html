@@ -1,0 +1,37 @@
+<toolbar-two></toolbar-two>
+
+<div class="container" *ngIf="roles?.FINANZAS == true || rolClienteNegotis == 'true'">
+    <h3 class="title">
+        Finanzas Panel
+    </h3>
+    <div class="row">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/finanzas/cuentadetalle/panel']">
+                <mat-card class="box pointer">
+                    Cuentas
+                </mat-card>
+            </a>
+        </div>
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/finanzas/valores/panel']">
+                <mat-card class="box pointer">
+                    Valores
+                </mat-card>
+            </a>
+      </div>
+      <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/finanzas/configuracion/panel']">
+                <mat-card class="box pointer">
+                    Configuraciones
+                </mat-card>
+            </a>
+        </div>
+        <div class="col-md-4 col-box" *ngIf="this.rolPrestamos || rolClienteNegotis == 'true'">
+            <a [routerLink]="['/cliente/prestamos/panel']">
+              <mat-card class="box pointer">
+                Préstamos 
+              </mat-card>
+            </a>
+          </div>
+    </div>
+</div>

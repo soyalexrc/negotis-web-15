@@ -1,0 +1,40 @@
+<toolbar-one></toolbar-one>
+
+<div class="container">
+  <h3 class="title">
+    Afip Dashboard
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a routerLink="/superadmin/clientenegotis/afip/crear/{{idUser}}">
+        <mat-card class="pointer">
+          Agregar Afip
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Archivo Pfx</th>
+          <!--<th scope="col">Tipo Coprobante</th>-->
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listAfip; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item?.NombreDocPfx}}</td>
+          <!--<td>{{item?.TipoComprobante}}</td>-->
+          <td><span (click)="delete(item)" style="color:blue;" class="pointer">Eliminar</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

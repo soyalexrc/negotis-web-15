@@ -1,0 +1,10 @@
+.table-totales{
+    height: 510px;
+    margin-top: 10px;
+    /* overflow-y:hidden!important; */
+    height: 90vh;
+}
+
+.restar{
+    color: red;
+}

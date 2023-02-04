@@ -1,0 +1,9 @@
+.ecommerce{
+    transform: scale(2.0);
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.obligatorio{
+    color: rgb(252, 57, 57);
+}

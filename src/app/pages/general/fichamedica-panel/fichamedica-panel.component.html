@@ -1,0 +1,102 @@
+<toolbar-one *ngIf="idUser != null"></toolbar-one>
+<toolbar-two *ngIf="idUser == null"></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Ficha Medica Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a routerLink="/cliente/fichamedica/crear/{{idCliente}}">
+        <mat-card class="pointer">
+          Agregar Ficha Medica
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Color Pelo</th>
+          <th scope="col">Grosor Pelo</th>          
+          <th scope="col">Edad 1° Mens.</th>
+          <th scope="col">Ciclo Mens.</th>
+          <th scope="col">Embarazos</th>
+          <th scope="col">Cantidad Embarazos</th>          
+          <th scope="col">Embarazos Terminados</th>
+          <th scope="col">Acne</th>
+          <th scope="col">Tratamiento Acne</th>
+          <th scope="col">Fecha Fin Acne</th>          
+          <th scope="col">Psoriasis</th>
+          <th scope="col">Cambios Psoriasis</th>
+          <th scope="col">T. Maligno</th>
+          <th scope="col">Tratamiento T. Maligno</th>          
+          <th scope="col">Fecha Fin Tratamiento T.</th>
+          <th scope="col">Hipotiroidismo</th>
+          <th scope="col">O. Poliquistico</th>
+          <th scope="col">Problema H</th>          
+          <th scope="col">Descripcion P.</th>
+          <th scope="col">Alergia</th>
+          <th scope="col">Descripcion A.</th>
+          <th scope="col">Patologia Extra</th>          
+          <th scope="col">Medicacion Habitual</th>       
+          <th scope="col">Observaciones</th>    
+          <th scope="col">Contacto Emergencia</th> 
+          <th scope="col">Relacion</th>    
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listFichaMedica; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item?.colorPelo}}</td>
+          <td>{{item?.grosorPelo}}</td>    
+          <td>{{item?.edadM}}</td>
+          <td>{{item?.cicloM}}</td> 
+          <td *ngIf ="item?.embarazos == true">SI</td>
+          <td *ngIf ="item?.embarazos == false">NO</td>
+          <td>{{item?.cantidadEmbarazos}}</td>  
+          <td>{{item?.embTerminados}}</td>           
+          <td *ngIf ="item?.acne == true">SI</td>
+          <td *ngIf ="item?.acne == false">NO</td>
+          <td *ngIf ="item?.tratamientoAcne == true">SI</td>
+          <td *ngIf ="item?.tratamientoAcne == false">NO</td>
+          <td>{{item?.fechaFinAcne}}</td>  
+          <td *ngIf ="item?.psoriasis == true">SI</td>
+          <td *ngIf ="item?.psoriasis == false">NO</td>
+          <td *ngIf ="item?.cambiosPsoriasis == true">SI</td>
+          <td *ngIf ="item?.cambiosPsoriasis == false">NO</td> 
+          <td *ngIf ="item?.tMaligno == true">SI</td>
+          <td *ngIf ="item?.tMaligno == false">NO</td>   
+          <td *ngIf ="item?.tratamientoT == true">SI</td>
+          <td *ngIf ="item?.tratamientoT == false">NO</td> 
+          <td>{{item?.fechaFinTratamientoT}}</td> 
+          <td *ngIf ="item?.hipotiroidismo == true">SI</td>
+          <td *ngIf ="item?.hipotiroidismo == false">NO</td> 
+          <td *ngIf ="item?.oPoliquistico == true">SI</td>
+          <td *ngIf ="item?.oPoliquistico == false">NO</td>   
+          <td *ngIf ="item?.problemaH == true">SI</td>
+          <td *ngIf ="item?.problemaH == false">NO</td> 
+          <td>{{item?.problemaHDescripcion}}</td>
+          <td *ngIf ="item?.alergia == true">SI</td>
+          <td *ngIf ="item?.alergia == false">NO</td> 
+          <td>{{item?.alergiaDescripcion}}</td>
+          <td>{{item?.patologiaExtra}}</td>  
+          <td>{{item?.medicacionHabitual}}</td>
+          <td>{{item?.observaciones}}</td>     
+          <td>{{item?.nombreApellidoEmergencia}}</td>     
+          <td>{{item?.relacion}}</td>      
+          <td><a routerLink="/cliente/fichamedica/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
+          <td>
+            <span (click)="borrar(item)" class="fas fa-trash-alt pointer"></span>
+          </td>          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>{{titulo}}</h1>
+<div mat-dialog-content>
+  <p>{{mensaje}}</p>
+</div>
+
+<div class="actions" style="text-align: left;"  mat-dialog-actions >
+  <div class="container">
+    <div class="row">
+      <div class=".col-md-4"><span (click)="cancelar()" class="btn btn-danger">Cerrar</span></div>
+      <div class="w-100"></div>    
+      <div class=".col-md-4"><a *ngIf="esAfip == false" (click)="aceptar()" class="btn btn-warning"Aceptar></a></div>
+    <div class="w-100"></div> 
+    
+    <div class=".col-md-6"><a *ngIf="data?.pedidoCerrado == true && tieneRolEsconderFactura == false" target="_blank" href="{{globalServ?.urlApi}}/ApiPedido/Get/Factura?idPedido={{data.idPedido}}&idClienteNegotis={{idClienteNegotis}}&generarFactAfip=true&token={{token}}" (click)="aceptarAfip()" class="btn btn-primary">
+      Factura Afip
+    </a></div>
+    <div class=".col-md-6"><a  *ngIf="data?.pedidoCerrado == true && tieneRolVisualizarImpresionComandera && tieneRolEsconderFacturaComandera == false" target="_blank" 
+      href="{{globalServ?.urlApi}}/ApiPedido/Get/Factura?idPedido={{data.idPedido}}&idClienteNegotis={{idClienteNegotis}}&generarFactAfip=true&is58mmComandera=true&token={{token}}" (click)="aceptarAfip()" class="btn btn-primary">      
+      Factura Afip Comandera
+    </a></div>      
+    <div class=".col-md-6"><a  *ngIf="data?.pedidoCerrado == true && tieneRolVisualizarImpresionComandera80mm && tieneRolEsconderFacturaComandera == false" target="_blank" href="{{globalServ?.urlApi}}/ApiPedido/Get/Factura?idPedido={{data.idPedido}}&idClienteNegotis={{idClienteNegotis}}&generarFactAfip=true&is80mmPrinter=true&token={{token}}" (click)="aceptarAfip()" class="btn btn-primary">
+      Factura Afip Comandera 80mm
+    </a></div>  
+  </div>
+</div>
+
+
+
+</div>
+

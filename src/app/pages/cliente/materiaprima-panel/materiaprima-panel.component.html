@@ -1,0 +1,129 @@
+
+<toolbar-two (GetSucursalEmit)="getMPCantidad($event)"></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Produccion Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a [routerLink]="['/cliente/materiaprima/crear']">
+        <mat-card class="pointer">
+          Agregar Materia Prima
+        </mat-card>
+      </a>
+    </div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <!--filtro-->
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Filtro libre (Nombre, Código, Marca, Rubro, Categoria, Proveedor)</label>
+          <input type="text" [(ngModel)]="filtroDescripcionMP"   class="form-control">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Stock Unidades</label>
+           <select type="text" [(ngModel)]="filtroUnidades" class="form-control">
+            <option [ngValue]="null">Seleccionar</option>
+            <option [ngValue]="-1">Menor a cero</option>
+            <option [ngValue]="1">Mayor a cero</option>
+            <option [ngValue]="0">Igual a cero</option>
+          </select>
+        </div>
+    </div>
+    </div>
+
+    
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>      
+      <button (click)="buscar()"  class="btn btn-warning">Buscar(Enter)</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  
+  <div class="row">
+      <div class="col-md-4 ng-star-inserted">
+        <div class="col-md-12">
+          <mat-card>
+            <div><strong>Capital Existente</strong></div>
+            <div>$ {{totalCapitalExistente | number:'1.1-2'}}</div>
+          </mat-card>
+        </div>
+      </div>     
+  </div>
+  
+
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>         
+          <th scope="col" class="sticky">#</th>
+          <th scope="col" class="sticky">*</th>         
+          <th scope="col" class="sticky">ArtÍculo</th>    
+          <th scope="col" class="sticky">Marca</th>
+          <th scope="col" class="sticky" *ngIf="OcultarPreciosProduccion == false">Precio Costo</th>                           
+          <th scope="col"  class="sticky" >Unidades</th>
+          <th scope="col" class="sticky">Rubro</th>
+          <th scope="col"  class="sticky">Proveedor</th>
+          <th scope="col" class="sticky">Categoría Rubro</th>          
+          <th scope="col"  class="sticky">Estado</th> 
+          <th scope="col" class="sticky">Código</th>         
+        </tr>        
+      </thead>
+      <tbody  *ngFor="let item of listadoMP; let i = index">
+        <tr>         
+          <th scope="row" >{{i+1}}</th>
+          <td><a routerLink="/cliente/materiaprima/editar/{{item.id}}/#"
+            [queryParams]="{ panelQuery: this.filtroDescripcionMP, pageQuery: this.page}"><span class="pointer">Editar</span></a>
+          </td>
+          <td>{{item.nombre}}</td>          
+          <td>{{item.nombreMarca}}</td>
+          
+
+          <td (click)="openPrecioCostoModal(item,i)" *ngIf="OcultarPreciosProduccion == false">
+            {{item.precioCosto}}
+          </td>          
+ 
+          <td (click)="openCantidadModal(item,i)" class="cant-art">
+            {{item.cantidad}}
+            <span *ngIf="item.kilogramo == true">Kilogramo</span>
+            <span *ngIf="item.unidad == true">Unidad</span>
+            <span *ngIf="item.gramo == true">Gramos</span>
+            <span *ngIf="item.metro == true">Metros</span>
+          </td>
+
+         <!-- <td (click)="openCantidadModal(item,i)" class="cant-art"
+            *ngIf="item.cantidad != null">
+            {{item.cantidad }}
+            <span *ngIf="item.kilogramo == true">Kilogramo</span>
+            <span *ngIf="item.unidad == true">Unidad</span>
+          </td>-->
+         
+          <td>{{item.nombreRubro}}</td>
+          <td >{{item.nombreProveedor}}</td>
+          <td>{{item.nombreCategoriaRubro}}</td>
+          <td >
+            <span *ngIf="item.activo == true">Activo</span>
+            <span *ngIf="item.activo != true">Inactivo</span>
+          </td>
+
+          <td >
+            {{item.codigoDeBarras}}
+          </td>
+
+          <td><span (click)="delete(item.Id)"
+              class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination class="mb-3" (goPage)="goToPage($event)" (goNext)="onNext()" (goPrev)="onPrev()" [pagesToShow]="20"
+      [page]="page" [perPage]="limit" [count]="total">
+    </app-pagination>
+</div>

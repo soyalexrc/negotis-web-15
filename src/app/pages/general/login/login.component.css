@@ -1,0 +1,28 @@
+.titulo{
+    text-align: center;
+    padding-top:  5px;
+    padding-bottom: 20px;
+}
+
+.caja{
+    margin-top:  80px;
+}
+
+.whatsapp {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 40px;
+    text-align: center;
+    font-size: 25px;
+    z-index: 100;
+  }
+  
+  .whatsapp-icon {
+    margin-top: 13px;
+  }
+  

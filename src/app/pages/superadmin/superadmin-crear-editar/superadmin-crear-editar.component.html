@@ -1,0 +1,55 @@
+<toolbar-one></toolbar-one>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idUser == null">Registrar</span>
+          <span *ngIf="idUser != null">Editar</span>
+          Super Admin
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+          <small *ngIf="post?.Resultado == false" class="form-text text-muted">Nombre de usuario existente en el sistema, intente con otro.</small>
+          <div class="form-group">
+            <label>Nombre de usuario</label>
+            <input type="email" formControlName="userName" class="form-control" placeholder="Email"
+              [(ngModel)]="userName">
+            <small *ngIf="(myForm.get('userName')?.hasError('required') || myForm.get('userName')?.hasError('email')) && submitted==true"
+              class="form-text text-muted">Ingrese email</small>
+          </div>
+          <div class="form-group">
+            <label>Nombres</label>
+            <input type="text" formControlName="nombres" class="form-control" [(ngModel)]="nombres">
+            <small *ngIf="myForm.get('nombres')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese nombres</small>
+          </div>
+          <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" formControlName="apellidos" class="form-control" [(ngModel)]="apellidos">
+            <small *ngIf="myForm.get('apellidos')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese apellidos</small>
+          </div>
+
+          <div class="form-group" *ngIf="puedeModificarSocios != true">
+            <label>Ver Solo Socios</label>
+            <div >
+              <input type="checkbox" class="testingUser" formControlName="verSocios" [checked]="verSocios">
+            </div>
+          </div>
+
+
+          <button type="submit" class="btn btn-dark">Guardar</button>
+          <small *ngIf="idUser == null" class="form-text text-muted">Contraseña por default: Aa123789</small>
+
+
+
+
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+.table-totales{
+    height: auto;
+    margin-top: 10px;
+    overflow-y:hidden!important;
+}
+
+.table-total{
+    height: 40px;
+    margin-top: 10px;
+    overflow-y:hidden!important;
+}
+
+.pagar-pendientes-habilitado {
+  margin-top: 0;
+}

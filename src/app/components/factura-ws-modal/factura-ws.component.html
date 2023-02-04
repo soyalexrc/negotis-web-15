@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>
+    Enviar Factura Por WhatsApp
+  </h1>
+  <div class=".col-md-3">
+    <label>Teléfono (Código de Área necesario "351")</label>
+    <input type="number"  class="form-control"
+      [(ngModel)]="phone">
+  </div>
+  <div class="actions" style="text-align: left;"  mat-dialog-actions >
+    <div class="container">
+      <div class="row">
+        <div class=".col-md-4"><span (click)="cerrar()" class="btn btn-danger">Volver (Esc)</span></div>
+        <div class="w-100"></div>      
+               <!--  "{{url}}"-{{idPedido}}-{{idClienteNegotis}} -->
+               <div class=".col-md-6" >
+                <a href="https://wa.me/send?phone={{phone}}&text={{globalServ?.urlApi}}/ApiPedido/Get/Factura/WhatsApp?token={{token}}/{{idPedido}}/{{idClienteNegotis}}" class="btn btn-primary" target="_blank">Confirmar</a>
+              </div>
+              <div class=".col-md-6"><a  *ngIf="data?.pedidoCerrado == true && tieneRolVisualizarImpresion80mm && tieneRolEsconderFacturaComandera == false" target="_blank" href="https://wa.me/send?phone={{phone}}&text={{globalServ?.urlApi}}/ApiPedido/Get/Factura/WhatsApp?token={{token}}/{{idPedido}}/{{idClienteNegotis}}/true/80mm"  (click)="aceptarAfip()" class="btn btn-primary">
+               Envio Factura Afip Comandera 80mm
+              </a></div>  
+              <div  *ngIf="tieneRolVisualizarImpresionComandera" class=".col-md-3"><a target="_blank" href="https://wa.me/send?phone={{phone}}&text={{globalServ?.urlApi}}/ApiPedido/Get/Factura/WhatsApp?token={{token}}/{{idPedido}}/{{idClienteNegotis}}/true/58mm" (click)="generar()" class="btn btn-warning">Comprobante 58mm Comandera</a></div>
+              <div class=".col-md-6"><a *ngIf="data?.pedidoCerrado == true && tieneRolEsconderFactura == false" target="_blank" href="https://wa.me/send?phone={{phone}}&text={{globalServ?.urlApi}}/ApiPedido/Get/Factura/WhatsApp?token={{token}}/{{idPedido}}/{{idClienteNegotis}}/true" (click)="aceptarAfip()" class="btn btn-primary">
+                Envio Factura Afip
+              </a></div>
+
+
+    </div>
+  </div>
+  
+  </div>
+  
+  

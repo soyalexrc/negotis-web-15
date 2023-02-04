@@ -1,0 +1,33 @@
+export class FichaMedicaCrearEditarModel {
+    Id!: any;
+    grosorPelo!: string;
+    idUser!: string;
+    idCliente!: number;
+    idClienteNegotis!: string;
+    colorPelo!: string;
+    edadM!: string;
+    cicloM!: string;
+    embarazos!: string;
+    cantidadEmbarazos!: string;
+    embTerminados!: string;
+    acne!: string;
+    tratamientoAcne!:string;
+    fechaFinAcne!: string;
+    psoriasis!: string;
+    cambiosPsoriasis!: string;
+    tMaligno!: string;
+    tratamientoT!: string;
+    fechaFinTratamientoT!: string;
+    hipotiroidismo!: string;
+    oPoliquistico!: number;
+    problemaH!: string;
+    problemaHDescripcion!: string;
+    alergia!: string;
+    alergiaDescripcion!: string;
+    epilepsia!: string;
+    patologiaExtra!: string;
+    medicacionHabitual!: string;
+    observaciones!: string;
+    nombreApellidoEmergencia!: string;
+    relacion!: string;
+}

@@ -1,0 +1,21 @@
+<form [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+  <h1 mat-dialog-title>Ingresar Cantidad</h1>
+  <div mat-dialog-content>
+    <mat-form-field>
+      <form [formGroup]="myForm">
+        <div class="form-group">
+          <label>Cantidad</label>
+          <input type="number" formControlName="cantidad" #myInput (focus)="$event.target" class="form-control" [(ngModel)]="cantidad">
+          <small *ngIf="myForm.get('cantidad')?.hasError('required') || errorEntero == true" class="form-text text-muted">
+            Ingrese cantidad <span *ngIf="errorEntero == true"> (Entero)</span></small>
+          <small *ngIf="myForm.get('cantidad')?.hasError('pattern')" class="form-text text-muted">
+            Ingrese número positivo</small>
+        </div>
+      </form>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <div (click)="cancel()" class="btn btn-danger" style="margin-right:5px">Cancelar</div>
+    <button class="btn btn-warning">Guardar</button>
+  </div>
+</form>

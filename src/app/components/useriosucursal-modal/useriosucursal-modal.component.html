@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Información</h1>
+<div mat-dialog-content>
+  <p>Nombre de usuario: {{userName}}</p>
+  <p>
+    Sucursal: {{sucursal.Sucursal?.Calle}} {{sucursal.Sucursal?.Numero}}
+    {{sucursal.Sucursal?.Barrio}} {{sucursal.Sucursal?.Ciudad}}
+  </p>
+
+</div>
+<div mat-dialog-actions>
+  <button (click)="cerrar()" style="margin-right:10px;" class="btn btn-danger">Cerrar</button>
+</div>

@@ -1,0 +1,55 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idCategoriaCliente == 0">Crear</span>
+          <span *ngIf="idCategoriaCliente != 0">Editar</span>
+          Categoría Cliente
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+          <small *ngIf="post?.Repetido == true" class="form-text text-muted">Nombre de categoría cliente existente</small>
+
+          <div class="form-group">
+            <label>Categoría Cliente</label>
+            <input type="text" formControlName="categoriaCliente" class="form-control" [(ngModel)]="categoriaCliente">
+            <small *ngIf="myForm.get('categoriaCliente')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese categoría cliente</small>
+          </div>
+
+
+
+          <div class="form-group">
+            <label>Estado</label>
+
+            <select formControlName="activo" class="form-control" [(ngModel)]="activo">
+              <option value="">Seleccionar</option>
+              <option value="true">Activo</option>
+              <option value="false">Inactivo</option>
+            </select>
+            <small *ngIf="myForm.get('activo')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese estado</small>
+          </div>
+
+          <div class="form-group">
+            <label>Eliminar</label>
+            <select formControlName="eliminar" class="form-control" [(ngModel)]="eliminar">
+              <option value="false">No</option>
+              <option value="true">Si</option>
+            </select>
+            <small *ngIf="myForm.get('eliminar')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Complete este campo
+            </small>
+          </div>
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

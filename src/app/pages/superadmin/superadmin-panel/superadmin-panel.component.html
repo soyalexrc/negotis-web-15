@@ -1,0 +1,44 @@
+<toolbar-one></toolbar-one>
+
+<div class="container">
+  <h3 class="title">
+    Super Admin Dashboard
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a [routerLink]="['/superadmin/crear']">
+        <mat-card class="pointer">
+          Agregar Super Admin
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Apellidos</th>
+          <th scope="col">Nombres</th>
+          <th scope="col">User Name</th>
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of superAdminList; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.Apellidos}}</td>
+          <td>{{item.Nombres}}</td>
+          <td>{{item.UserName}}</td>
+          <td><a routerLink="/superadmin/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
+          <td style="color:blue" class="pointer" (click)="resetPasswordModal(item)">Reset Password</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

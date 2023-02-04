@@ -1,0 +1,44 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="Zona.post?.Resultado != true">
+          <span *ngIf="idZona == 0">Crear</span>
+          <span *ngIf="idZona != 0">Editar</span>
+          Zona
+        </h3>
+        <form *ngIf="Zona.post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+          <small *ngIf="Zona.post?.Repetido == true" class="form-text text-muted">Nombre de zona existente</small>
+
+          <div class="form-group">
+            <label>Zona</label>
+            <input type="text" formControlName="zona" class="form-control" [(ngModel)]="Zona.zona">
+            <small *ngIf="myForm.get('zona')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese zona</small>
+          </div>
+
+          <div class="form-group">
+            <label>Detalle</label>
+            <textarea rows="5"  formControlName="detalle" class="form-control" [(ngModel)]="Zona.detalle"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Region</label>
+            <select formControlName="idRegion" class="form-control" [(ngModel)]="Zona.idRegion">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of Zona.listadoRegion" value="{{item?.Id}}">{{item?.Nombre}}</option>
+            </select>
+            <small *ngIf="myForm.get('idRegion')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese ciudad/provincia</small>
+          </div>
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

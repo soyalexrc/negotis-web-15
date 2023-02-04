@@ -1,0 +1,101 @@
+<toolbar-two></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Ranking Clientes
+  </h3>
+  <div class="margin-filtro">
+    <!--Fecha Desde-->
+                  
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Fecha Desde</label>
+        <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+      </div>
+    </div>
+
+    <!--Fecha Hasta-->
+    
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Fecha Hasta</label>
+        <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+      </div>
+    </div>
+    
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Vendedor</label>
+        <input type="text"  class="form-control" [(ngModel)]="vendedorNombres" [matAutocomplete]="autoVendedor"
+        [formControl]="vendedorCtrl" (ngModelChange)="filtrarVendedor()">
+        <mat-autocomplete #autoVendedor="matAutocomplete">
+          <mat-option (click)="getVendedor(item)" *ngFor="let item of filteredVendedor | async" [value]="item.Apellidos || item.RazonSocial">
+            <span>{{item.RazonSocial}} </span><span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span><span>
+              ({{item.UserName}})</span>
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Zona</label>
+        <input type="text" [(ngModel)]="FiltroZona" [matAutocomplete]="autoZona" class="form-control"
+        [formControl]="zonaCtrl" >
+        <mat-autocomplete #autoZona="matAutocomplete">
+          <mat-option (click)="getZona(item)" *ngFor="let item of filteredZona | async" [value]="item.Nombre">
+            <span>{{item.Nombre}}</span>
+          </mat-option>
+        </mat-autocomplete>
+
+      </div>
+    </div>
+
+
+
+    <mat-action-row>
+        <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+        <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+      </mat-action-row>
+  </div>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>   
+          <th scope="col">Razon Social</th>
+          <th scope="col">Nombre Fantasia</th>
+          <th scope="col" >Cantidad de Ventas</th>
+          <th scope="col">Cantidad De Unidades</th>
+          <th scope="col" >Total Vendido</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of ClientesLista; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.RazonSocial}}</td>
+          <td>{{item.NombreFantasia}}</td>
+
+          <td  class="cant-art">
+            {{item.cantidad_pedidos}}            
+          </td>
+
+          <td class="cant-art">
+            {{item.cantidad_vendida}}
+          </td>          
+          <td class="cant-art">
+            {{item.total_vendido}}
+          </td>         
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination class="mb-3"
+    (goPage)="goToPage($event)"
+    (goNext)="onNext()"
+    (goPrev)="onPrev()"
+    [pagesToShow]="20"
+    [page]="page"
+    [perPage]="limit"
+    [count]="total">
+    </app-pagination>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<mat-toolbar class="toolbar-content">
+  <mat-toolbar-row>
+    <span class="pointer" routerLink="/superadmin/inicio">
+      <img class="logo" width="30" height="30" src="assets/icono-negotis.jpg">
+      <span>Negotis</span>
+    </span>
+    <span class="toolbar-spacer"></span>
+    <mat-icon class="toolbar-icon pointer" (click)="openNav()">menu</mat-icon>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+  <a routerLink="/superadmin/inicio">Home</a>
+  <a routerLink="/superadmin/panel">Super Admin</a>
+  <a routerLink="/superadmin/clientenegotis/panel">Cliente</a>
+  <a routerLink="/superadmin/usuario/password/editar">Contraseña</a>
+  <a style="color:rgb(245, 60, 60);cursor: pointer;" (click)="cerrarSesion()">Cerra Sesión</a>
+</div>

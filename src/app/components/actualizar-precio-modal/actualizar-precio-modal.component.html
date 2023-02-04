@@ -1,0 +1,189 @@
+<div>
+    <h1 >
+      Actualizar Precio
+    </h1>
+
+    <form  [formGroup]="myForm"  (ngSubmit)="onSubmit(myForm.value)">
+        <div class="row" class="col-md-6">
+
+          <!--
+            <label><strong><h5> Precio Base </h5></strong></label>
+
+            <div class="form-group">
+                <label>Porcentaje</label>
+                <input (change)="porcentajeGClick()" type="checkbox" [checked]="porcentajeG">
+            </div>
+            <div class="form-group">
+                <input type="number"  formControlName="mmontoPorcentajeG" [(ngModel)]="montoPorcentajeG" *ngIf="porcentajeG; else elseBlock">
+                <ng-template #elseBlock>
+                      <input  type="number"
+                      class="form-control" disabled>
+
+                  </ng-template>
+            </div>
+
+        <div>
+
+        <div class="form-group">
+            <label>Monto Fijo</label>
+            <input (change)="montoFijoGClick()" type="checkbox" [checked]="montoG">
+        </div>
+        <div>
+            <input type="number" formControlName="mmontoFijoG" [(ngModel)]="montoFijoG"  *ngIf="montoG; else elseBlock">
+            <ng-template #elseBlock>
+                  <input  type="number"
+                  class="form-control" disabled>
+
+              </ng-template>
+        </div>
+        </div>
+        -->
+        <div class="form-group">
+            <label><strong> <h5>Precio Costo </h5></strong></label>
+
+            <div>
+                <label>Porcentaje</label>
+                <input (change)="porcentajeGClick()" type="checkbox" [checked]="porcentajeG">
+            </div>
+            <div>
+                <input type="number"  formControlName="porcentajeCostoG" [(ngModel)]="porcentajeCostoG" *ngIf="porcentajeG; else elseBlock">
+                <ng-template #elseBlock>
+                      <input  type="number"
+                      class="form-control" disabled>
+
+                  </ng-template>
+            </div>
+
+        <div>
+
+        <div>
+            <label>Monto Fijo</label>
+            <input (change)="montoFijoGClick()" type="checkbox"  [checked]="montoG">
+        </div>
+        <div>
+            <input type="number" formControlName="montoFijoCostoG" [(ngModel)]="montoFijoCostoG" *ngIf="montoG; else elseBlock">
+            <ng-template #elseBlock>
+                  <input  type="number"
+                  class="form-control" disabled>
+
+              </ng-template>
+        </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label><strong> <h5>Porcentaje utilidad </h5></strong></label>
+        <div class="form-group">
+            <label>Porcentaje</label>
+            <input (change)="porcentajeUClick()" type="checkbox" [checked]="porcentajeU">
+        </div>
+        <div class="form-group">
+            <input type="number"  formControlName="montoPorcentajeU" [(ngModel)]="montoPorcentajeU" *ngIf="porcentajeU; else elseBlock">
+            <ng-template #elseBlock>
+                  <input  type="number"
+                  class="form-control" disabled>
+
+              </ng-template>
+        </div>
+    </div>
+    <div class="form-group">
+        <label><strong> <h5>Porcentaje utilidad Precio Oferta </h5></strong></label>
+
+        <div>
+            <label>Porcentaje Oferta</label>
+            <input (change)="porcentajePOlick()" type="checkbox" [checked]="porcentajeO">
+        </div>
+        <div>
+            <input type="number"  formControlName="porcentajePrecioO" [(ngModel)]="porcentajePrecioO" *ngIf="porcentajeO; else elseBlock">
+            <ng-template #elseBlock>
+                  <input  type="number"
+                  class="form-control" disabled>
+
+              </ng-template>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label><strong> <h5>Porcentaje utilidad Lista</h5></strong></label>
+
+        <div>
+            <mat-card>
+              <span class="form-group">
+                <label>Lista de Precios (Activas)</label>
+                <select size="3" class="form-control" [(ngModel)]="idLista">
+                  <!-- <option (click)="sinAumneto();" value="0">Sin aumento</option> -->
+                  <option (click)="getLista(item);" *ngFor="let item of listadoPrecios" value="{{item?.Id}}">{{item?.Nombre}}
+                  </option>
+                </select>
+              </span>
+            </mat-card>
+
+
+          </div>
+
+        <div>
+            <label>Porcentaje </label>
+            <input (change)="porcentajeListalick()" type="checkbox" [checked]="porcentajeLista">
+        </div>
+        <div>
+            <input type="number"  formControlName="porcentajePrecioLista" [(ngModel)]="porcentajePrecioLista" *ngIf="porcentajeLista; else elseBlock">
+            <ng-template #elseBlock>
+                  <input  type="number"
+                  class="form-control" disabled>
+
+              </ng-template>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label><strong> <h5>Cotizacion Dolar </h5></strong></label>
+        <div class="form-group">
+            <label>Monto</label>
+            <input (change)="precioDClick()" type="checkbox" [checked]="precioD">
+        </div>
+        <div class="form-group">
+            <input type="number"  formControlName="montoPrecioDolar" [(ngModel)]="montoPrecioDolar" *ngIf="precioD; else elseBlock">
+            <ng-template #elseBlock>
+                  <input  type="number"
+                  class="form-control" disabled>
+
+              </ng-template>
+        </div>
+    </div>
+</div>
+        <label>Proveedor</label>
+
+        <select size="3" class="form-control" formControlName="idProveedor" [(ngModel)]="idProveedor" >
+        <option  *ngFor="let item of listadoProveedores" value="{{item?.id}}">{{item?.nombre}}
+    </option>
+    </select>
+    <label>Categoria</label>
+
+    <select size="3" class="form-control"  formControlName="idCategoria" [(ngModel)]="idCategoria" >
+     <option  *ngFor="let item of listadoCategoria" value="{{item?.Id}}">{{item?.Nombre}}
+    </option>
+</select>
+
+<label>Rubro</label>
+
+<select size="3" class="form-control" formControlName="idRubro" [(ngModel)]="idRubro" >
+ <option *ngFor="let item of listadoRubro" value="{{item?.Id}}">{{item?.Nombre}}
+</option>
+</select>
+
+<label>Marca</label>
+
+<select size="3" class="form-control" formControlName="idMarca" [(ngModel)]="idMarca" >
+ <option  *ngFor="let item of listadoMarcas" value="{{item?.Id}}">{{item?.Nombre}}
+
+</option>
+</select>
+
+<button (click)="cerrar()" class="btn btn-danger">Volver</button>
+    <div mat-dialog-actions>
+
+      <button type="submit" class="btn btn-warning">Guardar</button>
+    </div>
+</form>
+</div>
+
+

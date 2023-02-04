@@ -1,0 +1,16 @@
+<toolbar-two></toolbar-two>
+
+<div class="container" *ngIf="roles?.FINANZAS == true || rolClienteNegotis == 'true'">
+  <h3 class="title">
+    Configuraciones
+  </h3>
+  <div class="row">
+    <div class="col-md-4 col-box">
+      <a [routerLink]="['/cliente/finanzas/estadocheque/panel']">
+        <mat-card class="box pointer">
+          Estados de Cheques
+        </mat-card>
+      </a>
+    </div>
+  </div>
+</div>

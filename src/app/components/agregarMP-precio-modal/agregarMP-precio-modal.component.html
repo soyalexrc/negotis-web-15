@@ -1,0 +1,88 @@
+<form >
+    <div mat-dialog-content>
+  
+        <div class="row">
+          <div >
+            <div class="form-group">
+              <label>Filtro (nombre, código, marca, rubro)</label>
+              <input type="text"  class="form-control"   [(ngModel)]="filtroDescripcionMP"  >
+            </div>
+          </div>
+        </div>
+        <div>
+        <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+        <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+
+
+
+        <table class="table">
+          <thead>
+            <tr>         
+              <th scope="col" class="sticky">#</th>      
+              <th scope="col" class="sticky">ArtÍculo</th>    
+              <th scope="col" class="sticky">Marca</th>
+              <th scope="col" class="sticky">Precio Costo</th>                           
+              <th scope="col"  class="sticky" >Unidades</th>
+              <th scope="col" class="sticky">Rubro</th>
+              <th scope="col"  class="sticky">Proveedor</th>
+              <th scope="col" class="sticky">Categoría Rubro</th>          
+              <th scope="col"  class="sticky">Estado</th> 
+              <th scope="col" class="sticky">Código</th>         
+            </tr>        
+          </thead>
+          <tbody  *ngFor="let item of listadoMP; let i = index">
+            <tr>         
+              <th scope="row" >{{i+1}}</th>
+              <td (click)="seleccionar(item)">{{item.nombre}}</td>          
+              <td (click)="seleccionar(item)">{{item.nombreMarca}}</td>
+              
+    
+              <td (click)="seleccionar(item)">
+                {{item.precioCosto}}
+              </td>          
+     
+              <td  (click)="seleccionar(item)" class="cant-art">
+                {{item.cantidad}}
+                <span *ngIf="item.kilogramo == true">Kilogramo</span>
+                <span *ngIf="item.unidad == true">Unidad</span>
+                <span *ngIf="item.gramo == true">Gramos</span>
+                <span *ngIf="item.metro == true">Metros</span>
+              </td>             
+              <td (click)="seleccionar(item)">{{item.nombreRubro}}</td>
+              <td (click)="seleccionar(item)">{{item.nombreProveedor}}</td>
+              <td (click)="seleccionar(item)">{{item.nombreCategoriaRubro}}</td>
+              <td (click)="seleccionar(item)">
+                <span *ngIf="item.activo == true">Activo</span>
+                <span *ngIf="item.activo != true">Inactivo</span>
+              </td>
+    
+              <td (click)="seleccionar(item)">
+                {{item.codigoDeBarras}}
+              </td>
+  
+            </tr>
+          </tbody>
+        </table>
+        <app-pagination class="mb-3" (goPage)="goToPage($event)" (goNext)="onNext()" (goPrev)="onPrev()" [pagesToShow]="20"
+          [page]="page" [perPage]="limit" [count]="total">
+        </app-pagination>
+      </div>
+
+<!-- 
+          <div class="form-group">
+            <label>Materia Prima</label>
+            <select [formControl]="myForm.get('idMateriaPrima')" (change)="onChange(idMateriaPrima)" class="form-control" [(ngModel)]="idMateriaPrima">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listadoMP; let i = index" value="{{item.Id}}">{{item.Nombre}}</option>
+            </select>
+            <small *ngIf="myForm.get('idMateriaPrima').hasError('required')" class="form-text text-muted">
+              Seleccione Materia Prima
+            </small>
+          </div> -->
+
+     
+    </div>
+    <div mat-dialog-actions>
+      <button (click)="cerrar()" class="btn btn-danger">Volver</button>
+    </div>
+  </form>

@@ -1,0 +1,27 @@
+.btn-warning{
+    margin: 10px;
+}
+
+.btn-primary{
+    margin: 10px;
+}
+
+.btn-danger{
+margin: 10px;
+}
+
+table {
+    margin-top: unset;
+    white-space: unset;
+    display: contents;
+    overflow-x: auto;
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.actions{
+    overflow: auto;
+    white-space: nowrap;
+    display: inline-block;
+    margin-right: 5px;
+}

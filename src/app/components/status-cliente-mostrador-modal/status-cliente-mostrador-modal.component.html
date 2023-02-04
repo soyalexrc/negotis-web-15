@@ -1,0 +1,21 @@
+<div mat-dialog-content>
+  <div>
+    Cliente Mostrador Status
+  </div>
+  <div style="margin-top:25px;margin-bottom:25px;">
+    <label *ngIf="post != true">
+      <input type="checkbox" [checked]="getStatus" [(ngModel)]="getStatus"> Cliente Mostrador por Default
+    </label>
+<!--     <label *ngIf="post != true">
+      <input type="checkbox" [checked]="getStatus2" [(ngModel)]="getStatus2"> Cliente Mostrador 2 por Default
+    </label> -->
+    <label *ngIf="post == true">
+      Status Guardado Exitosamente
+    </label>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button *ngIf="post != true" (click)="cancelar()" style="margin-right:10px;" class="btn btn-danger">Cancelar</button>
+  <button *ngIf="post != true" (click)="guardar()" class="btn btn-warning">Guardar</button>
+  <button *ngIf="post == true" (click)="cancelar()" class="btn btn-success">Aceptar</button>
+</div>

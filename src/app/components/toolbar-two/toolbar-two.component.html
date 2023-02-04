@@ -1,0 +1,75 @@
+<mat-toolbar class="toolbar-content" style="background-color: white;">
+  <mat-toolbar-row>
+    <span class="pointer" routerLink="/inicio">
+      <img class="logo" width="45" height="45" src="assets/icono-negotis.jpg">
+      <span style="color: black;font-size: 25px;">Negotis</span>
+    </span>
+    <span class="toolbar-spacer"></span>
+    <span class="user-icon pointer" (click)="showUserSucursal()">
+      <span class="fas fa-user"></span>
+    </span>
+    <span class="direccion-usuario">
+      <span routerLink="/cliente/usuario/panel" class="box-data-sidenav pointer" style="color: black;">
+        {{userName}} -
+      </span>
+      <span class="box-data-sidenav">
+        <span *ngIf="sucSelecPost != null && selecInput == null"
+          style="font-size: 15px;margin-top: 40px;cursor: pointer; color: black;"
+          routerLink="/cliente/sucursal/seleccionar">{{sucSelecPost.Sucursal?.Calle}} {{sucSelecPost.Sucursal?.Numero}}
+          {{sucSelecPost.Sucursal?.Barrio}} {{sucSelecPost.Sucursal?.Ciudad}} 
+                    </span>
+        <span *ngIf="selecInput != null" style="font-size: 15px;margin-top: 40px;cursor: pointer; color: black;"
+          routerLink="/cliente/sucursal/seleccionar">{{selecInput.Sucursal?.Calle}}
+          {{selecInput.Sucursal?.Numero}} {{selecInput.Sucursal?.Barrio}} {{selecInput.Sucursal?.Ciudad}}
+        </span>
+      </span>
+    </span>
+    <mat-icon class="pointer" style="color: black;" (click)="openNav()">menu</mat-icon>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div style="margin-bottom: 100px;"></div>
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+  <a *ngIf="roles?.HabilitarHome == true" routerLink="/">Home</a>
+  <span *ngIf="sucSelecPost != null || selecInput != null" class="toolbar-icon pointer">
+
+    <a *ngIf="rolProduccion == true || rolClienteNegotis == 'true' || roles?.Name == 'Operario'" routerLink="/cliente/materiaprima/panel">Produccion</a>
+    <a *ngIf="roles?.PRODUCTOS == true || rolClienteNegotis == 'true'" routerLink="/cliente/producto/panel">
+      Stock</a>
+    <a *ngIf="roles?.VisualizarListaArticulos == true || rolClienteNegotis == 'true'" routerLink="/cliente/articulo/panel">
+        Lista de Articulos</a>   
+
+    <a *ngIf="roles?.PEDIDOS == true || rolClienteNegotis == 'true'" routerLink="/cliente/pedido/panel">Ventas</a>
+    <a *ngIf="roles?.CrearPedidoDirecto"  routerLink="/cliente/pedido/crear">Crear Venta</a>  
+    <a *ngIf="roles?.ComprasProveedor == true || rolClienteNegotis == 'true'" routerLink="/cliente/compras/panel">Compras</a>
+    <a *ngIf="roles?.CLIENTES == true || rolClienteNegotis == 'true'" routerLink="/cliente/panel">Clientes</a>
+    <a *ngIf="roles?.DESPACHO == true || rolClienteNegotis == 'true'" routerLink="/cliente/despacho/pedido/panel">Despachos</a>
+    <a *ngIf="roles?.VisualizarReportes == true || rolClienteNegotis == 'true'" routerLink="/cliente/reportes/panel">Reportes</a>
+    <a *ngIf="roles?.FINANZAS == true || rolClienteNegotis == 'true'" routerLink="/cliente/finanzas/panel">Finanzas</a>
+    <a *ngIf="roles?.TOTALES == true || roles?.GASTOS == true || rolClienteNegotis == 'true'" routerLink="/cliente/caja/panel">Caja</a>
+    
+
+    <a *ngIf="roles?.ZONAS == true || rolClienteNegotis == 'true'" routerLink="/cliente/zona/region/panel">Zonas</a>
+    <a *ngIf="roles?.ROLES == true || rolClienteNegotis == 'true'" routerLink="/cliente/rol/panel">Roles</a>    
+    <a *ngIf="roles?.EMPLEADOS == true || rolClienteNegotis == 'true'"
+      routerLink="/cliente/empleado/panel">Usuarios</a>
+
+    <a *ngIf="roles?.VisualizarConfiguraciones == true || rolClienteNegotis == 'true'" routerLink="/cliente/usuario/panel">Configuraciones</a>
+    
+  </span>
+  <a style="color:rgb(245, 60, 60);cursor: pointer;" (click)="cerrarSesion()">Cerra Sesión</a>
+  <a *ngIf="sucSelecPost == null && selecInput == null"
+    style="font-size: 15px;color: #dbbb2c;margin-top: 30px;cursor: pointer;"
+    routerLink="/cliente/sucursal/seleccionar">Seleccionar Sucursal</a>
+  <a *ngIf="sucSelecPost != null && selecInput == null"
+    style="font-size: 15px;color: #dbbb2c;margin-top: 30px;cursor: pointer;"
+    routerLink="/cliente/sucursal/seleccionar">{{sucSelecPost.Sucursal?.Calle}} {{sucSelecPost.Sucursal?.Numero}}
+    {{sucSelecPost.Sucursal?.Barrio}} {{sucSelecPost.Sucursal?.Ciudad}}
+  </a>
+  <a *ngIf="selecInput != null" style="font-size: 15px;color: #dbbb2c;margin-top: 30px;cursor: pointer;"
+    routerLink="/cliente/sucursal/seleccionar">{{selecInput.Sucursal?.Calle}}
+    {{selecInput.Sucursal?.Numero}} {{selecInput.Sucursal?.Barrio}} {{selecInput.Sucursal?.Ciudad}}
+  </a>
+</div>

@@ -1,0 +1,42 @@
+<toolbar-two [selecInput]="post"></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Seleccionar Sucursal
+  </h3>
+  <div class="row">
+    <div class="col-md-6">
+      <mat-card>
+        <span style="font-weight:800">Sucursal Seleccionada:</span>
+        <span *ngIf="post == null">
+          <span *ngFor="let item of SucSeleccionada"> {{item.Sucursal.Calle}} {{item.Sucursal.Numero}} {{item.Sucursal.Barrio}} {{item.Sucursal.Ciudad}}</span>
+        </span>
+        <span *ngIf="post != null">
+          <span> {{post.Sucursal?.Calle}} {{post.Sucursal?.Numero}} {{post.Sucursal?.Barrio}} {{post.Sucursal?.Ciudad}}</span>
+        </span>
+      </mat-card>
+    </div>
+    <div class="col-md-3"></div>
+    <div class="col-md-3"></div>
+  </div>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Sucursal</th>
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listSucUsu; let i = index">
+      <tr *ngIf="item?.Sucursal?.Deshabilitar == null">
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.Sucursal.Calle}} {{item.Sucursal.Numero}} {{item.Sucursal.Barrio}}</td>
+          <td><button (click)="seleccionar(item)" class="btn btn">Seleccionar</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

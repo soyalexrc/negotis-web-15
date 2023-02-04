@@ -1,0 +1,55 @@
+:host {
+	flex: 0 0 30px;
+	display: flex;
+	.pagination {
+		width: 100%;
+		position: relative;
+		flex: 1;
+		// background: grey;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		height: 125px;
+
+		.description {
+			position: absolute;
+			top: 10%;
+			transform: translate(0, -50%);
+			left: 2;
+			width: 100%;
+			text-align: center;
+
+			.page-counts {
+				margin-right: 10px * 2;
+			}
+		}
+
+		.numbers {
+			display: block;
+			text-align: center;
+			flex: 1;
+			position: absolute;
+			top: 25%;
+			width: 100%;
+
+			button {
+				flex: 0 0 auto;
+				outline: none;
+				border: 0;
+				padding: 0 (10px / 2);
+				background: transparent;
+				cursor: pointer;
+
+				&.active {
+					// @extend .h6;
+					font-weight: bold;
+				}
+
+				&.disabled {
+					// @extend .link-disabled;
+					color: grey;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>
+  <span *ngIf="data?.accion == 'Deshabilitar'">Deshabilitar</span><span *ngIf="data?.accion == 'Habilitar'">Habilitar</span>
+</h1>
+<div mat-dialog-content>
+  <p>¿Esta seguro de <span *ngIf="data?.accion == 'Deshabilitar'">deshabilitar</span><span *ngIf="data?.accion == 'Habilitar'">habilitar</span>  sucursal?</p>
+</div>
+<div mat-dialog-actions>
+  <button (click)="cancelar()" style="margin-right:10px;" class="btn btn-danger">Cancelar</button>
+  <button (click)="aceptar()" class="btn btn-warning">Aceptar</button>
+</div>

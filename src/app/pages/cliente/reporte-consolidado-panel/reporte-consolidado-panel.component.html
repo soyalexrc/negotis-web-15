@@ -1,0 +1,259 @@
+<toolbar-two ></toolbar-two>
+<div class="container">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-lg-12">
+    <mat-card>
+
+     <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              Filtro
+            </mat-expansion-panel-header>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Filtro libre(Nombre, Código, Marca, Rubro,Talle)</label>
+                      <input type="text" [(ngModel)]="filtroDescripcionArticulo" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Categoria Rubro</label>
+                      <input type="text" [(ngModel)]="categoriaNombre" [matAutocomplete]="autoCategoria" class="form-control"
+                      [formControl]="categoriaCtrl" >
+                      <mat-autocomplete #autoCategoria="matAutocomplete">
+                        <mat-option (click)="getCategoria(item)" *ngFor="let item of filteredCategoria | async" [value]="item.Nombre">
+                          <span>{{item.Nombre}}</span>
+                        </mat-option>
+                      </mat-autocomplete>
+
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Rubro</label>
+                      <input type="text" [(ngModel)]="FiltroRubro" [matAutocomplete]="autoRubro" class="form-control"
+                      [formControl]="rubroCtrl" >
+                      <mat-autocomplete #autoRubro="matAutocomplete">
+                        <mat-option (click)="getRubro(item)" *ngFor="let item of filteredRubro | async" [value]="item.Nombre">
+                          <span>{{item.Nombre}}</span>
+                        </mat-option>
+                      </mat-autocomplete>
+
+                    </div>
+                  </div>
+
+                  <form [formGroup]="myForm" noValidate>
+                    <div class="form-group">
+                      <label>Estado de Entrega</label>
+                      <select formControlName="filtroEstadoEntrega" class="form-control" [(ngModel)]="filtroEstadoEntrega">
+                        <option [ngValue]="0">Seleccionar</option>
+                        <option *ngFor="let item of estadosEntrega" [ngValue]="item.Id">{{item.Valor}}</option>
+                      </select>
+                    </div>
+                  </form>
+                  <!--Fecha Desde-->
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Fecha Desde</label>
+                      <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+                    </div>
+                  </div>
+
+                  <!--Fecha Hasta-->
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Fecha Hasta</label>
+                      <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Vendedor</label>
+                      <input type="text"  class="form-control" [(ngModel)]="vendedorNombres" [matAutocomplete]="autoVendedor"
+                      [formControl]="vendedorCtrl">
+                      <mat-autocomplete #autoVendedor="matAutocomplete">
+                        <mat-option (click)="getVendedor(item)" *ngFor="let item of filteredVendedor | async" [value]="item.Apellidos || item.RazonSocial">
+                          <span>{{item.RazonSocial}} </span><span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span><span>
+                            ({{item.UserName}})</span>
+                        </mat-option>
+                      </mat-autocomplete>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Cliente</label>
+                      <input type="text" (keyup)="resetCliente()" class="form-control" [matAutocomplete]="autoCliente"
+                        [formControl]="clienteCtrl" [(ngModel)]="cliente" (ngModelChange)="filtrarCliente()">
+                      <mat-autocomplete #autoCliente="matAutocomplete">
+                        <mat-option (click)="getCliente(item)" *ngFor="let item of filteredCliente | async" [value]="item.RazonSocial">
+                          <span>{{item.RazonSocial}}</span>
+                        </mat-option>
+                      </mat-autocomplete>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Zona</label>
+                      <input type="text" [(ngModel)]="FiltroZona" [matAutocomplete]="autoZona" class="form-control"
+                      [formControl]="zonaCtrl" >
+                      <mat-autocomplete #autoZona="matAutocomplete">
+                        <mat-option (click)="getZona(item)" *ngFor="let item of filteredZona | async" [value]="item.Nombre">
+                          <span>{{item.Nombre}}</span>
+                        </mat-option>
+                      </mat-autocomplete>
+
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Lista de Precios (Activas)</label>
+                    <select  class="form-control" [(ngModel)]="idLista" >
+                      <option [ngValue]="">Seleccionar</option>
+                      <option (click)="getLista(item);" *ngFor="let item of listadoPrecios" value="{{item?.Id}}">{{item?.Nombre}}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Lista de Sucursales</label>
+                    <select  class="form-control" [(ngModel)]="idSucursal" >
+                      <option [ngValue]="">Seleccionar</option>
+                      <option (click)="getSucursal(item);" *ngFor="let item of listadoSucursales" value="{{item?.Id}}">{{item.Calle}} {{item.Numero}}, {{item.Barrio}}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Tipo de Comprobante</label>
+                      <select class="form-control" [(ngModel)]="tipoComprobante">
+                        <option [ngValue]="">Seleccionar</option>
+                        <option  value="PRESUPUESTO" >PRESUPUESTO</option>
+                        <option  value="FACTURA" >FACTURA</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Proveedor</label>
+                      <input type="text" class="form-control" [formControl]="ctrlProveedor" [(ngModel)]="proveedor"
+                        (input)=resetProveedor() [matAutocomplete]="autoProveedor" matInput>
+                      <mat-autocomplete #autoProveedor="matAutocomplete" (optionSelected)="selectProveedor($event)"
+                        [displayWith]="displayProveedorSelected">
+                        <mat-option *ngFor="let option of filteredProveedor | async" [value]="option">
+                          {{ displayProveedorOption(option) }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </div>
+                  </div>
+<!--                   <div class="form-group">
+                    <label>Filtro Horas</label>
+                    <select  class="form-control" [(ngModel)]="horaFiltro" >
+                      <option [ngValue]="">Seleccionar</option>
+                      <option *ngFor="let item of horas" value="{{item}}">{{item}}
+                      </option>
+                    </select>
+                  </div> -->
+                  <div class="col-md-3" *ngIf="montoTotalVentas > 0">
+                    <div class="form-group">
+                      <label>Monto Total Ventas</label>
+                      <td>${{montoTotalVentas | number:'1.1-2'}}</td>
+                    </div>
+                  </div>
+                  <div class="col-md-3" *ngIf="montoTotalCostos > 0">
+                    <div class="form-group">
+                      <label>Monto Total Costos</label>
+                      <td>${{montoTotalCostos | number:'1.1-2'}}</td>
+                    </div>
+                  </div>
+                </div>
+
+            <mat-action-row>
+              <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+              <button (click)="cargarModel()" class="btn btn-warning">Buscar</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+
+
+
+          <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Código</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Marca</th>
+                  <th scope="col">Rubro</th>
+                  <th scope="col">Talle</th>
+                  <th scope="col">Cant. Vendida</th>
+                  <th scope="col">Monto Total</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of this.reporteModel.listaArticulos; let i = index">
+                <tr>
+                  <th scope="row">{{i+1}}</th>
+                  <td >{{item.CodigoDeBarras}}</td>
+                  <td>{{item.Articulo}}</td>
+                  <td>{{item.Marca}}</td>
+                  <td>{{item.Rubro}}</td>
+                  <td>{{item.Talle}}</td>
+                  <td>{{item.Cantidad_Vendida}}</td>
+                  <td>${{item.MontoTotal}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <app-pagination class="mb-3"
+            (goPage)="goToPage($event)"
+            (goNext)="onNext()"
+            (goPrev)="onPrev()"
+            [pagesToShow]="20"
+            [page]="page"
+            [perPage]="limit"
+            [count]="total">
+            </app-pagination>
+
+            <div *ngIf="this.reporteModel.listaArticulos != undefined">
+              <div >
+                <div class="col-md-4">
+                  <label>Seleccione tipo de Gráfico</label>
+                  <select class="form-control" [(ngModel)]="graph">
+                    <option value="bar" >Barras</option>
+                    <option value="line" >Lineal</option>
+                  </select>
+                  <br>
+                  <a  class="btn btn-warning" (click)="generarReporte()">
+                    <span>Generar Gráfico</span>
+                  </a>
+                  <br>
+                  <br>
+                  <a target="_blank"
+                  href="{{urlImprimir}}"
+                  class="btn btn-primary pdf-btn mb-2">
+                  <span>Imprimir Reporte</span>
+                </a>
+
+                <a target="_blank"
+                href="{{urlImprimir2}}"
+                class="btn btn-primary pdf-btn mb-2">
+                <span>Imprimir Reporte 80mm</span>
+              </a>
+                <div style="display:flex; margin-top: 50px;" *ngIf="this.reporteModel.listaArticulos !== undefined && this.reporteModel.listaArticulos.length > 0 ">
+                  <a (click)="marcarArticuloMasVendidos(true)"
+                      class="btn btn-primary pdf-btn mb-2" style="color: white !important;">Enviar Artículos Más Vendidos
+                   </a>
+                 </div>
+                </div>
+
+              </div>
+            </div>
+
+
+
+        </mat-card>
+        </div>
+      <div class="col"></div>
+    </div>
+</div>

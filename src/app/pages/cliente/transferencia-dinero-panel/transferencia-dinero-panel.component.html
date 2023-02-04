@@ -1,0 +1,113 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Ingreso / Deposito / Egreso Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a [routerLink]="['/cliente/transferencia/deposito/dinero/crear']">
+        <mat-card class="pointer">
+          Agregar Ingreso / Deposito / Egreso
+        </mat-card>
+      </a>
+    </div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <!--Fecha Desde-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Desde</label>
+          <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+        </div>
+      </div>
+      <!--Fecha Hasta-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Hasta</label>
+          <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+        </div>
+      </div>
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <!--total reparto (entrega)-->
+  <div class="row">
+    <div class="col-md-4">
+      <mat-card *ngIf="ocultarIndicadorEgreso == false">
+        <div>Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}</div>
+        <table class="table-total">
+          <tr>
+            <td>Total Externo Recibido</td>
+            <td>${{totalExterno | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Recibido de Ingreso</td>
+            <td>${{totalRecibidoDeTrans | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Transferido</td>
+            <td>${{totalTransferido | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Egreso</td>
+            <td>${{totalEgreso | number:'1.1-2'}}</td>
+          </tr>
+        </table>
+      </mat-card>
+    </div>
+  </div>
+
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Descripcion</th>
+          <th scope="col">De Sucursal</th>
+          <th scope="col">Para Sucursal</th>
+          <th scope="col" *ngIf="editarDepositos == false">*</th>
+          <th scope="col" *ngIf="ocultarDeleteIngresos == false">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listadoTransDep; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>
+            <span *ngIf="item.DeSucursalParaSucursal == true">De Suc. a Suc.</span>
+            <span *ngIf="item.TransExternaParaSucursal == true">De Ext. a Suc.</span>
+            <span *ngIf="item.EgresoDeSucursal == true">Egre. de Suc.</span>
+          </td>
+          <td>${{item.Monto}}</td>
+          <td>{{item.Descripcion}}</td>
+          <td>{{item.Sucursal?.Calle}} {{item.Sucursal?.Numero}} {{item.Sucursal?.Barrio}}
+            {{item.Sucursal?.Zona?.Nombre}} {{item.Sucursal?.Zona?.Region?.Nombre}}</td>
+          <td>{{item.ParaSucursal?.Calle}} {{item.ParaSucursal?.Numero}} {{item.ParaSucursal?.Barrio}}
+            {{item.ParaSucursal?.Zona?.Nombre}} {{item.ParaSucursal?.Zona?.Region?.Nombre}}</td>
+          <td *ngIf="editarDepositos == false"><a routerLink="/cliente/transferencia/deposito/dinero/editar/{{item.Id}}"><span
+                class="pointer">Editar</span></a></td>
+          <td *ngIf="ocultarDeleteIngresos == false"><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <a target="_blank"
+      href="{{urlImprimir}}" 
+      class="btn btn-primary pdf-btn mb-2">
+      <span>Imprimir Reporte</span>
+    </a>
+  </div>
+  </div>
+</div>

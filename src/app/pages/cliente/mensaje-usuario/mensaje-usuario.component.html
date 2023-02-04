@@ -1,0 +1,25 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post != true">
+          Guardar Mensaje
+        </h3>
+        <form *ngIf="post != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+          
+
+            <div class="form-group">
+                <label>Ingrese su Mensaje</label>
+                <textarea rows="4" [formControl]="myForm.get('mensajeUsuario')" class="form-control" [(ngModel)]="mensajeUsuario"></textarea>
+              </div>
+              
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

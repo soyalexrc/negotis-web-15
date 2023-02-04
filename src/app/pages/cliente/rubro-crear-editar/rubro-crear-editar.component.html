@@ -1,0 +1,70 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idRubro == 0">Crear</span>
+          <span *ngIf="idRubro != 0">Editar</span>
+          Rubro
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <div class="form-group">
+            <label>Rubro</label>
+            <input type="text" formControlName="rubro" class="form-control" [(ngModel)]="rubro">
+            <small *ngIf="myForm.get('rubro')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese rubro
+            </small>
+            <small *ngIf="post?.RepetidoNombre == true" class="form-text text-muted">Nombre de rubro existente</small>
+          </div>
+
+          <div class="form-group">
+            <label>Categoría</label>
+            <select type="text" formControlName="categoria" class="form-control" [(ngModel)]="categoria">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listadoCatRub" value="{{item.Id}}">{{item.Nombre}}</option>
+            </select>
+            <small *ngIf="myForm.get('categoria')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese categoría</small>
+          </div>
+
+          <!--
+          <div class="form-group">
+            <label>Código</label>
+            <input type="text" formControlName="mcodigo' class="form-control" [(ngModel)]="codigo">
+            <small *ngIf="post?.RepetidoCodigo == true" class="form-text text-muted">Código de rubro existente</small>
+          </div>
+          -->
+          <div class="form-group">
+            <label>Estado</label>
+
+            <select formControlName="activo" class="form-control" [(ngModel)]="activo">
+              <option value="">Seleccionar</option>
+              <option value="true">Activo</option>
+              <option value="false">Inactivo</option>
+            </select>
+            <small *ngIf="myForm.get('activo')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese estado</small>
+          </div>
+
+          <div class="form-group">
+            <label>Eliminar</label>
+            <select formControlName="eliminar" class="form-control" [(ngModel)]="eliminar">
+              <option value="false">No</option>
+              <option value="true">Si</option>
+            </select>
+            <small *ngIf="myForm.get('eliminar')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Complete este campo
+            </small>
+          </div>
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

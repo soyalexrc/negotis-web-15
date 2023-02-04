@@ -1,0 +1,64 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+    <h3 class="title">
+        Producto Panel
+    </h3>
+    <div class="row" *ngIf="modificarProductosHabilitado">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/categoria/rubro/panel']">
+                <mat-card class="box pointer">
+                    Categoría Rubro
+                </mat-card>
+            </a>
+        </div>
+    </div>        
+    <div class="row" *ngIf="modificarProductosHabilitado">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/rubro/panel']">
+                <mat-card class="box pointer">
+                    Rubro
+                </mat-card>
+            </a>
+        </div>
+    </div>
+    <div class="row" *ngIf="modificarProductosHabilitado">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/marca/panel']">
+                <mat-card class="box pointer">
+                    Marca
+                </mat-card>
+            </a>
+        </div>
+
+    </div>
+    
+    <div class="row" *ngIf="modificarProductosHabilitado">
+        <div class="col-md-4 col-box">
+            <a routerLink="/cliente/proveedor/panel">
+                <mat-card class="box pointer">
+                    Proveedores
+                </mat-card>
+            </a>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/articulo/panel']">
+                <mat-card class="box pointer">
+                    Listado de Articulos / Servicios
+                </mat-card>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-box">
+            <a [routerLink]="['/cliente/listaprecios/panel']">
+                <mat-card class="box pointer">
+                    Porcentaje Listas 
+                </mat-card>
+            </a>
+        </div>
+    </div>   
+</div>

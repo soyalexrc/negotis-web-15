@@ -1,0 +1,331 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Totales Panel
+  </h3>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel *ngIf="filtrosHabilitado">
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <!--Fecha Desde-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Desde</label>
+          <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+        </div>
+      </div>
+      <!--Fecha Hasta-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Hasta</label>
+          <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Nombre Usuario</label>
+          <input type="text" class="form-control" [(ngModel)]="nombreFiltro" [matAutocomplete]="autoNombre"
+            [formControl]="nombresCtrl">
+          <mat-autocomplete #autoNombre="matAutocomplete">
+            <mat-option (click)="getVendedor(item)" *ngFor="let item of filteredNombres | async" [value]="item.Nombres">
+              <span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3" *ngIf="turnoCaja">
+        <div class="form-group">
+          <label>Turno</label>
+          <select class="form-control" [(ngModel)]="turno" >
+            <option [ngValue]="null">Seleccionar</option>
+            <option *ngFor="let item of turnos" [ngValue]="item.Nombre">{{item.Nombre}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+      
+    </mat-action-row>
+  </mat-expansion-panel>
+  <div >
+    <a
+    target="_blank" href="{{urlImprimir}}" class="btn btn-primary pdf-btn mb-2">
+    <span >Imprimir Caja 80mm</span>
+    </a>
+    </div>
+    <div >
+      <a
+      target="_blank" href="{{urlImprimir2}}" class="btn btn-primary pdf-btn mb-2">
+      <span >Imprimir Caja</span>
+      </a>
+      </div>
+    
+  <!--total-->
+  <div class="row">
+    <!--todas las sucursales-->
+    <div class="col-md-4" *ngIf="verTodasSucursalesHabilitado">
+      <mat-card>
+        <div><strong>Caja de Todas las Sucursales</strong></div>
+        <div><strong>Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}</strong></div>
+        <table class="table-totales">
+          <strong> Ventas </strong>
+          <tr>                        
+            <td>Efectivo: </td>
+            <td>${{getTotales?.TotalGral?.TotalGananciaVentaEfect | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Tarjeta: </td>
+            <td>${{getTotales?.TotalGral?.TotalGananciaVentaTarj | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Transferencia Bancaria: </td>
+            <td>${{getTotales?.TotalGral?.TotalGananciaVentaTB | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Mercado Pago: </td>
+            <td>${{getTotales?.TotalGral?.TotalGananciaVentaMP | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Valores: </td>
+            <td>${{getTotales?.TotalGral?.TotalValores | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Cta Cte Total: </td>
+            <td>${{getTotales?.TotalGral?.TotalGananciaVentaCtaCte | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td><u>Total Ventas : </u></td>           
+            <td><u>${{getTotales?.TotalGral?.TotalVentas | number:'1.1-2'}}</u></td>
+            
+          </tr>
+          <br>
+          <strong>Compras</strong>
+          <tr *ngIf="ocultarCompras == false">
+            
+            <td>Efectivo: </td>
+            <td class="restar">${{getTotales?.TotalGral?.TotalCompraEfectivo | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarCompras == false">
+            <td>Tarjeta: </td>
+            <td class="restar">${{getTotales?.TotalGral?.TotalCompraTarjetas | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarCompras == false">
+            <td>Cta Cte Total: </td>
+            <td class="restar">${{getTotales?.TotalGral?.TotalCompraCtaCte | number:'1.1-2'}}</td>
+          </tr>
+          <!--<tr>
+              <td>Total Ventas (Cta Cte Pagado): </td>
+              <td>${{getTotales?.TotalGral?.TotalGananciaVentaCtaCtePagoTotal | number:'1.1-2'}}</td>
+            </tr>-->
+
+          <tr *ngIf="ocultarCompras == false">
+            <td>Total Compra Artículos: </td>
+            <td>${{getTotales?.TotalGral?.TotalIngresoArticulo | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarGanancia == false">
+            <td>Total Costo Artículos: </td>
+            <td class="restar">${{getTotales?.TotalGral?.TotalCostoArticulo | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarGanancia == false">
+            <td>Total Comisiónes: </td>
+            <td class="restar">${{getTotales?.TotalGral?.TotalComision | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td><u>Total Gastos: </u></td>
+            <td class="restar"><u>${{getTotales?.TotalGral?.TotalGasto | number:'1.1-2'}}</u></td>
+            <hr>
+          </tr>
+          <br>
+          <!-- <tr>
+            <td>Total Resto Pago Parciales (Total): </td>
+            <td class="restar">${{getTotales?.TotalGral?.TotalPagoParcialRestante | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Resto Pago Parciales (Efect): </td>
+            <td class="restar">${{getTotales?.TotalGral?.TotalPagoParcialRestanteEfect | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Resto Pago Parciales (Tarj): </td>
+            <td class="restar">${{getTotales?.TotalGral?.TotalPagoParcialRestanteTarj | number:'1.1-2'}}</td>
+          </tr> -->
+          <!--
+          <tr>
+            <td>Total Resto Pago Parciales (Cta Cte): </td>
+            <td class="restar">${{getTotales?.TotalGral?.TotalPagoParcialRestanteCtaCte | number:'1.1-2'}}</td>
+          </tr>
+          -->
+          <tr>
+            <td>Total Egreso: </td>
+            <td class="restar">${{getTotales?.TotalGral?.TotalEgreso | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Ingresos Externos: </td>
+            <td>${{getTotales?.TotalGral?.TotalReciboExterno | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarGanancia == false">
+            <td><strong>Total de Ganancia:</strong> </td>
+            <td>${{getTotales?.TotalGral?.TotalGancia | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarGanancia == false">
+            <td><strong>Rentabilidad ({{getTotales?.TotalGral?.PorcentajeRentabilidad | number:'1.1-2'}}%):</strong> </td>            
+            <td>${{getTotales?.TotalGral?.TotalGananciaFuturo | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td><strong>Cierre de Caja (Efect.):</strong> </td>
+            <td>${{getTotales?.TotalGral?.TotalCierreDeCajaEfect | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td><strong>Cierre de Caja (Gral.):</strong> </td>
+            <td>${{getTotales?.TotalGral?.TotalCierreDeCajaGral | number:'1.1-2'}}</td>
+          </tr>
+        </table>
+      </mat-card>
+    </div>
+    <!--por sucursal-->
+    <div class="col-md-4">
+      <mat-card>
+        <div>
+          <strong>
+            Caja de Sucursal: {{sucursal?.Calle}} {{sucursal?.Numero}} {{sucursal?.Barrio}} {{sucursal?.Zona?.Nombre}}
+            {{sucursal?.Zona?.Region?.Nombre}}
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}
+          </strong>
+        </div>
+        <table class="table-totales">
+          <strong> Ventas </strong> 
+          <tr>            
+            <td>Efectivo: </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalGananciaVentaEfect | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Tarjeta: </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalGananciaVentaTarj | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Transferencia Bancaria: </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalGananciaVentaTB | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Mercado Pago: </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalGananciaVentaMP | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Valores: </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalValores | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Cta Cte Total: </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalGananciaVentaCtaCte | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td><u>Total Ventas: </u></td>
+            <td><u>${{getTotales?.TotalSuc?.SucTotalVentas | number:'1.1-2'}}</u></td>            
+          </tr>
+          <br>
+          <strong>Compras</strong>
+          <tr *ngIf="ocultarCompras == false">
+            
+            <td>Efectivo: </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalCompraEfectivo | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarCompras == false">
+            <td>Tarjeta: </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalCompraTarjetas | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarCompras == false">
+            <td>Cta Cte Total: </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalCompraCtaCte | number:'1.1-2'}}</td>
+          </tr>
+          <!--<tr>
+              <td>Total Ventas (Cta Cte Pagado): </td>
+              <td>${{getTotales?.TotalSuc?.SucTotalGananciaVentaCtaCtePagoTotal | number:'1.1-2'}}</td>
+            </tr>-->
+
+
+          <tr *ngIf="ocultarCompras == false">
+            <td>Total Compra Artículos: </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalIngresoArticulo | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarCompras == false">
+            <td>Total Costo Artículos: </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalCostoArticulo | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarGanancia == false">
+            <td>Total Comisiónes: </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalComision | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td><u>Total Gastos: </u></td>
+            <td class="restar"> <u>${{getTotales?.TotalSuc?.SucTotalGasto | number:'1.1-2'}}</u></td>
+            
+          </tr>
+          <br>
+          <!-- <tr>
+            <td>Total Resto Pago Parciales (Total): </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalPagoParcialRestante | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Resto Pago Parciales (Efect): </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalPagoParcialRestanteEfect | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Resto Pago Parciales (Tarj.): </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalPagoParcialRestanteTarj | number:'1.1-2'}}</td>
+          </tr> -->
+          <!--
+          <tr>
+            <td>Total Resto Pago Parciales (Cta Cte): </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalPagoParcialRestanteCtaCte | number:'1.1-2'}}</td>
+          </tr>
+          -->
+          <tr>
+            <td>Total Recibido a Suc.: </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalRecibido | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Transferido a Otra Suc.: </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalTransferidoDeSucToSuc | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Ingreso Externo: </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalReciboExterno | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td>Total Egreso: </td>
+            <td class="restar">${{getTotales?.TotalSuc?.SucTotalEgreso | number:'1.1-2'}}</td>
+          </tr>
+          <!---->
+
+          <tr *ngIf="ocultarGanancia == false">
+            <td><strong>Total de Ganancia:</strong> </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalGancia | number:'1.1-2'}}</td>
+          </tr>
+          <tr *ngIf="ocultarGanancia == false">
+            <td><strong>Rentabilidad ({{getTotales?.TotalSuc?.SucPorcentajeRentabilidad | number:'1.1-2'}}%):</strong> </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalGananciaFuturo | number:'1.1-2'}}</td>
+          </tr>          
+          <tr>
+            <td><strong>Cierre de Caja (Efect.):</strong> </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalCierreDeCajaEfect | number:'1.1-2'}}</td>
+          </tr>
+          <tr>
+            <td><strong>Cierre de Caja (Gral.):</strong> </td>
+            <td>${{getTotales?.TotalSuc?.SucTotalCierreDeCajaGral | number:'1.1-2'}}</td>
+          </tr>
+        </table>
+      </mat-card>
+    </div>
+  </div>
+
+</div>

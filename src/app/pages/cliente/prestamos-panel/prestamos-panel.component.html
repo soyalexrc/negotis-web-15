@@ -1,0 +1,137 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Panel Préstamos
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a [routerLink]="['/cliente/prestamos/crear']">
+        <mat-card class="pointer">
+          Agregar Préstamo
+        </mat-card>
+      </a>
+    </div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <!--Fecha Desde-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Desde</label>
+          <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+        </div>
+      </div>
+      <!--Fecha Hasta-->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Fecha Hasta</label>
+          <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Cliente</label>
+          <input type="text" (keyup)="resetCliente()" class="form-control" [matAutocomplete]="autoCliente"
+            [formControl]="clienteCtrl" [(ngModel)]="cliente" (ngModelChange)="filtrarCliente()">
+          <mat-autocomplete #autoCliente="matAutocomplete">
+            <mat-option (click)="getCliente(item)" *ngFor="let item of filteredCliente | async" [value]="item.RazonSocial">
+              <span>{{item.RazonSocial}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+      
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  
+   <div class="row">
+    <div class="col-md-4" >
+      <mat-card>       
+        <div>Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}</div>
+        <div>
+          <div>Total Prestamos: ${{listadoPrestamos?.TotalPrestamos | number:'1.1-2'}}</div>
+        </div>
+        <div>
+          <div>Total Resto a Pagar: ${{listadoPrestamos?.TotalRestoAPagar | number:'1.1-2'}}</div>
+        </div>
+      </mat-card>
+    </div>
+          
+
+      
+    
+  </div> 
+
+
+  <div  class="col-md-3" *ngIf="this.prestamosImprimir.length > 0">
+    <div class="form-group">
+      <label>Cuotas a cobrar</label>
+      <input type="number"  class="form-control"  [(ngModel)]="cuotasAPagar">
+    </div>
+    <button (click)="pagarPrestamos()" class="btn btn-warning">Cobrar Cuotas</button>
+  </div>
+
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" ><input type="checkbox" (change)="seleccionarTodosPedidosCambioEstado($event)"></th>    
+          <th scope="col">#</th>          
+          <th scope="col">Cliente</th>                  
+          <th scope="col">Fecha</th>
+          <th scope="col">Interés</th>          
+          <th scope="col"> Cuotas Pagas</th>
+          <th scope="col">Monto(c/ interés)</th>
+          <th scope="col"> Resto a Pagar </th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listadoPrestamos?.ListPrestamo; let i = index">
+        <tr *ngIf="item.RestoAPagar == 0" style="background-color: rgb(6, 190, 6);color: antiquewhite;">
+          <th scope="row"  ><input  type="checkbox" [(ngModel)]="item.pedidosPendienteChecked" (change)="cambiarEstado($event, i)"></th>   
+          <th scope="row">{{i+1}}</th>          
+          <td >{{item.Cliente.RazonSocial}}</td>
+                          
+          <td>{{item.FechaCracion}}</td>
+          <td>{{item.Interes}}</td>
+          <td>{{item.CuotasPagas}}/{{item.CantidadCuotas}}</td>
+          <td>${{item.Monto}}</td>
+          <td>{{item.RestoAPagar}}</td>          
+          <td><a routerLink="/cliente/prestamos/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
+          <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+        <tr *ngIf="item.RestoAPagar != 0" >
+          <th scope="row"  ><input  type="checkbox" [(ngModel)]="item.pedidosPendienteChecked" (change)="cambiarEstado($event, i)"></th>   
+          <th scope="row">{{i+1}}</th>          
+          <td >{{item.Cliente.RazonSocial}}</td>
+                          
+          <td>{{item.FechaCracion}}</td>
+          <td>{{item.Interes}}</td>
+          <td>{{item.CuotasPagas}}/{{item.CantidadCuotas}}</td>
+          <td>${{item.Monto}}</td>
+          <td>{{item.RestoAPagar}}</td>          
+          <td><a routerLink="/cliente/prestamos/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
+          <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+<!--     <div>
+      <a target="_blank"
+      href="{{urlImprimir}}" 
+      class="btn btn-primary pdf-btn mb-2">
+      <span>Imprimir Gastos</span>
+    </a>
+  </div> -->
+  </div>
+</div>

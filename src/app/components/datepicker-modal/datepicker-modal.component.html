@@ -1,0 +1,16 @@
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <ngb-datepicker #dp (click)="seleccionar()" [(ngModel)]="model" (navigate)="$event.next"></ngb-datepicker>
+      <small *ngIf="validacionFechaNull == true" class="form-text text-muted">Seleccione fecha</small>
+      <small *ngIf="validacionFechaPasada == true" class="form-text text-muted">No se permiten fechas pasadas</small>
+      <hr />
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</div>
+<div mat-dialog-actions class="row boton-box">
+  <button (click)="close()" class="btn btn-danger">Cerrar</button>
+  <!-- <button (click)="seleccionar()" class="btn btn-warning">Seleccionar</button> -->
+</div>

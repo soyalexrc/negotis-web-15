@@ -1,0 +1,103 @@
+export class ClienteCrearEditarModel {
+  idUser: any;
+  idCliente: any;
+  idClienteNegotis: any;
+  razonSocial: any;
+  nombreFantasia: any;
+  horaDesde: any;
+  minutoDesde: any;
+  sistHorarioDesde: any;
+  horaHasta: any;
+  minutoHasta: any;
+  sistHorarioHasta: any;
+  horaDesdeDos: any;
+  minutoDesdeDos: any;
+  sistHorarioDesdeDos: any;
+  horaHastaDos: any;
+  minutoHastaDos: any;
+  sistHorarioHastaDos: any;
+  cuit: any;
+  condicionImpositiva: any;
+  ingresosBrutos: any;
+  IdListaPrecios: any;
+  telefono: any;
+  email: any;
+  redSocialUno: any;
+  redSocialDos: any;
+  dni: any;
+  descripcion: any;
+  IdVendedor: any;
+  sesionesRealizadas: any;
+  sesionesTratamiento: any;
+  sesionesTotal:any;
+  color:any;
+  patente:any;
+  nSiniestro: any;
+  nSiniestro2: any;
+  vehiculo: any;
+  idSucursal: any;
+  numeroCliente: any;
+  distancia: any;
+  saldoAFavor: any;
+  categoriaCliente: any;
+  tipoSesion:any;
+  tipoSesion2:any;
+  tipoSesion3:any;
+  cantidadSesion:any;
+  cantidadSesion2:any;
+  cantidadSesion3:any;
+
+  constructor(idUser: any, idCliente: any, idClienteNegotis: any, razonSocial: any, nombreFantasia: any, horaDesde: any, minutoDesde: any, sistHorarioDesde: any, horaHasta: any,
+     minutoHasta: any, sistHorarioHasta: any, horaDesdeDos: any, minutoDesdeDos: any, sistHorarioDesdeDos: any, horaHastaDos: any, minutoHastaDos: any, sistHorarioHastaDos: any,
+      cuit: any, condicionImpositiva: any, ingresosBrutos: any, IdListaPrecios: any, telefono: any, email: any, redSocialUno: any, redSocialDos: any, dni: any, descripcion: any,
+       IdVendedor: any,sesionesRealizadas: any,  sesionesTratamiento: any,sesionesTotal:any,patente:any,nSiniestro:any,nSiniestro2:any,vehiculo:any,color:any,idSucursal:any,
+       nroCliente: any,distancia:any, saldoAFavor: any, categoriaCliente: any, tipoSesion: any,tipoSesion2: any,tipoSesion3: any,cantidadSesion:any,cantidadSesion2:any, cantidadSesion3:any) {
+    this.idUser = idUser;
+    this.idCliente = idCliente;
+    this.idClienteNegotis = idClienteNegotis;
+    this.razonSocial = razonSocial;
+    this.nombreFantasia = nombreFantasia;
+    this.horaDesde = horaDesde;
+    this.minutoDesde = minutoDesde;
+    this.sistHorarioDesde = sistHorarioDesde;
+    this.horaHasta = horaHasta;
+    this.minutoHasta = minutoHasta;
+    this.sistHorarioHasta = sistHorarioHasta;
+    this.horaDesdeDos = horaDesdeDos;
+    this.minutoDesdeDos = minutoDesdeDos;
+    this.sistHorarioDesdeDos = sistHorarioDesdeDos;
+    this.horaHastaDos = horaHastaDos;
+    this.minutoHastaDos = minutoHastaDos;
+    this.sistHorarioHastaDos = sistHorarioHastaDos;
+    this.cuit = cuit;
+    this.condicionImpositiva = condicionImpositiva;
+    this.ingresosBrutos = ingresosBrutos;
+    this.IdListaPrecios = IdListaPrecios;
+    this.telefono = telefono;
+    this.email = email;
+    this.redSocialUno = redSocialUno;
+    this.redSocialDos = redSocialDos;
+    this.dni = dni;
+    this.descripcion = descripcion;
+    this.IdVendedor = IdVendedor;
+    this.sesionesRealizadas = sesionesRealizadas;
+    this.sesionesTratamiento = sesionesTratamiento;
+    this.sesionesTotal = sesionesTotal;
+    this.patente = patente;
+    this.nSiniestro = nSiniestro;
+    this.nSiniestro2 = nSiniestro2;
+    this.vehiculo = vehiculo;
+    this.color = color;
+    this.idSucursal = idSucursal;
+    this.numeroCliente = nroCliente;
+    this.distancia = distancia;
+    this.saldoAFavor = saldoAFavor;
+    this.categoriaCliente = categoriaCliente;
+    this.tipoSesion = tipoSesion;
+    this.tipoSesion2 = tipoSesion2;
+    this.tipoSesion3 = tipoSesion3;
+    this.cantidadSesion = cantidadSesion;
+    this.cantidadSesion2 = cantidadSesion2;
+    this.cantidadSesion3 = cantidadSesion3;
+  }
+}

@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>
+  <span *ngIf="data?.data == null">Bloquear</span>
+  <span *ngIf="data?.data == true">Desbloquear</span>
+</h1>
+<div mat-dialog-content>
+  <p *ngIf="data?.data == null">¿Esta seguro de bloquearlo?</p>
+  <p *ngIf="data?.data == true">¿Esta seguro de desbloquearlo?</p>
+  <mat-form-field>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button (click)="cancelar()" style="margin-right:10px;" class="btn btn-danger">Cancelar</button>
+  <button (click)="aceptar()" class="btn btn-warning">Aceptar</button>
+</div>

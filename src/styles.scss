@@ -1,1 +1,77 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*angular material*/
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+/*bootstrap*/
+@import "~bootstrap/dist/css/bootstrap.css";
+
+.back{
+  background: #ededed;
+}
+.pointer{
+  cursor: pointer;
+}
+
+a:link
+{
+  text-decoration:none;
+}
+
+table {
+  margin-top: 50px;
+  /*
+  white-space: nowrap;
+  */
+  display: block;
+  overflow-x: auto;
+  height: 400px;
+  overflow-y: scroll;
+}
+
+
+td{
+  min-width: 0px;
+  max-width: 230px;
+  overflow:hidden;
+  height:auto;
+  word-wrap:nowrap;
+}
+
+th{
+  min-width: 0px;
+  max-width: 230px;
+  overflow:hidden;
+  height:auto;
+  white-space: nowrap;
+}
+
+tbody:hover{
+  background: white;
+}
+
+mat-card{
+  margin-top: 20px;
+}
+
+.margin-filtro{
+  margin-top: 20px;
+}
+
+.btn-limpiard{
+  margin-right: 10px;
+}
+
+.text-muted {
+  color: #cf4647 !important;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.title{
+  margin-top: 20px;
+}
+
+

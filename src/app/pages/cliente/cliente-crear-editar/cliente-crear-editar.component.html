@@ -1,0 +1,542 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idCliente == 0">Registrar</span>
+          <span *ngIf="idCliente != 0">Editar</span>
+          Cliente
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <div class="form-group">
+            <label class="obligatorio">Razon social(Nombre y Apellido)</label>
+            <input type="text" formControlName="razonSocial" class="form-control" [(ngModel)]="razonSocial"
+                   [readOnly]="readOnlyMostrador">
+            <small *ngIf="myForm.get('razonSocial')?.hasError('required') && submitted==true"
+                   class="form-text text-muted">
+              Ingrese razon social
+            </small>
+            <small *ngIf="post?.RepetidoRS == true" class="form-text text-muted">
+              Razon social existente
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label>Usuario App</label>
+            <input type="email" formControlName="userName" class="form-control" placeholder="Usuario@nombreEmpresa.com"
+              [(ngModel)]="userName">
+          </div>
+
+
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+            <label class="btn btn-info">
+              Agregar Archivo
+              <input id="fileCliente" accept="image/*,.pdf,.doc,.txt,.rtf" type='file' value="{{fileName}}"
+                     (change)="fileChanged($event)" style="display: none;">
+            </label>
+            <div class="col-md-12">
+              <table class="table">
+                <tbody >
+                  <tr *ngFor="let item of documentos; let i = index">
+                    <td>{{item.filename}}</td>
+                    <td *ngIf="item.id>0"><a href="{{getDocumentUrl(item)}}"><span class="fas fa-cloud-download-alt pointer"></span></a></td>
+                    <td><span (click)="deleteDocument(item)" class="fas fa-trash-alt pointer"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div  class="form-group">
+            <label>Nro Cliente</label>
+            <input type="tel" formControlName="nroCliente" class="form-control" [(ngModel)]="nroCliente">
+          </div>
+
+          <div *ngIf="verDatosTaller">
+            <div  class="form-group">
+              <label>Patente</label>
+              <input type="text" formControlName="patente" class="form-control" [(ngModel)]="patente">
+            </div>
+
+            <div  class="form-group">
+              <label>Nro Siniestro</label>
+              <input type="tel" formControlName="nSiniestro" class="form-control" [(ngModel)]="nSiniestro">
+            </div>
+
+            <div  class="form-group">
+              <label>Segundo Nro Siniestro</label>
+              <input type="tel" formControlName="nSiniestro2" class="form-control" [(ngModel)]="nSiniestro2">
+            </div>
+
+            <div  class="form-group">
+              <label>Vehículo </label>
+              <input type="text" formControlName="vehiculo" class="form-control" [(ngModel)]="vehiculo">
+            </div>
+
+            <div  class="form-group">
+              <label>Color</label>
+              <input type="text" formControlName="color" class="form-control" [(ngModel)]="color">
+            </div>
+          </div>
+
+          <div *ngIf="razonSocial != 'Mostrador'">
+            <div class="form-group">
+              <label>Nombre Fantasía</label>
+              <input type="text" formControlName="nombreFantasia" class="form-control"
+                     [(ngModel)]="nombreFantasia">
+            </div>
+
+            <div class="form-group">
+              <label>Horarios Desde</label>
+              <div style="display:flex">
+                <select [(ngModel)]="desdeHora" formControlName="desdeHora" class="form-control"
+                        style="max-width:125px">
+                  <option value="">Hora</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <select [(ngModel)]="desdeMinuto" formControlName="desdeMinuto" class="form-control"
+                        style="max-width:125px">
+                  <option value="">Minutos</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
+                  <option value="35">35</option>
+                  <option value="40">40</option>
+                  <option value="45">45</option>
+                  <option value="50">50</option>
+                  <option value="55">55</option>
+                  <option value="60">60</option>
+                </select>
+                <select [(ngModel)]="desdeAmPm" formControlName="desdeAmPm" class="form-control"
+                        style="max-width:125px">
+                  <option value="">AM/PM</option>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Horarios Hasta</label>
+              <div style="display:flex">
+                <select [(ngModel)]="hastaHora" formControlName="hastaHora" class="form-control"
+                        style="max-width:125px">
+                  <option value="">Hora</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <select [(ngModel)]="hastaMinuto" formControlName="hastaMinuto" class="form-control"
+                        style="max-width:125px">
+                  <option value="">Minutos</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
+                  <option value="35">35</option>
+                  <option value="40">40</option>
+                  <option value="45">45</option>
+                  <option value="50">50</option>
+                  <option value="55">55</option>
+                  <option value="60">60</option>
+                </select>
+                <select [(ngModel)]="hastaAmPm" formControlName="hastaAmPm" class="form-control"
+                        style="max-width:125px">
+                  <option value="">AM/PM</option>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Horarios Desde (2)</label>
+              <div style="display:flex">
+                <select [(ngModel)]="desdeHoraDos" formControlName="desdeHoraDos" class="form-control"
+                        style="max-width:125px">
+                  <option value="">Hora</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <select [(ngModel)]="desdeMinutoDos" formControlName="desdeMinutoDos" class="form-control"
+                        style="max-width:125px">
+                  <option value="">Minutos</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
+                  <option value="35">35</option>
+                  <option value="40">40</option>
+                  <option value="45">45</option>
+                  <option value="50">50</option>
+                  <option value="55">55</option>
+                  <option value="60">60</option>
+                </select>
+                <select [(ngModel)]="desdeAmPmDos" formControlName="desdeAmPmDos" class="form-control"
+                        style="max-width:125px">
+                  <option value="">AM/PM</option>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Horarios Hasta (2)</label>
+              <div style="display:flex">
+                <select [(ngModel)]="hastaHoraDos" formControlName="hastaHoraDos" class="form-control"
+                        style="max-width:125px">
+                  <option value="">Hora</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <select [(ngModel)]="hastaMinutoDos" formControlName="hastaMinutoDos" class="form-control"
+                        style="max-width:125px">
+                  <option value="">Minutos</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
+                  <option value="35">35</option>
+                  <option value="40">40</option>
+                  <option value="45">45</option>
+                  <option value="50">50</option>
+                  <option value="55">55</option>
+                  <option value="60">60</option>
+                </select>
+                <select [(ngModel)]="hastaAmPmDos" formControlName="hastaAmPmDos" class="form-control"
+                        style="max-width:125px">
+                  <option value="">AM/PM</option>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Cuit (Sin guiones)</label>
+              <input type="number" formControlName="cuit" class="form-control" [(ngModel)]="cuit">
+            </div>
+            <div *ngIf="datosEsteticaHabilitado">
+            <div class="form-group">
+              <label>Cantidad Sesiones Realizadas</label>
+              <input type="number" formControlName="sesionesRealizadas" class="form-control" [(ngModel)]="sesionesRealizadas">
+            </div>
+
+            <div class="form-group">
+              <label>Cantidad Sesiones Tratamiento</label>
+              <input type="number" formControlName="sesionesTratamiento" class="form-control" [(ngModel)]="sesionesTratamiento">
+            </div>
+
+            <div class="form-group">
+              <label>Cantidad Sesiones Restantes</label>
+              <input type="number" formControlName="sesionesTotal" class="form-control" [(ngModel)]="sesionesTotal">
+            </div>
+
+            <div class="form-group">
+              <label >Tipo Sesion:</label>
+              <select formControlName="tipoSesion" class="form-control" [(ngModel)]="tipoSesion">
+                <option value="">Seleccionar</option>
+                <option value="Cara">Cara</option>
+                <option value="Pecho">Pecho</option>
+                <option value="Brazo">Brazo</option>
+                <option value="Pierna">Pierna</option>
+              </select>
+              <label>Cantidad Sesiones
+                  <input type="text" formControlName="cantidadSesion" class="form-control" [(ngModel)]="cantidadSesion">
+              </label>
+            </div>
+            <div class="form-group">
+              <label >Tipo Sesion:</label>
+              <select formControlName="tipoSesion2" class="form-control" [(ngModel)]="tipoSesion2">
+                <option value="">Seleccionar</option>
+                <option value="Cara">Cara</option>
+                <option value="Pecho">Pecho</option>
+                <option value="Brazo">Brazo</option>
+                <option value="Pierna">Pierna</option>
+              </select>
+              <label>Cantidad Sesiones
+                  <input type="text" formControlName="cantidadSesion2" class="form-control" [(ngModel)]="cantidadSesion2">
+              </label>
+            </div>
+            <div class="form-group">
+              <label >Tipo Sesion:</label>
+              <select formControlName="tipoSesion3" class="form-control" [(ngModel)]="tipoSesion3">
+                <option value="">Seleccionar</option>
+                <option value="Cara">Cara</option>
+                <option value="Pecho">Pecho</option>
+                <option value="Brazo">Brazo</option>
+                <option value="Pierna">Pierna</option>
+              </select>
+              <label>Cantidad Sesiones
+                  <input type="text" formControlName="cantidadSesion3" class="form-control" [(ngModel)]="cantidadSesion3">
+              </label>
+            </div>
+
+          </div>
+            <div class="form-group">
+              <label>Dni</label>
+              <input type="number" formControlName="dni" class="form-control" [(ngModel)]="dni">
+            </div>
+
+            <div class="form-group">
+              <label>Condicion Impositiva</label>
+              <select formControlName="condicionImpositiva" class="form-control"
+                      [(ngModel)]="condicionImpositiva">
+                <option value="CONSUMIDOR FINAL">CONSUMIDOR FINAL</option>
+                <option value="RESPONSABLE INSCRIPTO">RESPONSABLE INSCRIPTO</option>
+                <option value="MONOTRIBUTISTA">MONOTRIBUTISTA</option>
+                <option value="EXENTO">EXENTO</option>
+
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Ingresos Brutos</label>
+              <input type="number" formControlName="ingresosBrutos" class="form-control"
+                     [(ngModel)]="ingresosBrutos">
+            </div>
+
+
+          <div *ngIf ="tieneRolProduccion" class="form-group">
+            <label>Distancia</label>
+            <input type="number" formControlName="distancia" class="form-control"
+                   [(ngModel)]="distancia">
+          </div>
+        </div>
+
+
+          <div class="form-group">
+            <label>Vendedor</label>
+            <input type="text" (keyup)="resetVendedor()"  class="form-control" [matAutocomplete]="autoVendedor"
+                   [formControl]="vendedorCtrl" [(ngModel)]="vendedorNombres" >
+            <mat-autocomplete #autoVendedor="matAutocomplete">
+              <mat-option (click)="getVendedor(item)" *ngFor="let item of filteredVendedor | async" [value]="item.Apellidos || item.RazonSocial">
+                <span>{{item.RazonSocial}} </span><span>{{item.Apellidos}}</span><span> {{item.Nombres}}</span><span>
+                    ({{item.UserName}})</span>
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+
+
+          <div class="form-group">
+            <label class="obligatorio">Lista de Precios</label>
+            <select formControlName="listaPrecios" class="form-control" [(ngModel)]="listaPrecios">
+              <option value="">Seleccione</option>
+              <option *ngFor="let item of listadoPrecios" value="{{item?.Id}}">{{item?.Nombre}}</option>
+            </select>
+            <small *ngIf="myForm.get('listaPrecios')?.hasError('required') && submitted==true"
+                   class="form-text text-muted">
+              Ingrese lista de precios</small>
+          </div>
+
+
+          <div class="form-group">
+            <label >Categoria Cliente</label>
+            <select formControlName="categoriaCliente" class="form-control" [(ngModel)]="categoriaCliente">
+              <option value="">Seleccione</option>
+              <option *ngFor="let item of categoriasClientes" value="{{item?.Id}}">{{item?.Nombre}}</option>
+            </select>
+          </div>
+
+
+          <div class="form-group" *ngIf="rolSaldoAFavor">
+            <label>Saldo a Favor</label>
+            <input type="number" formControlName="saldoAFavor" class="form-control" [(ngModel)]="saldoAFavor">
+          </div>
+
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" formControlName="telefono" class="form-control" [(ngModel)]="telefono">
+          </div>
+
+
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+            <label >Email </label>
+            <input type="email" formControlName="email" class="form-control" [(ngModel)]="email">
+            <small *ngIf="myForm.get('email')?.hasError('email') && submitted==true" class="form-text text-muted">
+              Ingrese un email
+            </small>
+          </div>
+
+
+          <div class="form-group">
+            <label>Seleccionar Sucursal</label>
+            <div>
+              <div *ngFor="let item of sucursalList?.ListSucursal;let i=index" style="margin-left:10px">
+                <div (click)="selectSucursal(item.Id)" *ngIf="item?.seleccionar == null" class="sucursal" [ngClass]="{'active-select':item?.seleccionar}">
+                  {{item.Calle}} {{item.Numero}} {{item.Barrio}}
+                </div>
+                <div (click)="eliminarSucursal(item.Id)" *ngIf="item?.seleccionar == true" class="sucursal" [ngClass]="{'active-select':item?.seleccionar}">
+                  {{item.Calle}} {{item.Numero}} {{item.Barrio}}
+                </div>
+              </div>
+            </div>
+            <small *ngIf="idSucursalSelected.length == 0 && submitted==true" class="form-text text-muted">
+              Ingrese sucursal/es</small>
+          </div>
+
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+            <label>Descripción</label>
+            <input type="text" formControlName="descripcion" class="form-control" [(ngModel)]="descripcion">
+          </div>
+
+
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+            <label>1° Res Social (URL)</label>
+            <input type="url" formControlName="redSocialUno" class="form-control"
+                   [(ngModel)]="redSocialUno">
+          </div>
+
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+            <label>2° Res Social (URL)</label>
+            <input type="url" formControlName="redSocialDos" class="form-control"
+                   [(ngModel)]="redSocialDos">
+          </div>
+
+
+
+            <div class="form-group">
+              <label class="obligatorio">Calle / Country</label>
+              <input type="text" formControlName="calle" class="form-control" [(ngModel)]="calle">
+              <small *ngIf="myForm.get('calle')?.hasError('required') && submitted==true "
+                class="form-text text-muted">Ingrese
+                calle
+              </small>
+            </div>
+            <div class="form-group">
+              <label class="obligatorio">Número / Manzana</label>
+              <input type="text" formControlName="numero" class="form-control" [(ngModel)]="numero">
+              <small *ngIf="myForm.get('numero')?.hasError('required') && submitted==true" class="form-text text-muted">
+                Ingrese número / manzana</small>
+            </div>
+            <div class="form-group">
+              <label class="obligatorio">Barrio</label>
+              <input type="text" formControlName="barrio" class="form-control" [(ngModel)]="barrio">
+              <small *ngIf="myForm.get('barrio')?.hasError('required') && submitted==true " class="form-text text-muted">
+                Ingrese barrio</small>
+            </div>
+            <div *ngIf="idUser == null" class="form-group">
+              <label>Zona</label>
+              <select formControlName="idZona" class="form-control" [(ngModel)]="idZona">
+                <option value="">Seleccione</option>
+                <option *ngFor="let item of listadoZonas" value="{{item.Id}}">{{item.Nombre}} ({{item.Region?.Nombre}})
+                </option>
+              </select>
+              <small *ngIf="valZona == true && submitted==true" class="form-text text-muted">
+                Ingrese zona
+              </small>
+            </div>
+
+            <div *ngIf="idUser == null" class="form-group">
+              <label>Ruta</label>
+              <input type="text" formControlName="nombreRuta" class="form-control" [(ngModel)]="rutaNgModel"
+                (input)=resetKeyRuta() [matAutocomplete]="auto" matInput>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOptionRuta($event.option.value)"
+                [displayWith]="displayWithRuta">
+                <mat-option *ngFor="let option of filteredRuta | async" [value]="option">
+                  {{ option.Nombre }}
+                </mat-option>
+              </mat-autocomplete>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">*</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let item of listaRutas; let i = index">
+                  <tr>
+                    <th class="text-center" scope="row">{{i+1}}</th>
+                    <th class="text-center" scope="row">{{item.Nombre}}</th>
+                    <td><span (click)="deleteRuta(item)" class="fas fa-trash-alt pointer"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="idUser != null" class="form-group">
+              <label>Pfx Afip</label>
+              <select formControlName="pfxAfip" class="form-control" [(ngModel)]="pfxAfip">
+                <option value="">Seleccionar</option>
+                <option *ngFor="let item of listAfip" value="{{item?.Id}}">{{item?.NombreDocPfx}}</option>
+              </select>
+              <small *ngIf="valPfx == true" class="form-text text-muted">
+                Ingrese pfx afip
+              </small>
+            </div>
+
+            <div *ngIf="idUser != null" class="form-group">
+              <label>Punto de Venta</label>
+              <input type="number" formControlName="punoDeVenta" class="form-control"
+                [(ngModel)]="punoDeVenta">
+              <small *ngIf="myForm.get('punoDeVenta')?.hasError('pattern')" class="form-text text-muted">
+                Ingrese número positivo entero
+              </small>
+              <small *ngIf="valPtoVta == true" class="form-text text-muted">
+                Ingrese punto de venta
+              </small>
+            </div>
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

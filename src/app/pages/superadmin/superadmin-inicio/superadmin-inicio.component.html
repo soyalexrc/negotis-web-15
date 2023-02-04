@@ -1,0 +1,16 @@
+<toolbar-one></toolbar-one>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-box" *ngIf="verSocios != 'true'">
+        <mat-card class="box pointer" [routerLink]="['/superadmin/panel']">
+              Super Admin
+        </mat-card>
+    </div>
+    <div class="col-md-6 col-box">
+        <mat-card class="box pointer" [routerLink]="['/superadmin/clientenegotis/panel']">
+          Cliente
+        </mat-card>
+    </div>
+  </div>
+</div>

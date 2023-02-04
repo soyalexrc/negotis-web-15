@@ -1,0 +1,597 @@
+
+<toolbar-two (GetSucursalEmit)="getArticuloCantidad($event)"></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Artículo Panel
+  </h3>
+  <div class="row" *ngIf="modificarProductosHabilitado">
+    <div class="col-md-4">
+      <a [routerLink]="['/cliente/articulo/crear']">
+        <mat-card class="pointer">
+          Agregar Artículo
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4" *ngIf="visualizarActualizarPreciosHabilitado">
+      <a (click)="agregarArticuloPorNombre()">
+        <mat-card class="pointer">
+          Actualizar Precios
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4" *ngIf="puedeSincronizarExcel">
+      <a (click)="sincronizarExcel2()">
+        <mat-card class="pointer">
+         Sincronizar Excel
+        </mat-card>
+      </a>
+
+    </div>
+    <div class="col-md-4" style="float:right;" *ngIf="this.fatman">
+      <label style="color: blue"> Cotización Dolar</label>
+      <input type="text" [(ngModel)]="cotizacionDolar"   class="form-control">
+
+    <div (click)="guardarCotizacion()" *ngIf="this.cotizacionDolar != null" class="input-group-append">
+      <span class="input-group-text" id="basic-addon2-monto">Guardar Cotización Dolar</span>
+    </div>
+  </div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Filtro libre (Nombre, Código, Marca, Rubro, Categoria, Proveedor)</label>
+          <input type="text" [(ngModel)]="filtroDescripcionArticulo"   class="form-control">
+        </div>
+      </div>
+  <div class="col-md-3" *ngIf="ocultarFiltros == false">
+    <div class="form-group">
+      <label>Stock Unidades</label>
+       <select type="text" [(ngModel)]="filtroUnidades" class="form-control">
+        <option [ngValue]="null">Seleccionar</option>
+        <option [ngValue]="-1">Menor a cero</option>
+        <option [ngValue]="1">Mayor a cero</option>
+        <option [ngValue]="0">Igual a cero</option>
+      </select>
+    </div>
+</div>
+<div class="col-md-3" *ngIf="ocultarFiltros == false">
+  <div class="form-group">
+    <label>Precio Base</label>
+     <select type="text" [(ngModel)]="filtroPrecioBase" class="form-control">
+      <option [ngValue]="null">Seleccionar</option>
+      <option [ngValue]="-1">Menor a cero</option>
+      <option [ngValue]="1">Mayor a cero</option>
+      <option [ngValue]="0">Igual a cero</option>
+    </select>
+  </div>
+</div>
+<div class="col-md-3" *ngIf="ocultarFiltros == false">
+  <div class="form-group">
+    <label>Precio Costo</label>
+     <select type="text" [(ngModel)]="filtroPrecioCosto" class="form-control">
+      <option [ngValue]="null">Seleccionar</option>
+      <option [ngValue]="-1">Menor a cero</option>
+      <option [ngValue]="1">Mayor a cero</option>
+      <option [ngValue]="0">Igual a cero</option>
+    </select>
+  </div>
+</div>
+<div class="col-md-3" *ngIf="ocultarFiltros == false">
+  <div class="form-group">
+    <label>Publicado Tienda</label>
+     <select type="text" [(ngModel)]="filtroTienda" class="form-control">
+      <option [ngValue]="null">Seleccionar</option>
+      <option [ngValue]="false">No Publicado</option>
+      <option [ngValue]="true">Publicado</option>
+    </select>
+  </div>
+</div>
+<div class="col-md-3" *ngIf="ocultarFiltros == false">
+  <div class="form-group">
+    <label>Precio Oferta</label>
+     <select type="text" [(ngModel)]="filtroPrecioOferta" class="form-control">
+      <option [ngValue]="null">Seleccionar</option>
+      <option [ngValue]="true">Mayor a cero</option>
+    </select>
+  </div>
+</div>
+<div class="col-md-3" *ngIf="ocultarFiltros == false">
+  <div class="form-group">
+    <label>Activos</label>
+     <select type="text" [(ngModel)]="filtroActivos" class="form-control">
+      <option [ngValue]="null">Seleccionar</option>
+      <option [ngValue]="1">Activo</option>
+      <option [ngValue]="0">Inactivo</option>
+    </select>
+  </div>
+</div>
+<div class="col-md-3" *ngIf="ocultarFiltros == false">
+  <div class="form-group">
+    <label>Filtro Imagen</label>
+     <select type="text" [(ngModel)]="filtroImagen" class="form-control">
+      <option [ngValue]="null">Seleccionar</option>
+      <option [ngValue]="1">Con Imagen</option>
+      <option [ngValue]="0">Sin Imagen</option>
+    </select>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="form-group">
+    <label>Rubro</label>
+    <input type="text" class="form-control" [(ngModel)]="rubroFiltro" [matAutocomplete]="autoRubro"
+      [formControl]="rubroCtrl">
+    <mat-autocomplete #autoRubro="matAutocomplete">
+      <mat-option (click)="getRubro(item)" *ngFor="let item of filteredRubro | async" [value]="item.Nombre">
+        <span *ngIf="rubroFiltro != null && rubroFiltro != ''">{{item.Nombre}}</span>
+        <span *ngIf="rubroFiltro == null || rubroFiltro == ''">Ingrese al menos un carácter</span>
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="form-group">
+    <label>Categoría Rubro</label>
+    <input type="text" class="form-control" [(ngModel)]="categoriaRubroFiltro" [matAutocomplete]="autoCR"
+      [formControl]="crCtrl">
+    <mat-autocomplete #autoCR="matAutocomplete">
+      <mat-option (click)="getRubro(item)" *ngFor="let item of filteredCR | async" [value]="item.Nombre">
+        <span *ngIf="categoriaRubroFiltro != null && categoriaRubroFiltro != ''">{{item.Nombre}}</span>
+        <span *ngIf="categoriaRubroFiltro == null || categoriaRubroFiltro == ''">Ingrese al menos un carácter</span>
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="form-group">
+    <label>Marca</label>
+    <input type="text" class="form-control" [(ngModel)]="marcaFiltro" [matAutocomplete]="autoMarca"
+      [formControl]="marcaCtrl">
+    <mat-autocomplete #autoMarca="matAutocomplete">
+      <mat-option (click)="getMarca(item)" *ngFor="let item of filteredMarca | async" [value]="item.Nombre">
+        <span *ngIf="marcaFiltro != null && marcaFiltro != ''">{{item.Nombre}}</span>
+        <span *ngIf="marcaFiltro == null || marcaFiltro == ''">Ingrese al menos un carácter</span>
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+</div>
+<div class="col-md-3" *ngIf="medinor">
+  <div class="form-group">
+    <label>Filtro Lote</label>
+    <input type="text" [(ngModel)]="filtroLote" class="form-control">
+  </div>
+</div>
+<!-- <div class="col-md-3">
+        <div class="form-group">
+          <label>ArtÍculo</label>
+          <input type="text" [(ngModel)]="articuloFiltro" class="form-control" [matAutocomplete]="autoArt"
+            [formControl]="artCtrl">
+          <mat-autocomplete #autoArt="matAutocomplete">
+            <mat-option *ngFor="let item of filteredArt | async" [value]="item.Articulo.Nombre">
+              <span> {{item.Articulo.Nombre}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado</label>
+          <select class="form-control" [(ngModel)]="estadoFiltro">
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Código</label>
+          <input type="text" class="form-control" [(ngModel)]="codigoFiltro" [matAutocomplete]="autoCodigo"
+            [formControl]="codigoCtrl">
+          <mat-autocomplete #autoCodigo="matAutocomplete">
+            <mat-option *ngFor="let item of filteredCodigo | async | unique" [value]="item.Articulo?.CodigoDeBarras">
+              <span *ngIf="codigoFiltro != null && codigoFiltro != ''">{{item.Articulo?.CodigoDeBarras}}</span>
+              <span *ngIf="codigoFiltro == null || codigoFiltro == ''">Ingrese al menos un carácter</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div> -->
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()"  *ngIf="filtroEnterHabilitado == false" class="btn btn-warning">Buscar(F2)</button>
+      <button (click)="buscar()"  *ngIf="filtroEnterHabilitado" class="btn btn-warning">Buscar(Enter)</button>
+      <button (click)="calculoPrecio()" class="btn btn-warning" style="margin-left:10px;">Calcular Precio</button>
+      <div *ngIf="resetSelectList == true" style="margin-left:10px;">
+
+        <a target="_blank"
+          href="{{globalServ?.urlApi}}/ApiArticulo/Get/Pdf/Listado/Precios?filtro={{filtroDescripcionArticulo}}&idClienteNegotis={{idClienteNegotis}}&iva={{iva}}&idLista={{idLista}}&idSucursal={{sucursalActual.Sucursal.Id}}&listaResaltar={{this.articulosImprimir}}&idUser={{idUser}}&filtroUnidades={{this.filtroUnidades}}&filtroTienda={{filtroTienda}}&filtroPrecioOferta={{filtroPrecioOferta}}&filtroPrecioCosto={{filtroPrecioCosto}}&filtroPrecioBase={{filtroPrecioBase}}&filtroActivo={{filtroActivos}}&filtroImagen={{filtroActivos}}&token={{token}}"
+          class="btn btn-primary">Imprimir</a>
+
+      </div>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <!--calculo de precios-->
+  <div class="row">
+    <div class="col-md-4" *ngIf="visualizarListaPreciosHabilitado">
+      <mat-card>
+        <span class="form-group">
+          <label>Lista de Precios (Activas)</label>
+          <select size="3" class="form-control" [(ngModel)]="idLista">
+            <!-- <option (click)="sinAumneto();" value="0">Sin aumento</option> -->
+            <option (click)="getLista(item);" *ngFor="let item of listadoPrecios" value="{{item?.Id}}">{{item?.Nombre}}
+            </option>
+          </select>
+        </span>
+      </mat-card>
+
+
+    </div>
+
+    <!--  <div class="col-md-4">
+      <mat-card>
+        <span class="form-group">
+          <label>IVA</label>
+          <div>
+            <input class="iva" (change)="ivaFunc($event)" type="checkbox" [checked]="iva">
+          </div>
+        </span>
+      </mat-card>
+    </div>-->
+   <!-- <div class="mb-3" *ngIf="visualizarStockValorHabilitado">-->
+      <div class="col-md-4 ng-star-inserted" *ngIf="visualizarStockValorHabilitado">
+        <div class="col-md-12">
+          <mat-card>
+            <div><strong>Capital Existente</strong></div>
+            <div>$ {{totalCapitalExistente | number:'1.1-2'}}</div>
+          </mat-card>
+        </div>
+      </div>
+      <div class="col-md-4 ng-star-inserted" *ngIf="visualizarStockValorHabilitado">
+        <div class="col-md-12">
+          <mat-card>
+            <div><strong>Capital Venta</strong></div>
+            <div>$ {{totalCapitalVenta | number:'1.1-2'}}</div>
+          </mat-card>
+        </div>
+      </div>
+
+
+    <!--</div>-->
+  </div>
+
+
+  <div>
+    <div class="col-md-6" *ngIf="sincronizarExcel">
+      <div class="col-md-4" >
+        <a (click)="sincronizarEcommerce()"
+           class="btn btn-primary pdf-btn mb-2" style="color: white !important; max-width: 260px;">Sincronizar Excel Ecommerce
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4" *ngIf="mostrarDatosEcommerce">
+        <a (click)="enviarListaEcommerce(true)"
+          class="btn btn-primary pdf-btn mb-2" style="color: white !important; max-width: 260px;">Alta Lista Filtrada Ecommerce
+        </a>
+      </div>
+      <div class="col-md-4" *ngIf="mostrarDatosEcommerce">
+        <a (click)="enviarListaEcommerce(false)"
+          class="btn btn-primary pdf-btn mb-2" style="color: white !important; max-width: 260px;">Baja Lista Filtrada Ecommerce
+        </a>
+      </div>
+      <div class="col-md-4" *ngIf="visualizarListaActivos">
+        <a (click)="ActivarListado(true)"
+           class="btn btn-primary pdf-btn2 mb-2" style="color: white !important;">Cambiar Filtrado a Activo
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4" *ngIf="mostrarDatosEcommerce">
+        <a (click)="enviarListaOfertasEcommerce(true)"
+          class="btn btn-primary pdf-btn mb-2" style="color: white !important; max-width: 300px;">Alta Lista Ofertas Filtrada Ecommerce
+        </a>
+      </div>
+      <div class="col-md-4" *ngIf="mostrarDatosEcommerce">
+        <a (click)="enviarListaOfertasEcommerce(false)"
+          class="btn btn-primary pdf-btn mb-2" style="color: white !important; max-width: 300px;">Baja Lista Ofertas Filtrada Ecommerce
+        </a>
+      </div>
+
+      <div class="col-md-4" *ngIf="visualizarListaActivos">
+        <a (click)="ActivarListado(false)"
+           class="btn btn-primary pdf-btn2 mb-2" style="color: white !important;">Cambiar Filtrado a Inactivo
+        </a>
+      </div>
+    </div>
+
+
+    <div class="row"   *ngIf="this.articulosResaltar.length > 0 && mostrarDatosEcommerce">
+      <div class="col-md-4">
+        <a (click)="marcarArticuloEcommerce(true)"
+           class="btn btn-primary pdf-btn mb-2" style="color: white !important; max-width: 260px;">Alta Articulo Ecommerce
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a (click)="marcarArticuloEcommerce(false)"
+           class="btn btn-primary pdf-btn mb-2" style="color: white !important; max-width: 260px;">Baja Articulo Ecommerce
+        </a>
+      </div>
+    </div>
+    <div class="row"   *ngIf="this.articulosResaltar.length > 0 && mostrarDatosEcommerce">
+
+      <div class="col-md-4">
+      <a (click)="marcarArticuloOferta(true)"
+         class="btn btn-primary pdf-btn mb-2" style="color: white !important;">Agregar Oferta Ecommerce
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a (click)="marcarArticuloOferta(false)"
+         class="btn btn-primary pdf-btn2 mb-2" style="color: white !important;">Cancelar Oferta Ecommerce
+      </a>
+    </div>
+  </div>
+
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" *ngIf="modificarProductosHabilitado" class="sticky"><input type="checkbox"  (change)="seleccionarTodosArticulosResaltar($event)"></th>
+          <th scope="col" *ngIf="visualizarIDEstadoHabilitado" class="sticky">#</th>
+          <th scope="col" *ngIf="modificarProductosHabilitado" class="sticky">*</th>
+          <th scope="col" class="sticky"></th>
+          <th scope="col" class="sticky">ArtÍculo</th>
+          <th scope="col" class="sticky" *ngIf="ocultarCodigoUnidades == false">Código</th>
+          <th scope="col" class="sticky" >Fecha Act.</th>
+          <th scope="col" class="sticky" *ngIf="tieneRolMP">Mat. Primas</th>
+          <th scope="col" class="sticky" *ngIf="mostrarDatosEcommerce">Tienda</th>
+          <th scope="col"  class="sticky" *ngIf="ocultarCodigoUnidades == false && tieneRolCliente != true">Unidades</th>
+          <th scope="col" class="sticky">Marca</th>
+          <th scope="col" *ngIf="modificarProductosHabilitado && ocultarPrecios == false" class="sticky">Costo</th>
+          <th scope="col" *ngIf="visualizarPrecioDolarHabilitado && ocultarPrecios == false" class="sticky">Precio Dolar</th>
+          <th scope="col" *ngIf="visualizarPorcentajeHabilitado && ocultarPrecios == false" class="sticky">Porcentaje</th>
+          <th scope="col" class="sticky" *ngIf="ocultarPrecios == false">Precio Base</th>
+          <th scope="col" class="sticky" *ngIf="medinor">Lote</th>
+          <th scope="col" class="sticky" *ngIf="medinor">Fecha Ingreso</th>
+          <th scope="col" class="sticky" *ngIf="medinor">Fecha Egreso</th>
+          <th scope="col" class="sticky" *ngIf="visualizarPrecioOferta && ocultarPrecios == false">Porcentaje Oferta</th>
+          <th scope="col" class="sticky" *ngIf="visualizarPrecioOferta && ocultarPrecios == false">Precio Oferta</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Porcentaje 1</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Precio 1</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Porcentaje 2</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Precio 2</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Porcentaje 3</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Precio 3</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Porcentaje 4</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Precio 4</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Porcentaje 5</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Precio 5</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Porcentaje 6</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Precio 6</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Porcentaje 7</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Precio 7</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Porcentaje 8</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Precio 8</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Porcentaje 9</th>
+          <th scope="col" class="sticky" *ngIf="agregarLista && ocultarPrecios == false">Precio 9</th>
+
+          <th scope="col" class="sticky">Rubro</th>
+          <th scope="col" *ngIf="verProveedorHabilitado" class="sticky">Proveedor</th>
+          <th scope="col" class="sticky">Categoría Rubro</th>
+          <th scope="col" *ngIf="visualizarCantidadXPackHabilitado" class="sticky">Cant. x Pack</th>
+          <th scope="col" *ngIf="Ubicaciones" class="sticky">Ubicación Depósito</th>
+          <th scope="col" *ngIf="Ubicaciones" class="sticky">Ubicación Artículo</th>
+          <th scope="col" *ngIf="visualizarIDEstadoHabilitado" class="sticky">Estado</th>
+          <th scope="col" *ngIf="visualizarTalle" class="sticky">Talle</th>
+          <th scope="col" *ngIf="visualizarColor" class="sticky">Color</th>
+          <th scope="col" *ngIf="modificarProductosHabilitado" class="sticky">*</th>
+        </tr>
+      </thead>
+      <tbody  *ngFor="let item of listadoArticulo; let i = index">
+        <tr>
+          <th scope="row" *ngIf="modificarProductosHabilitado" ><input [(ngModel)]="item.pedidosPendienteChecked" type="checkbox" (change)="cambiarEstado($event, item.id)"></th>
+          <th scope="row" *ngIf="visualizarIDEstadoHabilitado">{{i+1}}</th>
+          <td *ngIf="modificarProductosHabilitado"><a routerLink="/cliente/articulo/editar/{{item.id}}/#"
+            [queryParams]="{ panelQuery: this.filtroDescripcionArticulo, pageQuery: this.page, filterStock : this.filtroUnidades, filterPrecioOferta: this.filtroPrecioOferta,
+              filtroPrecioCosto: this.filtroPrecioCosto,filtroPrecioBase:this.filtroPrecioBase, filtroTienda: this.filtroTienda, filtroActivos : this.filtroActivos, filtroImagen: this.filtroImagen}"><span class="pointer">Editar</span></a>
+          </td>
+          <th scope="row" class="text-center">
+            <span (click)="fotoModal(item.id)" style="height: 50px;" *ngIf="item.existe == false" class="fas fa-image pointer"></span>
+            <img (click)="fotoModal(item.id)" style="height: 50px;" class="image-sample-img pointer" *ngIf="item.existe == true" src="{{item.imagen}}">
+          </th>
+          <td >{{item.nombre}}</td>
+          <td *ngIf="ocultarCodigoUnidades == false && visualizarCodigoArticulo == false">
+            {{item.codigoDeBarras}}
+          </td>
+          <td *ngIf="ocultarCodigoUnidades == false && visualizarCodigoArticulo == true">
+            {{item.codigoArticulo}}
+          </td>
+          <td >
+            {{item.fechaActualizacion}}
+          </td>
+
+          <td  *ngIf="tieneRolMP" (click)="getMateriaPrima(item.id)" class="cant-art">Ver Mat. Prima/s</td>
+          <td *ngIf="mostrarDatosEcommerce && item.articuloEcommerce == true && item.activo == true || mostrarDatosEcommerce && item.articuloOfertaEcommerce == true && item.activo == true" style="color: blue;">Publicado</td>
+          <td *ngIf="(mostrarDatosEcommerce && item.articuloEcommerce == false  && item.articuloOfertaEcommerce == false) || (mostrarDatosEcommerce && item.activo != true)" style="color: red;">No Publicado</td>
+          <td *ngIf="(modificarUnidadesHabilitado == false && ocultarCodigoUnidades == false) && tieneRolCliente != true">
+            {{item.cantidad}}
+            <span *ngIf="item.kilogramo == true">Kilogramo</span>
+            <span *ngIf="item.unidad == true">Unidad</span>
+            <span *ngIf="item.litro == true">Litro</span>
+            <span *ngIf="item.horas == true">Horas</span>
+            <span *ngIf="item.metro == true">Metros</span>
+            <span *ngIf="item.kilometro == true">Kilometros</span>
+          </td>
+          <td (click)="openCantidadModal(item,i)" class="cant-art"
+            *ngIf="((modificarUnidadesHabilitado || tieneRolCliente) && item.cantidad != null && ocultarCodigoUnidades == false && tieneRolCliente != true)">
+            {{item.cantidad }}
+            <span *ngIf="item.kilogramo == true">Kilogramo</span>
+            <span *ngIf="item.unidad == true">Unidad</span>
+            <span *ngIf="item.litro == true">Litro</span>
+            <span *ngIf="item.horas == true">Horas</span>
+            <span *ngIf="item.metro == true">Metros</span>
+            <span *ngIf="item.kilometro == true">Kilometros</span>
+          </td>
+          <td>{{item.nombreMarca}}</td>
+
+
+          <td (click)="openPrecioCostoModal(item,i)" class="cant-art" *ngIf="modificarProductosHabilitado && ocultarPrecios == false">
+            {{item.precioCosto}}
+          </td>
+
+          <td *ngIf="visualizarPrecioDolarHabilitado && ocultarPrecios == false">
+            {{item.precioDolar}}
+          </td>
+
+          <td  (click)="openPorcentajeModal(item,i)" class="cant-art" *ngIf="visualizarPorcentajeHabilitado && ocultarPrecios == false">
+            {{item.porcentaje}}
+          </td>
+
+          <td (click)="openPrecioBaseModal(item,i)" class="cant-art"
+            *ngIf="modificarProductosHabilitado && item.precioConAumento == null && ocultarPrecios == false">
+            {{item.precioBase | number:'1.1-2'}}
+          </td>
+          <td *ngIf="!modificarProductosHabilitado && item.precioConAumento == null && ocultarPrecios == false">
+            {{item.precioBase | number:'1.1-2'}}</td>
+
+            <td *ngIf="medinor">
+              {{item.lote}}
+            </td>
+            <td *ngIf="medinor">
+              {{item.fechaIngreso}}
+            </td>
+            <td *ngIf="medinor">
+              {{item.fechaEgreso}}
+            </td>
+          <td *ngIf="ocultarPrecios == false && item.precioConAumento != null">{{item.precioConAumento | number:'1.1-2'}}</td>
+          <td (click) = "openPorcentajeOModal(item,1)" class="cant-art" *ngIf="visualizarPrecioOferta && ocultarPrecios == false && BloquearPrecios == false">{{item.porcentajeO}}</td>
+          <td (click) = "openPrecioOfertaModal(item,1)" class="cant-art" *ngIf="visualizarPrecioOferta && ocultarPrecios == false && BloquearPrecios == false">{{item.precioXBulto}}</td>
+
+          <td (click) = "openPorcentaje123Modal(item,1)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.porcentaje1}}</td>
+          <td (click) = "openPrecioModal1(item,1)"  class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.precio1}}</td>
+
+          <td (click) = "openPorcentaje123Modal(item,2)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.porcentaje2}}</td>
+          <td  (click) = "openPrecioModal2(item,2)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.precio2}}</td>
+
+          <td (click) = "openPorcentaje123Modal(item,3)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.porcentaje3}}</td>
+          <td (click) = "openPrecioModal3(item,3)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.precio3}}</td>
+
+          <td (click) = "openPorcentaje123Modal(item,4)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.porcentaje4}}</td>
+          <td (click) = "openPrecioModal4(item,4)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.precio4}}</td>
+
+          <td (click) = "openPorcentaje123Modal(item,5)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.porcentaje5}}</td>
+          <td (click) = "openPrecioModal5(item,5)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.precio5}}</td>
+
+          <td (click) = "openPorcentaje123Modal(item,6)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.porcentaje6}}</td>
+          <td (click) = "openPrecioModal6(item,6)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.precio6}}</td>
+          <td (click) = "openPorcentaje123Modal(item,7)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.porcentaje7}}</td>
+          <td (click) = "openPrecioModal7(item,7)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.precio7}}</td>
+
+          <td (click) = "openPorcentaje123Modal(item,8)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.porcentaje8}}</td>
+          <td (click) = "openPrecioModal8(item,8)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.precio8}}</td>
+
+          <td (click) = "openPorcentaje123Modal(item,9)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.porcentaje9}}</td>
+          <td (click) = "openPrecioModal9(item,9)" class="cant-art" *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == false">{{item.precio9}}</td>
+
+
+          <td   *ngIf="visualizarPrecioOferta && ocultarPrecios == false && BloquearPrecios == true">{{item.porcentajeO}}</td>
+          <td   *ngIf="visualizarPrecioOferta && ocultarPrecios == false &&  BloquearPrecios == true">{{item.precioXBulto}}</td>
+
+          <td   *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.porcentaje1}}</td>
+          <td  *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.precio1}}</td>
+
+          <td   *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.porcentaje2}}</td>
+          <td  *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.precio2}}</td>
+
+          <td   *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.porcentaje3}}</td>
+          <td   *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.precio3}}</td>
+
+          <td   *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.porcentaje4}}</td>
+          <td  *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.precio4}}</td>
+
+          <td   *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.porcentaje5}}</td>
+          <td   *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.precio5}}</td>
+
+          <td   *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.porcentaje6}}</td>
+          <td  *ngIf="agregarLista && ocultarPrecios == false && BloquearPrecios == true">{{item.precio6}}</td>
+
+
+          <td>{{item.nombreRubro}}</td>
+          <td *ngIf="verProveedorHabilitado">{{item.nombreProveedor}}</td>
+          <td>{{item.nombreCategoriaRubro}}</td>
+          <td *ngIf="visualizarCantidadXPackHabilitado"><span >{{item.cantidadPorPack}}</span></td>
+          <td *ngIf="Ubicaciones"><span >{{item.ubicacionDeposito}}</span></td>
+          <td *ngIf="Ubicaciones"><span >{{item.ubicacionArticulo}}</span></td>
+          <td *ngIf="visualizarIDEstadoHabilitado && tieneRolActivoSucursal == false">
+            <span *ngIf="item.activo != false">Activo</span>
+            <span *ngIf="item.activo == false">Inactivo</span>
+          </td>
+          <td *ngIf="visualizarIDEstadoHabilitado && tieneRolActivoSucursal">
+            <span *ngIf="item.activoSucursal != false">Activo</span>
+            <span *ngIf="item.activoSucursal == false">Inactivo</span>
+          </td>
+          <!-- <td (click)="openCantidadModal(item,i)" class="cant-art" *ngIf="modificarProductosHabilitado && item.cantidad == null">
+            {{cantidad[i]}}
+            <span *ngIf="item.kilogramo == true">Kilogramo</span>
+            <span *ngIf="item.unidad == true">Unidad</span>
+          </td> -->
+
+          <td *ngIf="visualizarTalle">
+            {{item.talle}}
+          </td>
+          <td *ngIf="visualizarColor">
+            {{item.color}}
+          </td>
+
+          <td *ngIf="modificarProductosHabilitado"><span (click)="delete(item.id)"
+              class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination class="mb-3" (goPage)="goToPage($event)"  (goNext)="onNext()" (goLast)="onLast()" (goPrev)="onPrev()" [pagesToShow]="20"
+      [page]="page" [perPage]="limit" [count]="total">
+    </app-pagination>
+    <div style="display:flex" *ngIf="ocultarFiltros == false">
+      <div (click)="calculoPrecio()" class="btn btn-warning pdf-btn">Calcular Precio</div>
+      <div *ngIf="resetSelectList == true" style="margin-left:10px;" (click)="reset()" class="btn btn-danger pdf-btn">
+        Reset</div>
+      <div *ngIf="resetSelectList == true" style="margin-left:10px;">
+
+        <a target="_blank"
+          href="{{globalServ?.urlApi}}/ApiArticulo/Get/Pdf/Listado/Precios?filtro={{filtroDescripcionArticulo}}&idClienteNegotis={{idClienteNegotis}}&iva={{iva}}&idLista={{idLista}}&idSucursal={{sucursalActual.Sucursal.Id}}&listaResaltar={{this.articulosImprimir}}&idUser={{idUser}}&filtroUnidades={{filtroUnidades}}&filtroTienda={{filtroTienda}}&filtroPrecioOferta={{filtroPrecioOferta}}&filtroPrecioCosto={{filtroPrecioCosto}}&filtroPrecioBase={{filtroPrecioBase}}&filtroActivo={{filtroActivos}}&filtroImagen={{filtroActivos}}&filtroRubro={{rubroFiltro}}&filtroMarca={{marcaFiltro}}&filtroCategoriaRubro={{categoriaRubroFiltro}}&token={{token}}"
+          class="btn btn-primary pdf-btn">Imprimir</a>
+
+      </div>
+      <div *ngIf="tieneRolEtiquetas" style="margin-left:10px;" >
+        <a target="_blank"
+        href="{{globalServ?.urlApi}}/ApiArticulo/Get/Pdf/Listado/Etiquetas?filtro={{filtroDescripcionArticulo}}&idClienteNegotis={{idClienteNegotis}}&iva={{iva}}&idLista={{idLista}}&idSucursal={{sucursalActual.Sucursal.Id}}&listaResaltar={{this.articulosImprimir}}&token={{token}}"
+        class="btn btn-primary pdf-btn">Imprimir Etiquetas</a>
+      </div>
+      <div *ngIf="tieneRolEtiquetas80mm" style="margin-left:10px;" >
+        <a target="_blank"
+        href="{{globalServ?.urlApi}}/ApiArticulo/Get/Pdf/Listado/Etiquetas?filtro={{filtroDescripcionArticulo}}&idClienteNegotis={{idClienteNegotis}}&iva={{iva}}&idLista={{idLista}}&idSucursal={{sucursalActual.Sucursal.Id}}&listaResaltar={{this.articulosImprimir}}&es80mm=true&token={{token}}"
+        class="btn btn-primary pdf-btn">Imprimir Etiquetas 80mm</a>
+      </div>
+      <div style="margin-left:10px;">
+      <button (click)="refresh()" class="btn btn-secondary btn-limpiard">Refrescar Pantalla</button>
+    </div>
+    <div style="margin-left:10px;" *ngIf="sincronizarApi">
+      <button (click)="obtenerApi()" class="btn btn-secondary btn-limpiard">Obtener Articulos</button>
+    </div>
+    <div style="margin-left:10px;" *ngIf="sincronizarApi">
+      <button (click)="obtenerApiFiltrado()" class="btn btn-secondary btn-limpiard">Obtener Articulos Filtrados</button>
+    </div>
+    </div>
+
+  </div>
+
+</div>

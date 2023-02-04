@@ -1,0 +1,28 @@
+.image-sample {
+    margin: 5px;
+    border: 7px solid #fff;
+   /* white-space: nowrap;*/
+    width: 100%;
+    height: 350px;
+    background-color: #ccc;
+    text-align: center;
+    /*float: left;*/
+}
+
+.image-sample-img {
+    max-height: 335px;
+    max-width: 99.9%;
+    vertical-align: middle;
+    margin-left:0;
+}
+
+.helper {
+    margin: 0px;
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+ }
+
+ .clean{
+     margin-left: 5px;
+ }

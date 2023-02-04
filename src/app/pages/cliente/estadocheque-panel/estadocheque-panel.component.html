@@ -1,0 +1,42 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container" *ngIf="roles?.FINANZAS == true || rolClienteNegotis == 'true'">
+  <h3 class="title">
+    Panel Estado de Cheques
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a [routerLink]="['/cliente/finanzas/estadocheque/crear']">
+        <mat-card class="pointer">
+          Agregar Estado de Cheque
+        </mat-card>
+      </a>
+    </div>
+  </div>
+
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre al Comprar</th>
+          <th scope="col">Representa (Valor)</th>
+          <th scope="col">Representa (Efectivo)</th>
+          <th scope="col">Tipo de Operacion</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of lista; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.descripcion}}</td>
+          <td>{{getRepresentacionTexto(item.modificadorValor)}}</td>
+          <td>{{getRepresentacionTexto(item.modificadorCaja)}}</td>
+          <td>{{getTipoOperacionTexto(item.tipoOperacion)}}</td>
+          <td><a routerLink="/cliente/finanzas/estadocheque/editar/{{item.id}}"><span class="pointer">Editar</span></a></td>
+          <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

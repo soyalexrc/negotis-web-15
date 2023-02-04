@@ -1,0 +1,136 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idMateriaPrima == 0">Crear</span>
+          <span *ngIf="idMateriaPrima != 0">Editar</span>
+          Materia Prima
+        </h3>
+
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <div class="form-group">
+            <label class="obligatorio">Materia Prima (Nombre)</label>
+            <input type="text" formControlName="materiaPrima" class="form-control" [(ngModel)]="materiaPrima">
+            <small *ngIf="myForm.get('materiaPrima')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese Materia Prima
+            </small>
+            <small *ngIf="post?.RepetidoNombre == true" class="form-text text-muted">
+              Nombre Materia Prima existente
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label class="obligatorio">Codigo de barras</label>
+            <input type="text" formControlName="codigoDeBarras" class="form-control"
+              [(ngModel)]="codigoDeBarras">
+            <small *ngIf="myForm.get('codigoDeBarras')?.hasError('required') && submitted==true"
+              class="form-text text-muted">
+              Ingrese código</small>
+            <small *ngIf="post?.RepetidoCodigo == true " class="form-text text-muted">Código de barras existente</small>
+          </div>
+
+          <div class="form-group">
+            <label class="obligatorio">Marca</label>
+            <select formControlName="idMarca" class="form-control" [(ngModel)]="idMarca">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listadoMarcas" value="{{item.Id}}">{{item.Nombre}}</option>
+            </select>
+            <small *ngIf="myForm.get('idMarca')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese marca</small>
+          </div>
+
+          <div class="form-group">
+            <label class="obligatorio">Proveedor</label>
+            <select formControlName="idProveedor" class="form-control" [(ngModel)]="idProveedor">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listadoProveedores" value="{{item.id}}">{{item.nombre}}</option>
+            </select>
+            <small *ngIf="myForm.get('idProveedor')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Seleccione Proveedor
+            </small>
+          </div>
+
+          <div class="form-group" >
+            <label class="obligatorio">Rubro</label>
+            <select formControlName="idRubro" class="form-control" [(ngModel)]="idRubro">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listadoRubro" value="{{item.Id}}">{{item.Nombre}}
+                ({{item?.CategoriaRubro?.Nombre}})</option>
+            </select>
+            <small *ngIf="myForm.get('idRubro')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese rubro</small>
+          </div>
+
+          <div class="form-group">
+            <label class="obligatorio">Precio Costo</label>
+            <input type="number" formControlName="precioCosto" class="form-control"
+              [(ngModel)]="precioCosto" (change)="onChange()">
+            <small
+              *ngIf="(myForm.get('precioCosto')?.hasError('required') || myForm.get('precioCosto')?.hasError('pattern')) && submitted==true"
+              class="form-text text-muted">
+              Ingrese precio costo mayor o igual a 0</small>
+          </div>
+
+          <div class="form-group">
+            <label>Unidad de Medida</label>
+            <div>
+              <label>
+                <input type="radio" (click)="changeUnidad()" [checked]="unidad">
+                Unidad
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" (click)="changeKilogramo()" [checked]="kilogramo">
+                Kilogramo/Litro
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" (click)="changeGramo()" [checked]="gramo">
+                Gramos/Mililitros
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" (click)="changeMetro()" [checked]="metro">
+                Metros
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label >Estado</label>
+            <select formControlName="activo" class="form-control" [(ngModel)]="activo">
+              <option value="">Seleccionar</option>
+              <option value="true">Activo</option>
+              <option value="false">Inactivo</option>
+            </select>
+            <small *ngIf="myForm.get('activo')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese estado
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label >Eliminar</label>
+            <select formControlName="eliminar" class="form-control" [(ngModel)]="eliminar">
+              <option value="false">No</option>
+              <option value="true">Si</option>
+            </select>
+            <small *ngIf="myForm.get('eliminar')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Complete este campo
+            </small>
+          </div>
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

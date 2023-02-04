@@ -1,0 +1,87 @@
+<toolbar-two></toolbar-two>
+<div class="container">
+  <h3 class="title">
+    Cuentas Clientes
+  </h3>
+  <div class="margin-filtro">
+    <mat-action-row>
+          <!--Fecha Desde-->
+                  
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Fecha Desde</label>
+        <input type="text" class="form-control" (click)="fechaDesdeFunc()" [(ngModel)]="fechaDesde" readonly>
+      </div>
+    </div>
+
+    <!--Fecha Hasta-->
+    
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Fecha Hasta</label>
+        <input type="text" class="form-control" (click)="fechaHastaFunc()" [(ngModel)]="fechaHasta" readonly>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Filtrar Mes</label>
+        <select class="form-control" [(ngModel)]="filtroMes">
+          <option [ngValue]="1">Enero</option>
+          <option [ngValue]="2">Febrero</option>
+          <option [ngValue]="3">Marzo</option>
+          <option [ngValue]="4">Abril</option>
+          <option [ngValue]="5">Mayo</option>
+          <option [ngValue]="6">Junio</option>
+          <option [ngValue]="7">Julio</option>
+          <option [ngValue]="8">Agosto</option>
+          <option [ngValue]="9">Septiembre</option>
+          <option [ngValue]="10">Octubre</option>
+          <option [ngValue]="11">Noviembre</option>
+          <option [ngValue]="12">Diciembre</option>                 
+        </select>
+      </div>   
+    </div> 
+
+
+        <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+      </mat-action-row>
+  </div>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>   
+          <th scope="col">Razon Social</th>
+          <th scope="col">Direccion</th>          
+          <th scope="col">Saldo</th>          
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of ClientesLista; let i = index">
+        <tr>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.RazonSocial}}</td>
+          <td>{{item.DireccionSucursalCliente}}</td>          
+          <td >
+            {{item.totalCuentas}}
+          </td>                         
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination class="mb-3"
+    (goPage)="goToPage($event)"
+    (goNext)="onNext()"
+    (goPrev)="onPrev()"
+    [pagesToShow]="20"
+    [page]="page"
+    [perPage]="limit"
+    [count]="total">
+    </app-pagination>
+  </div>
+  <div style="display:flex">
+    <a target="_blank"
+        href="{{urlImprimir}}"
+        class="btn btn-primary pdf-btn mb-2">Imprimir Cuenta
+      </a>      
+  </div>
+</div>

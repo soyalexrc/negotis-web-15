@@ -1,0 +1,22 @@
+tbody:hover{
+    background: #ededed;
+    cursor: pointer;
+}
+.btn {
+    text-align: center;
+    width: 80px;
+    height: 35px;
+  }
+  table {
+    margin-top: 10px;    
+  }
+  .fullscreen{
+    font-size: 14px;
+  }
+  .sticky{
+    position: sticky;
+    top: 0;
+    background-color: white;
+  }
+
+

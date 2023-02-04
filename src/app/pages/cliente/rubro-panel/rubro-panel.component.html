@@ -1,0 +1,114 @@
+<toolbar-two></toolbar-two>
+
+<div class="container">
+  <h3 class="title">
+    Rubro Panel
+  </h3>
+  <div class="row">
+    <div class="col-md-4">
+      <a [routerLink]="['/cliente/rubro/crear']">
+        <mat-card class="pointer">
+          Agregar Rubro
+        </mat-card>
+      </a>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"></div>
+  </div>
+  <!--filtro-->
+  <div class="margin-filtro"></div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filtro
+    </mat-expansion-panel-header>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Rubro</label>
+          <input type="text" class="form-control" [(ngModel)]="rubroFiltro" [matAutocomplete]="autoRubro"
+            [formControl]="rubroCtrl">
+          <mat-autocomplete #autoRubro="matAutocomplete">
+            <mat-option *ngFor="let item of filteredRubro | async" [value]="item.Nombre">
+              <span>{{item.Nombre}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Categoría Rubro</label>
+          <input type="text" class="form-control" [(ngModel)]="categoriaFiltro" [matAutocomplete]="autoCat"
+            [formControl]="catCtrl">
+          <mat-autocomplete #autoCat="matAutocomplete">
+            <mat-option *ngFor="let item of filteredCat | async | unique" [value]="item.CategoriaRubro.Nombre">
+              <span *ngIf="categoriaFiltro != null && categoriaFiltro != ''">{{item.CategoriaRubro.Nombre}}</span>
+              <span *ngIf="categoriaFiltro == null || categoriaFiltro == ''">Ingrese al menos un carácter</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Estado</label>
+          <select class="form-control" [(ngModel)]="estadoFiltro">
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>            
+          </select>
+        </div>
+      </div>
+      <!-- <div class="col-md-3">
+        <div class="form-group">
+          <label>Código</label>
+          <input type="text" class="form-control" [(ngModel)]="codigoFiltro">
+        </div>
+      </div>-->
+    </div>
+    <mat-action-row>
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
+      <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <div>
+    <!--tabla-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" *ngIf="tieneRolImagen"></th>
+          <th scope="col">#</th>
+          <th scope="col">Rubro</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Estado</th>
+          <!--<th scope="col">Código</th>-->
+          <th scope="col">*</th>
+          <th scope="col">*</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listadoRubro; let i = index">
+        <tr>
+          <th scope="row" class="text-center" *ngIf="tieneRolImagen">
+            <span (click)="fotoModal(item.Id)" style="height: 50px;" *ngIf="item.existe == false" class="fas fa-image pointer"></span>
+            <img (click)="fotoModal(item.Id)" style="height: 50px;" class="image-sample-img pointer" *ngIf="item.existe == true" src="{{item.imagen}}">
+          </th>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.Nombre}}</td>
+          <td>{{item.CategoriaRubro.Nombre}}</td>
+          <!--<td>{{item.Codigo}}</td>-->
+          <td *ngIf="item.Activo == true">Activo</td>
+          <td *ngIf="item.Activo == false">Inactivo</td> 
+          <td *ngIf="item.Activo == null">Sin Asignar</td> 
+          <td><a routerLink="/cliente/rubro/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
+          <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination class="mb-3"
+    (goPage)="goToPage($event)"
+    (goNext)="onNext()"
+    (goPrev)="onPrev()"
+    [pagesToShow]="100"
+    [page]="page"
+    [perPage]="limit"
+    [count]="total">
+    </app-pagination>
+  </div>
+</div>

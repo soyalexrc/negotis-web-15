@@ -1,0 +1,117 @@
+.toolbar-icon {
+    padding: 0 14px;
+  }
+  
+.toolbar-spacer {
+    flex: 1 1 auto;
+}
+
+.toolbar-content{
+    top: 0;
+    z-index: 999;
+    position: fixed;
+    background: #dbbb2c;
+    color: white;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+.logo{
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.direccion-usuario{
+    background: #00C851;
+    padding: 5px 5px 5px 5px;
+    margin-right: 15px;
+    border-radius: 5px;
+    border: 2px solid rgb(255, 255, 255);
+}
+
+.direccion-usuario {
+    animation: blink-animation 1s steps(5, start) infinite;
+    -webkit-animation: blink-animation 1s steps(5, start) infinite;
+  }
+  .user-icon{
+    animation: blink-animation 1s steps(5, start) infinite;
+    -webkit-animation: blink-animation 1s steps(5, start) infinite; 
+  }
+  @keyframes blink-animation {
+    to {
+      background: #dbbb2c;
+    }
+  }
+  @-webkit-keyframes blink-animation {
+    to {
+        background: #00C851;
+    }
+  }
+
+/*sidenav*/
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 100px;
+    }
+    
+    .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    }
+    
+    .sidenav a:hover {
+    color: #f1f1f1;
+    }
+    
+    .sidenav .closebtn {
+    position: absolute;
+    top: 60px;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    }
+
+    .direccion{
+        font-size: 15px;
+        color: #dbbb2c;
+    }
+
+    .box-data-sidenav{
+        margin-right: 10px;
+        color: white;
+        font-size: 15px;
+    }
+
+    .user-icon{
+        background: #00C851;
+        padding: 5px 10px 5px 10px;
+        border-radius: 5px;
+        margin-right: 10px;
+        color: white;
+        font-size: 15px;
+        border: 2px solid rgb(255, 255, 255);
+    }
+    
+    @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 105px;}
+    .sidenav a {font-size: 18px;}
+    }
+
+    @media screen and (max-width: 646px) {
+        .direccion-usuario{display: none}
+    }
+
+    @media screen and (min-width: 646px) {
+        .user-icon{display: none}
+    }

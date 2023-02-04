@@ -1,0 +1,428 @@
+<toolbar-two (GetSucursalEmit)="getSucursalVendedor($event)"></toolbar-two>
+
+<div class="container" *ngIf="roles?.FINANZAS == true || rolClienteNegotis == 'true'">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post?.Resultado != true">
+          <span *ngIf="idValor == 0">Crear</span>
+          <span *ngIf="idValor != 0">Editar</span>
+          Detalle de Cuenta
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Cliente</label>
+
+                  <input type="text" formControlName="nombreCliente" class="form-control"
+                    [(ngModel)]="nombreCliente" (input)=resetKey() [matAutocomplete]="auto" matInput>
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOption($event.option.value)"
+                    [displayWith]="displayWith">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                      {{ option.RazonSocial }}
+                    </mat-option>
+                  </mat-autocomplete>
+
+
+                  <input type="hidden" formControlName="idCliente" class="form-control"
+                    [(ngModel)]="request.idCliente">
+                  <small *ngIf="(myForm.get('idCliente')?.hasError('required')) && submitted==true"
+                    class="form-text text-muted">
+                    Seleccione un elemento de la lista por favor.
+                  </small>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <h5>Datos del Cheque</h5>
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Número</label>
+                  <input type="text" formControlName="numero" class="form-control"
+                    [(ngModel)]="request.numero">
+                  <small *ngIf="myForm.get('numero')?.hasError('required') && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Numero.
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Plaza</label>
+                  <input type="text" formControlName="plaza" class="form-control"
+                    [(ngModel)]="request.plaza">
+                  <small *ngIf="myForm.get('plaza')?.hasError('required') && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Plaza.
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Banco</label>
+                  <input type="text" formControlName="banco" class="form-control"
+                    [(ngModel)]="request.banco">
+                  <small *ngIf="myForm.get('banco')?.hasError('required') && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Banco.
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>CUIT</label>
+                  <input type="text" formControlName="cuit" class="form-control" [(ngModel)]="request.cuit">
+                  <small
+                    *ngIf="(myForm.get('cuit')?.hasError('required') || myForm.get('cuit')?.hasError('pattern') )&& submitted==true"
+                    class="form-text text-muted">
+                    Ingrese CUIT
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Librador</label>
+                  <input type="text" formControlName="librador" class="form-control"
+                    [(ngModel)]="request.librador">
+                  <small *ngIf="myForm.get('librador')?.hasError('required') && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Librador
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Nº Cuenta</label>
+                  <input type="text" formControlName="cuenta" class="form-control"
+                    [(ngModel)]="request.cuenta">
+                  <small
+                    *ngIf="(myForm.get('cuenta')?.hasError('required')||myForm.get('cuenta')?.hasError('pattern')) && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Nº Cuenta.
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Importe</label>
+                  <input type="text" formControlName="importe" class="form-control"
+                    [(ngModel)]="request.importe">
+                  <small
+                    *ngIf="(myForm.get('importe')?.hasError('required')||myForm.get('importe')?.hasError('pattern')) && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Importe.
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Fecha de Emision</label>
+                  <div (click)="fechaEmisionDatePicker()" class="input-group pointer">
+                    <input formControlName="fechaEmision" readonly type="text" class="form-control"
+                      value="{{request.fechaEmision}}" [(ngModel)]="request.fechaEmision">
+                    <div class="input-group-append">
+                      <span class="input-group-text" ><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <small
+                    *ngIf="(myForm.get('fechaEmision')?.hasError('required')||myForm.get('fechaEmision')?.hasError('pattern')) && submitted==true"
+                    class="form-text text-muted">
+                    Ingresar Fecha de Emision.
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Fecha de Vencimiento</label>
+                  <div (click)="fechaVencimientoDatePicker()" class="input-group pointer">
+                    <input formControlName="fechaVencimiento" readonly type="text" class="form-control"
+                      value="{{request.fechaVencimiento}}" [(ngModel)]="request.fechaVencimiento">
+                    <div class="input-group-append">
+                      <span class="input-group-text" ><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <small
+                    *ngIf="(myForm.get('fechaVencimiento')?.hasError('required')||myForm.get('fechaVencimiento')?.hasError('pattern')) && submitted==true"
+                    class="form-text text-muted">
+                    Ingresar Fecha de Vencimiento.
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Estado</label>
+                  <input type="text" formControlName="nombreEstado" class="form-control"
+                      [(ngModel)]="nombreEstado" (input)=resetKeyEstado() [matAutocomplete]="auto1" matInput>
+                  <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectOptionEstado($event.option.value)"
+                    [displayWith]="displayWithEstado">
+                    <mat-option *ngFor="let option of filteredOptionsEstado | async" [value]="option">
+                      {{ option.key }}
+                    </mat-option>
+                  </mat-autocomplete>
+
+                  <input type="hidden" class="form-control" [(ngModel)]="request.idEstadoCompra"
+                    formControlName="idEstado">
+                  <small class="form-text text-muted"
+                    *ngIf="(myForm.get('idEstado')?.hasError('required')||myForm.get('idEstado')?.hasError('pattern')) && submitted==true">
+                    Seleccione un elemento de la lista por favor.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Fecha de Recepción</label>
+                  <div (click)="fechaIngresoValorDatePicker()" class="input-group pointer"
+                    *ngIf="MostrarFechaIngresoValor(selectedOptionEstado); else fechaIngresoValorRO">
+                    <input formControlName="fechaIngresoValor" readonly type="text" class="form-control"
+                      value="{{fechaIngresoValor}}" [(ngModel)]="fechaIngresoValor">
+                    <div class="input-group-append">
+                      <span class="input-group-text" ><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <ng-template #fechaIngresoValorRO>
+                    <input formControlName="fechaIngresoValor" readonly type="text" class="form-control"
+                      value="{{fechaIngresoValor}}" [(ngModel)]="fechaIngresoValor">
+                  </ng-template>
+                  <small *ngIf="myForm.get('fechaIngresoValor')?.invalid && submitted==true"
+                    class="form-text text-muted">
+                    Ingresar Fecha de Recepcion
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Fecha de Pago</label>
+                  <div (click)="fechaEgresoEfectivoDatePicker()" class="input-group pointer"
+                    *ngIf="MostrarFechaEgresoEfectivo(selectedOptionEstado); else fechaEgresoEfectivoRO">
+                    <input formControlName="fechaEgresoEfectivo" readonly type="text" class="form-control"
+                      value="{{fechaEgresoEfectivo}}" [(ngModel)]="fechaEgresoEfectivo">
+                    <div class="input-group-append">
+                      <span class="input-group-text" ><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <ng-template #fechaEgresoEfectivoRO>
+                    <input formControlName="fechaEgresoEfectivo" readonly type="text" class="form-control"
+                      value="{{fechaEgresoEfectivo}}" [(ngModel)]="fechaEgresoEfectivo">
+                  </ng-template>
+                  <small *ngIf="myForm.get('fechaEgresoEfectivo')?.invalid && submitted==true"
+                    class="form-text text-muted">
+                    Ingresar Fecha de Pago
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Fecha de Venta</label>
+                  <div (click)="fechaEgresoValorDatePicker()" class="input-group pointer"
+                    *ngIf="MostrarFechaEgresoValor(selectedOptionEstado); else fechaEgresoValorRO">
+                    <input formControlName="fechaEgresoValor" readonly type="text" class="form-control"
+                      value="{{fechaEgresoValor}}" [(ngModel)]="fechaEgresoValor">
+                    <div class="input-group-append">
+                      <span class="input-group-text" ><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <ng-template #fechaEgresoValorRO>
+                    <input formControlName="fechaEgresoValor" readonly type="text" class="form-control"
+                      value="{{fechaEgresoValor}}" [(ngModel)]="fechaEgresoValor">
+                  </ng-template>
+                  <small *ngIf="myForm.get('fechaEgresoValor')?.invalid && submitted==true" class="form-text text-muted">
+                    Ingresar Fecha de Venta
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Fecha de Cobro</label>
+                  <div (click)="fechaIngresoEfectivoDatePicker()" class="input-group pointer"
+                    *ngIf="MostrarFechaIngresoEfectivo(selectedOptionEstado); else fechaIngresoEfectivoRO">
+                    <input formControlName="fechaIngresoEfectivo" readonly type="text" class="form-control"
+                      value="{{fechaIngresoEfectivo}}" [(ngModel)]="fechaIngresoEfectivo">
+                    <div class="input-group-append">
+                      <span class="input-group-text" ><span class="far fa-calendar-alt"></span></span>
+                    </div>
+                  </div>
+                  <ng-template #fechaIngresoEfectivoRO>
+                    <input formControlName="fechaIngresoEfectivo" readonly type="text" class="form-control"
+                      value="{{fechaIngresoEfectivo}}" [(ngModel)]="fechaIngresoEfectivo">
+                  </ng-template>
+                  <small *ngIf="myForm.get('fechaIngresoEfectivo')?.invalid && submitted==true"
+                    class="form-text text-muted">
+                    Ingresar Fecha de Cobro
+                  </small>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Dias Demora</label>
+                  <input type="text" formControlName="demora" class="form-control"
+                    [(ngModel)]="request.demoraDeposito">
+                  <small
+                    *ngIf="(myForm.get('demora')?.hasError('required')||myForm.get('demora')?.hasError('pattern')) && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Demora.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Dias hasta el deposito</label>
+                  <input readonly type="text" formControlName="resultDeposito" class="form-control"
+                    [ngModel]="calcularDiasDeposito(this.request)">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Ajuste</label>
+                  <input type="text" formControlName="ajusteDeposito" class="form-control"
+                    [(ngModel)]="request.ajusteDeposito">
+                  <small
+                    *ngIf="(myForm.get('ajusteDeposito')?.hasError('required')||myForm.get('ajusteDeposito')?.hasError('pattern')) && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Ajuste.
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tasa (%)</label>
+                  <input type="text" formControlName="tasa" class="form-control" [(ngModel)]="request.tasa">
+                  <small
+                    *ngIf="(myForm.get('tasa')?.hasError('required')||myForm.get('tasa')?.hasError('pattern')) && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Tasa.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Monto</label>
+                  <input readonly type="text" formControlName="montoTasa" class="form-control"
+                    [ngModel]="fixedMontoTasa(this.request)">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Ajuste</label>
+                  <input type="text" formControlName="ajusteTasa" class="form-control"
+                    [(ngModel)]="request.ajusteTasa">
+                  <small
+                    *ngIf="(myForm.get('ajusteTasa')?.hasError('required')||myForm.get('ajusteTasa')?.hasError('pattern')) && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Ajuste.
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Imp. Bancario (%)</label>
+                  <input type="text" formControlName="impBancario" class="form-control"
+                    [(ngModel)]="request.impBancario">
+                  <small
+                    *ngIf="(myForm.get('impBancario')?.hasError('required')||myForm.get('impBancario')?.hasError('pattern')) && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Imp. Bancario.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Monto</label>
+                  <input readonly type="text" formControlName="montoImpBancario" class="form-control"
+                    [ngModel]="fixedMontoImpuestoBancario(this.request)">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Ajuste</label>
+                  <input type="text" formControlName="ajusteImpBancario" class="form-control"
+                    [(ngModel)]="request.ajusteImpBancario">
+                  <small
+                    *ngIf="(myForm.get('ajusteImpBancario')?.hasError('required')||myForm.get('ajusteImpBancario')?.hasError('pattern')) && submitted==true"
+                    class="form-text text-muted">
+                    Ingrese Ajuste.
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <h5>Resumen</h5>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Retenciones</label>
+                </div>
+                <div class="col-md-4">
+                  <input readonly type="text" formControlName="retenciones" class="form-control"
+                    [ngModel]="fixedRetencion(this.request)">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Subtotal</label>
+                </div>
+                <div class="col-md-4">
+                  <input readonly type="text" formControlName="subtotal" class="form-control"
+                    [ngModel]="fixedSubtotal(this.request)">
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

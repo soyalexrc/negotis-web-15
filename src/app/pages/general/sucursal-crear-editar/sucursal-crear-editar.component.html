@@ -1,0 +1,137 @@
+<toolbar-one *ngIf="idUser != null"></toolbar-one>
+<toolbar-two *ngIf="idUser == null"></toolbar-two>
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-lg-8">
+      <mat-card>
+        <h3 *ngIf="post != true">
+          <span *ngIf="idSucursal == 0">Crear</span>
+          <span *ngIf="idSucursal != 0">Editar</span>
+          Sucursal
+        </h3>
+        <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+          <small *ngIf="post?.Repetido == true" class="form-text text-muted">Dirección existente para este
+            cliente</small>
+          <div class="form-group">
+            <label>Calle</label>
+            <input type="text" formControlName="calle" class="form-control" [(ngModel)]="calle">
+            <small *ngIf="myForm.get('calle')?.hasError('required') && submitted==true"
+              class="form-text text-muted">Ingrese
+              calle
+            </small>
+          </div>
+          <div class="form-group">
+            <label>Número</label>
+            <input type="number" formControlName="numero" class="form-control" [(ngModel)]="numero">
+            <small *ngIf="myForm.get('numero')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese número</small>
+            <small *ngIf="myForm.get('numero')?.hasError('pattern')" class="form-text text-muted">
+              Ingrese número positivo entero</small>
+          </div>
+          <div class="form-group">
+            <label>Barrio</label>
+            <input type="text" formControlName="barrio" class="form-control" [(ngModel)]="barrio">
+            <small *ngIf="myForm.get('barrio')?.hasError('required') && submitted==true" class="form-text text-muted">
+              Ingrese barrio</small>
+          </div>
+          <div *ngIf="idUser == null" class="form-group">
+            <label>Zona</label>
+            <select formControlName="idZona" class="form-control" [(ngModel)]="idZona">
+              <option value="">Seleccione</option>
+              <option *ngFor="let item of listadoZonas" value="{{item.Id}}">{{item.Nombre}} ({{item.Region?.Nombre}})
+              </option>
+            </select>
+            <small *ngIf="valZona == true && submitted==true" class="form-text text-muted">
+              Ingrese zona
+            </small>
+          </div>
+
+        <div class="form-group">
+            <label>Cuit (Sin guiones)</label>
+            <input type="number" formControlName="cuit" class="form-control" [(ngModel)]="cuit">
+          </div>
+
+           <div class="form-group">
+            <label class="obligatorio">Razon social(Nombre y Apellido)</label>
+            <input type="text" formControlName="razonSocial" class="form-control" [(ngModel)]="razonSocial"
+                   [readOnly]="readOnlyMostrador">
+          </div>
+          <div class="form-group">
+            <label>Ingresos Brutos</label>
+            <input type="number" formControlName="ingresosBrutos" class="form-control"
+                   [(ngModel)]="ingresosBrutos">
+          </div>
+           <!--  -->
+          <div class="form-group">
+            <label>Condicion Impositiva</label>
+            <select formControlName="condicionImpositiva" class="form-control"
+                    [(ngModel)]="condicionImpositiva">
+              <option value="">Seleccione</option>
+              <option value="RESPONSABLE INSCRIPTO">RESPONSABLE INSCRIPTO</option>
+              <option value="MONOTRIBUTISTA">MONOTRIBUTISTA</option>
+              <option value="EXENTO">EXENTO</option>
+              <option value="CONSUMIDOR FINAL">CONSUMIDOR FINAL</option>
+            </select>
+          </div>
+
+          <div *ngIf="idUser == null" class="form-group">
+            <label>Ruta</label>
+            <input type="text" formControlName="nombreRuta" class="form-control" [(ngModel)]="rutaNgModel"
+              (input)=resetKeyRuta() [matAutocomplete]="auto" matInput>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOptionRuta($event.option.value)"
+              [displayWith]="displayWithRuta">
+              <mat-option *ngFor="let option of filteredRuta | async" [value]="option">
+                {{ option.Nombre }}
+              </mat-option>
+            </mat-autocomplete>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">*</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of listaRutas; let i = index">
+                <tr>
+                  <th class="text-center" scope="row">{{i+1}}</th>
+                  <th class="text-center" scope="row">{{item.Nombre}}</th>
+                  <td><span (click)="deleteRuta(item)" class="fas fa-trash-alt pointer"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="idUser != null" class="form-group">
+            <label>Pfx Afip</label>
+            <select formControlName="pfxAfip" class="form-control" [(ngModel)]="pfxAfip">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let item of listAfip" value="{{item?.Id}}">{{item?.NombreDocPfx}}</option>
+            </select>
+            <small *ngIf="valPfx == true" class="form-text text-muted">
+              Ingrese pfx afip
+            </small>
+          </div>
+
+          <div *ngIf="idUser != null" class="form-group">
+            <label>Punto de Venta</label>
+            <input type="number" formControlName="punoDeVenta" class="form-control"
+              [(ngModel)]="punoDeVenta">
+            <small *ngIf="myForm.get('punoDeVenta')?.hasError('pattern')" class="form-text text-muted">
+              Ingrese número positivo entero
+            </small>
+            <small *ngIf="valPtoVta == true" class="form-text text-muted">
+              Ingrese punto de venta
+            </small>
+          </div>
+
+          <button type="submit" class="btn btn-warning">Guardar</button>
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
