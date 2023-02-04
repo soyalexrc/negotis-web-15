@@ -33,21 +33,21 @@ export class ProveedorCrearEditarComponent implements OnInit {
       private snackBar: MatSnackBar) {
         titleService.setTitle("Stock");
         this.myForm = fb.group({
-          'nombre': ['', Validators.compose([Validators.required])],
-          'apellido': ['', Validators.compose([])],
-          'cuit': ['', Validators.compose([Validators.pattern('^[0-9.,]+$')])],
-          'telefono': ['', Validators.compose([])],
-          'provincia': ['', Validators.compose([])],
-          'localidad': ['', Validators.compose([])],
-          'direccion': ['', Validators.compose([])],
-          'razonsocial': ['', Validators.compose([Validators.required])],
-          'numerocuenta': ['', Validators.compose([Validators.pattern('^[0-9.,]+$')])],
-          'empresa': ['', Validators.compose([])],
-          'email': ['', Validators.compose([])],
-          'detalle': ['', Validators.compose([])],
-          'tasa': ['', Validators.compose([])],
-          'retencion': ['', Validators.compose([])],
-          'percepcion': ['', Validators.compose([])]
+          nombre: ['', Validators.compose([Validators.required])],
+          apellido: ['', Validators.compose([])],
+          cuit: ['', Validators.compose([Validators.pattern('^[0-9.,]+$')])],
+          telefono: ['', Validators.compose([])],
+          provincia: ['', Validators.compose([])],
+          localidad: ['', Validators.compose([])],
+          direccion: ['', Validators.compose([])],
+          razonsocial: ['', Validators.compose([Validators.required])],
+          numerocuenta: ['', Validators.compose([Validators.pattern('^[0-9.,]+$')])],
+          empresa: ['', Validators.compose([])],
+          email: ['', Validators.compose([])],
+          detalle: ['', Validators.compose([])],
+          tasa: ['', Validators.compose([])],
+          retencion: ['', Validators.compose([])],
+          percepcion: ['', Validators.compose([])]
 
         });
     route.params.subscribe(params => { this.id = params['id']; });

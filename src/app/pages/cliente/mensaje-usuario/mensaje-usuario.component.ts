@@ -22,7 +22,7 @@ export class MensajeUsuarioComponent implements OnInit {
     private route: ActivatedRoute, private generalServ: GeneralService) {
     titleService.setTitle("Usuario");
     this.myForm = fb.group({
-      'mensajeUsuario': ['', Validators.compose([])]
+      mensajeUsuario: ['', Validators.compose([])]
     });
   }
 

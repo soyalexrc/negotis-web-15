@@ -186,7 +186,7 @@
             <input type="number" formControlName="precioCosto" class="form-control"
               [(ngModel)]="precioCosto" (change)="onChange()">
             <small
-              *ngIf="(myForm.get('precioCosto')?.hasError('required') || myForm.get('precioCosto').hasError('pattern')) && submitted==true"
+              *ngIf="(myForm.get('precioCosto')?.hasError('required') || myForm.get('precioCosto')?.hasError('pattern')) && submitted==true"
               class="form-text text-muted">
               Ingrese precio costo mayor o igual a 0</small>
           </div>
@@ -202,7 +202,7 @@
             <input type="number" formControlName="precioBase" class="form-control"
              [(ngModel)]="precioBase">
             <small
-              *ngIf="(myForm.get('precioBase')?.hasError('required') || myForm.get('precioBase').hasError('pattern'))
+              *ngIf="(myForm.get('precioBase')?.hasError('required') || myForm.get('precioBase')?.hasError('pattern'))
               && submitted==true"
               class="form-text text-muted">
               Ingrese precio base mayor o igual a 0</small>

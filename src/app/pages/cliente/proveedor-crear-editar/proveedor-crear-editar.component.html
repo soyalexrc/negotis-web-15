@@ -13,28 +13,28 @@
         <form *ngIf="model" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
           <div class="form-group">
             <label class="obligatorio">Razon social *</label>
-            <input type="text" [formControl]="myForm.get('razonsocial')" class="form-control" [(ngModel)]="model.RazonSocial">
+            <input type="text" formControlName="razonsocial" class="form-control" [(ngModel)]="model.RazonSocial">
             <small *ngIf="myForm.get('razonsocial')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese razon social</small>
           </div>
 
           <div class="form-group">
             <label class="obligatorio">Nombres *</label>
-            <input type="text" [formControl]="myForm.get('nombre')" class="form-control" [(ngModel)]="model.Nombre">
+            <input type="text" formControlName="nombre" class="form-control" [(ngModel)]="model.Nombre">
             <small *ngIf="myForm.get('nombre')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese nombres</small>
           </div>
 
           <div class="form-group">
             <label>Apellidos</label>
-            <input type="text" [formControl]="myForm.get('apellido')" class="form-control" [(ngModel)]="model.Apellido">
+            <input type="text" formControlName="apellido" class="form-control" [(ngModel)]="model.Apellido">
             <small *ngIf="myForm.get('apellido')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese apellidos</small>
           </div>
 
           <div class="form-group">
             <label>CUIT(Sin Guión)</label>
-            <input type="number" [formControl]="myForm.get('cuit')" class="form-control" [(ngModel)]="model.CUIT">
+            <input type="number" formControlName="cuit" class="form-control" [(ngModel)]="model.CUIT">
             <small *ngIf="myForm.get('cuit')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese cuit</small>
             <small *ngIf="myForm.get('cuit')?.hasError('pattern') && submitted==true" class="form-text text-muted">
@@ -43,43 +43,43 @@
 
           <div class="form-group">
             <label>Teléfono</label>
-            <input type="number" [formControl]="myForm.get('telefono')" class="form-control" [(ngModel)]="model.Telefono">
+            <input type="number" formControlName="telefono" class="form-control" [(ngModel)]="model.Telefono">
           </div>
 
           <div class="form-group">
             <label>Tasa</label>
-            <input type="number" [formControl]="myForm.get('tasa')" class="form-control" [(ngModel)]="model.Tasa">
+            <input type="number" formControlName="tasa" class="form-control" [(ngModel)]="model.Tasa">
           </div>
 
           <div class="form-group">
             <label>Retención</label>
-            <input type="number" [formControl]="myForm.get('retencion')" class="form-control" [(ngModel)]="model.Retencion">
+            <input type="number" formControlName="retencion" class="form-control" [(ngModel)]="model.Retencion">
           </div>
 
           <div class="form-group">
             <label>Percepción</label>
-            <input type="number" [formControl]="myForm.get('percepcion')" class="form-control" [(ngModel)]="model.Percepcion">
+            <input type="number" formControlName="percepcion" class="form-control" [(ngModel)]="model.Percepcion">
           </div>
 
           <div class="form-group">
             <label>Provincia</label>
-            <input type="text" [formControl]="myForm.get('provincia')" class="form-control" [(ngModel)]="model.Provincia">
+            <input type="text" formControlName="provincia" class="form-control" [(ngModel)]="model.Provincia">
           </div>
 
           <div class="form-group">
             <label>Localidad</label>
-            <input type="text" [formControl]="myForm.get('localidad')" class="form-control" [(ngModel)]="model.Localidad">
+            <input type="text" formControlName="localidad" class="form-control" [(ngModel)]="model.Localidad">
           </div>
 
           <div class="form-group">
             <label>Dirección</label>
-            <input type="text" [formControl]="myForm.get('direccion')" class="form-control" [(ngModel)]="model.Direccion">
+            <input type="text" formControlName="direccion" class="form-control" [(ngModel)]="model.Direccion">
           </div>
 
 
           <div class="form-group">
             <label>Numero de cuenta</label>
-            <input type="number" [formControl]="myForm.get('numerocuenta')" class="form-control" [(ngModel)]="model.NumeroCuenta">
+            <input type="number" formControlName="numerocuenta" class="form-control" [(ngModel)]="model.NumeroCuenta">
             <small *ngIf="myForm.get('numerocuenta')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese numero de cuenta</small>
             <small *ngIf="myForm.get('numerocuenta')?.hasError('pattern') && submitted==true" class="form-text text-muted">
@@ -88,21 +88,21 @@
 
           <div class="form-group">
             <label>Empresa</label>
-            <input type="text" [formControl]="myForm.get('empresa')" class="form-control" [(ngModel)]="model.Empresa">
+            <input type="text" formControlName="empresa" class="form-control" [(ngModel)]="model.Empresa">
             <small *ngIf="myForm.get('empresa')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese empresa</small>
           </div>
 
           <div class="form-group">
             <label>Email</label>
-            <input type="email" [formControl]="myForm.get('email')" class="form-control" [(ngModel)]="model.Email">
+            <input type="email" formControlName="email" class="form-control" [(ngModel)]="model.Email">
             <small *ngIf="myForm.get('email')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese email</small>
           </div>
 
           <div class="form-group">
             <label>Detalle</label>
-            <input type="text" [formControl]="myForm.get('detalle')" class="form-control" [(ngModel)]="model.Detalle">
+            <input type="text" formControlName="detalle" class="form-control" [(ngModel)]="model.Detalle">
           </div>
 
           <button type="submit" class="btn btn-warning">Guardar</button>

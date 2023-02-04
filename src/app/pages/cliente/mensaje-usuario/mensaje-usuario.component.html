@@ -9,13 +9,13 @@
           Guardar Mensaje
         </h3>
         <form *ngIf="post != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
-          
+
 
             <div class="form-group">
                 <label>Ingrese su Mensaje</label>
-                <textarea rows="4" [formControl]="myForm.get('mensajeUsuario')" class="form-control" [(ngModel)]="mensajeUsuario"></textarea>
+                <textarea rows="4" formControlName="mensajeUsuario" class="form-control" [(ngModel)]="mensajeUsuario"></textarea>
               </div>
-              
+
           <button type="submit" class="btn btn-warning">Guardar</button>
         </form>
       </mat-card>
