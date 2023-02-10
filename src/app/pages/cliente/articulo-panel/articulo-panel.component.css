@@ -1,5 +1,5 @@
 .cant-art{
-    cursor:pointer; 
+    cursor:pointer;
     color: rgb(57, 57, 252);
 }
 
@@ -24,7 +24,7 @@
 
 .table{
     height: 120vh;
-    width: 265vh;
+    /* width: 265vh; */
 }
 
 @media only screen and (min-width:1025px) {
