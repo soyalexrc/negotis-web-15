@@ -5,15 +5,15 @@
   </h3>
   <div class="row">
     <div class="col-md-4">
-      <a routerLink="/cliente/pedido/crear">
-        <mat-card class="pointer">
+      <a style="color: black" routerLink="/cliente/pedido/crear">
+        <mat-card class="pointer p-3">
           Agregar Pedido (+)
         </mat-card>
       </a>
     </div>
     <div class="col-md-6" *ngIf="visualizarPedidosHabilitado">
       <div *ngIf="!tieneRolCliente">
-      <mat-card>
+      <mat-card class="p-3">
         Id° Pedido (F4)
 
         <div style="display:flex">
@@ -54,7 +54,7 @@
         </select>
       </div>
       <div (click)="guardarTurno()" *ngIf="this.turno != null" class="input-group-append">
-        <span class="input-group-text" id="basic-addon2-monto">Guardar Turno</span>
+        <span class="input-group-text" style="width: fit-content">Guardar Turno</span>
       </div>
     </div>
   </div>
@@ -374,7 +374,7 @@
   <div class="row" *ngIf="visualizarPedidosHabilitado && !tieneRolCliente && visualizarCantidadVentas">
     <div class="col-md-4">
       <!--totales del día-->
-      <mat-card *ngIf="submittedTipoVta == true && ocultarIndicadorVentas == false">
+      <mat-card  class="p-3" *ngIf="submittedTipoVta == true && ocultarIndicadorVentas == false">
         <div>Totales del {{submittedFechaDesde}} al {{submittedFechaHasta}}</div>
         <table class="table-totales">
           <tr *ngIf="!tieneRolCliente">

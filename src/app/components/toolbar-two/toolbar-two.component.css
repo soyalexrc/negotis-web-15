@@ -1,7 +1,7 @@
 .toolbar-icon {
     padding: 0 14px;
   }
-  
+
 .toolbar-spacer {
     flex: 1 1 auto;
 }
@@ -34,7 +34,7 @@
   }
   .user-icon{
     animation: blink-animation 1s steps(5, start) infinite;
-    -webkit-animation: blink-animation 1s steps(5, start) infinite; 
+    -webkit-animation: blink-animation 1s steps(5, start) infinite;
   }
   @keyframes blink-animation {
     to {
@@ -60,20 +60,21 @@
     transition: 0.5s;
     padding-top: 100px;
     }
-    
+
     .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
+    line-height: 33px;
     font-size: 25px;
     color: #818181;
     display: block;
     transition: 0.3s;
     }
-    
+
     .sidenav a:hover {
     color: #f1f1f1;
     }
-    
+
     .sidenav .closebtn {
     position: absolute;
     top: 60px;
@@ -102,7 +103,7 @@
         font-size: 15px;
         border: 2px solid rgb(255, 255, 255);
     }
-    
+
     @media screen and (max-height: 450px) {
     .sidenav {padding-top: 105px;}
     .sidenav a {font-size: 18px;}

@@ -6,8 +6,8 @@
   </h3>
   <div class="row">
     <div class="col-md-4">
-      <a [routerLink]="['/cliente/transferencia/deposito/dinero/crear']">
-        <mat-card class="pointer">
+      <a style="color: black" [routerLink]="['/cliente/transferencia/deposito/dinero/crear']">
+        <mat-card class="pointer p-3">
           Agregar Ingreso / Deposito / Egreso
         </mat-card>
       </a>
@@ -43,7 +43,7 @@
   <!--total reparto (entrega)-->
   <div class="row">
     <div class="col-md-4">
-      <mat-card *ngIf="ocultarIndicadorEgreso == false">
+      <mat-card class="p-3" *ngIf="ocultarIndicadorEgreso == false">
         <div>Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}</div>
         <table class="table-total">
           <tr>
@@ -104,7 +104,7 @@
     </table>
     <div>
       <a target="_blank"
-      href="{{urlImprimir}}" 
+      href="{{urlImprimir}}"
       class="btn btn-primary pdf-btn mb-2">
       <span>Imprimir Reporte</span>
     </a>

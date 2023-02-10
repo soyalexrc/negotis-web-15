@@ -5,8 +5,8 @@
   </h3>
   <div class="row">
     <div class="col-md-4">
-      <a routerLink="/cliente/proveedor/crear">
-        <mat-card class="pointer">
+      <a style="color: black" routerLink="/cliente/proveedor/crear">
+        <mat-card class="pointer p-3">
           Agregar Proveedor
         </mat-card>
       </a>
@@ -116,13 +116,13 @@
           <th scope="col">Empresa</th>
           <th scope="col">Email</th>
           <th scope="col">Detalle</th>
-          <th scope="col">*</th>          
+          <th scope="col">*</th>
         </tr>
       </thead>
       <tbody *ngFor="let item of listado; let i = index">
         <tr>
           <td><a routerLink="/cliente/proveedor/editar/{{item.id}}"><span class="pointer">Editar</span></a></td>
-          <th scope="row">{{i+1}}</th>          
+          <th scope="row">{{i+1}}</th>
           <td>{{item.nombre}}</td>
           <td>{{item.apellido}}</td>
           <td>{{item.provincia}}</td>
@@ -134,7 +134,7 @@
           <td>{{item.numeroCuenta}}</td>
           <td>{{item.empresa}}</td>
           <td>{{item.email}}</td>
-          <td>{{item.detalle}}</td>          
+          <td>{{item.detalle}}</td>
           <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
         </tr>
       </tbody>

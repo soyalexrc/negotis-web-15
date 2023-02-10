@@ -145,8 +145,8 @@ export class PedidoPanelComponent implements OnInit {
   pedidosPendientesMonto = 0;
   pedidosCambiarEstadoIndices: any =[];
   pedidosImprimir: any = [];
-  idClienteNegotis=localStorage.getItem('idClienteNegotis');
-  token=localStorage.getItem('token');
+  idClienteNegotis: any;
+  token: any;
   estadosPago = PropertyUtil.getPropertiesByType(TiposPropiedad.ESTADO_PAGO);
   formasPago = PropertyUtil.getPropertiesByType(TiposPropiedad.FORMA_PAGO);
   estadosEntrega = PropertyUtil.getPropertiesByType(TiposPropiedad.ESTADO_ENTREGA);
@@ -166,7 +166,7 @@ export class PedidoPanelComponent implements OnInit {
   cancelarPedidos: any = 0;
   turnos: any;
   flag: any = false;
-  pedidoFiltro: PedidoFiltroModel = JSON.parse(localStorage.getItem(this.keyLastPedidoFilter) ?? '');
+  pedidoFiltro!: PedidoFiltroModel;
   private filtro: any;
 
   constructor(
@@ -189,6 +189,9 @@ export class PedidoPanelComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.idClienteNegotis = localStorage.getItem('idClienteNegotis')
+    this.token = localStorage.getItem('token')
+    this.pedidoFiltro = JSON.parse(localStorage.getItem(this.keyLastPedidoFilter) ?? 'null')
     const dataTurno = { 'idClienteNegotis': localStorage.getItem('idClienteNegotis') };
     this.userServ.obtenerTurnos(dataTurno).subscribe((data: any) => {
       this.turnos = data;
@@ -198,10 +201,10 @@ export class PedidoPanelComponent implements OnInit {
       console.log('turno', this.turno);
     }, (error: any) => { console.log(error);});
     this.idUser = localStorage.getItem('idUser');
-    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? '');
+    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? 'false');
     const roles = JSON.parse(localStorage.getItem('roles') ?? '');
-    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? '') || false;
-    const soporte = eval(localStorage.getItem('soporte') ?? '') || false;
+    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? 'false') || false;
+    const soporte = eval(localStorage.getItem('soporte') ?? 'false') || false;
     this.modificarPedidosHabilitado = (roles != null && roles.ModificarPedidos) || tieneRolClienteNegotis || soporte;
     this.eliminarPedidosHabilitado = (roles != null && roles.EliminarPedidos) || tieneRolClienteNegotis || soporte;
     this.visualizarPedidosHabilitado = (roles != null && roles.VisualizarPedidos) || tieneRolClienteNegotis || soporte;

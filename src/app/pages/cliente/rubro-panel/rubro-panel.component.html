@@ -6,8 +6,8 @@
   </h3>
   <div class="row">
     <div class="col-md-4">
-      <a [routerLink]="['/cliente/rubro/crear']">
-        <mat-card class="pointer">
+      <a style="color: black" [routerLink]="['/cliente/rubro/crear']">
+        <mat-card class="pointer p-3">
           Agregar Rubro
         </mat-card>
       </a>
@@ -52,7 +52,7 @@
           <label>Estado</label>
           <select class="form-control" [(ngModel)]="estadoFiltro">
             <option value="true">Activo</option>
-            <option value="false">Inactivo</option>            
+            <option value="false">Inactivo</option>
           </select>
         </div>
       </div>
@@ -94,8 +94,8 @@
           <td>{{item.CategoriaRubro.Nombre}}</td>
           <!--<td>{{item.Codigo}}</td>-->
           <td *ngIf="item.Activo == true">Activo</td>
-          <td *ngIf="item.Activo == false">Inactivo</td> 
-          <td *ngIf="item.Activo == null">Sin Asignar</td> 
+          <td *ngIf="item.Activo == false">Inactivo</td>
+          <td *ngIf="item.Activo == null">Sin Asignar</td>
           <td><a routerLink="/cliente/rubro/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
           <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
         </tr>

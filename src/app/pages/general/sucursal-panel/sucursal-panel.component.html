@@ -2,17 +2,17 @@
 <toolbar-two *ngIf="idUser == null"></toolbar-two>
 <div class="container">
   <h3 class="title">
-    {{data?.RazonSocial}} <span *ngIf="data?.NombreFantasia != null">({{data?.NombreFantasia}})</span> 
+    {{data?.RazonSocial}} <span *ngIf="data?.NombreFantasia != null">({{data?.NombreFantasia}})</span>
   </h3>
   <div class="row">
     <div class="col-md-4">
-      <a *ngIf="idUser != null" routerLink="/superadmin/clientenegotis/sucursal/crear/{{idUser}}">
-        <mat-card class="pointer">
+      <a style="color: black" *ngIf="idUser != null" routerLink="/superadmin/clientenegotis/sucursal/crear/{{idUser}}">
+        <mat-card class="pointer p-3">
           Agregar Sucursal
         </mat-card>
       </a>
-      <a *ngIf="idUser == null" routerLink="/cliente/sucursal/crear/{{idCliente}}">
-        <mat-card class="pointer">
+      <a style="color: black" *ngIf="idUser == null" routerLink="/cliente/sucursal/crear/{{idCliente}}">
+        <mat-card class="pointer p-3">
           Agregar Sucursal
         </mat-card>
       </a>

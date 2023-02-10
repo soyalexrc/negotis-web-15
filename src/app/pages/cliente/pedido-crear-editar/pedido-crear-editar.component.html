@@ -3,8 +3,8 @@
 <div class="container">
   <div class="row">
     <div class="col"></div>
-    <div class="col-lg-12">
-      <mat-card>
+    <div class="col-lg-9">
+      <mat-card class="p-3">
         <h3 *ngIf="postPedido?.Resultado != true">
           <span *ngIf="idPedido == 0">Crear</span>
           <span *ngIf="idPedido != 0">Editar</span>
@@ -582,11 +582,11 @@
           <div class="row">
             <!--Código de Barras-->
             <div class="col-md-6">
-              <mat-card *ngIf="this.esNotaDebito == true || pedidoCerrado != true && facturaAfip != true ">
+              <mat-card class="p-3" *ngIf="this.esNotaDebito == true || pedidoCerrado != true && facturaAfip != true ">
 
                   <div class="form-group">
                     <label>Agregar Artículos</label>
-                    <div>
+                    <div class="my-4">
                       <label (click)="agregarArticuloPorNombre()" class="btn btn-secondary btn-carro" style="background-color:white;">
                         <i class="fas fa-cart-plus fa-2x" style ="color :blue;" fa-lg ></i>
                       </label>
@@ -636,7 +636,7 @@
             <!--Totales-->
             <div #totales class="col-md-6">
 
-                <mat-card>
+                <mat-card class="p-3">
                     <div>
                       <div class="form-group">
                         <label>Observación</label>
@@ -648,7 +648,7 @@
 
 
                 <div class="form-group">
-                  <div>
+                  <div class="my-2">
                     <label>Total Artículos: {{totalArticulos}}</label>
                   </div>
                   <div *ngIf="datosEsteticaHabilitado">
@@ -675,11 +675,11 @@
                     </select>
                     </div>
                   </div>
-                  <div *ngIf="ocultarPrecios == false">
+                  <div class="my-2" *ngIf="ocultarPrecios == false">
                     <label style="font-weight: bold; font-size:larger;">Total Precio: ${{totalPrecio | number:'1.1-2'}}</label>
                   </div>
                   <div *ngIf="permisoAumentoDescuentoMonto">
-                    <div class="form-group">
+                    <div class="form-group my-2">
                       <label>Aument./Desc. de Lista (monto)</label>
                       <div class="input-group mb-3 pointer">
                         <input formControlName="aumentoListaMonto" (keyup)="aumentoListaMontoGuardar()" type="number"
@@ -690,12 +690,12 @@
                       </div>
                     </div>
                   </div>
-                  <tr *ngIf="tieneRolRentabilidad && ocultarPrecios == false">
+                  <tr  *ngIf="tieneRolRentabilidad && ocultarPrecios == false">
                     <td>Rentabilidad({{porcentajeRentabilidad | number:'1.1-2'}}%): ${{rentabilidad | number:'1.1-2'}}</td>
                   </tr>
                  <!-- pago total
                   pago con-->
-                  <div *ngIf="estadoPago == estadoPagoTotal">
+                  <div class="my-2" *ngIf="estadoPago == estadoPagoTotal">
                     <label>Pago Con: (F6)</label>
                     <input (keyup)="calcularVuelto()" #vueltoCliente type="number" class="form-control" formControlName="pagoCantidad" [(ngModel)]="pagoCantidad">
                   </div>

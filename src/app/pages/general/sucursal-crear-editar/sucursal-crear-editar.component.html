@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col"></div>
     <div class="col-lg-8">
-      <mat-card>
+      <mat-card class="p-3">
         <h3 *ngIf="post != true">
           <span *ngIf="idSucursal == 0">Crear</span>
           <span *ngIf="idSucursal != 0">Editar</span>
@@ -13,7 +13,7 @@
         <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
           <small *ngIf="post?.Repetido == true" class="form-text text-muted">Dirección existente para este
             cliente</small>
-          <div class="form-group">
+          <div class="form-group  my-2">
             <label>Calle</label>
             <input type="text" formControlName="calle" class="form-control" [(ngModel)]="calle">
             <small *ngIf="myForm.get('calle')?.hasError('required') && submitted==true"
@@ -21,7 +21,7 @@
               calle
             </small>
           </div>
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Número</label>
             <input type="number" formControlName="numero" class="form-control" [(ngModel)]="numero">
             <small *ngIf="myForm.get('numero')?.hasError('required') && submitted==true" class="form-text text-muted">
@@ -29,13 +29,13 @@
             <small *ngIf="myForm.get('numero')?.hasError('pattern')" class="form-text text-muted">
               Ingrese número positivo entero</small>
           </div>
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Barrio</label>
             <input type="text" formControlName="barrio" class="form-control" [(ngModel)]="barrio">
             <small *ngIf="myForm.get('barrio')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese barrio</small>
           </div>
-          <div *ngIf="idUser == null" class="form-group">
+          <div *ngIf="idUser == null" class="form-group my-2">
             <label>Zona</label>
             <select formControlName="idZona" class="form-control" [(ngModel)]="idZona">
               <option value="">Seleccione</option>
@@ -47,23 +47,23 @@
             </small>
           </div>
 
-        <div class="form-group">
+        <div class="form-group my-2">
             <label>Cuit (Sin guiones)</label>
             <input type="number" formControlName="cuit" class="form-control" [(ngModel)]="cuit">
           </div>
 
-           <div class="form-group">
+           <div class="form-group my-2">
             <label class="obligatorio">Razon social(Nombre y Apellido)</label>
             <input type="text" formControlName="razonSocial" class="form-control" [(ngModel)]="razonSocial"
                    [readOnly]="readOnlyMostrador">
           </div>
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Ingresos Brutos</label>
             <input type="number" formControlName="ingresosBrutos" class="form-control"
                    [(ngModel)]="ingresosBrutos">
           </div>
            <!--  -->
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Condicion Impositiva</label>
             <select formControlName="condicionImpositiva" class="form-control"
                     [(ngModel)]="condicionImpositiva">
@@ -75,7 +75,7 @@
             </select>
           </div>
 
-          <div *ngIf="idUser == null" class="form-group">
+          <div *ngIf="idUser == null" class="form-group my-2">
             <label>Ruta</label>
             <input type="text" formControlName="nombreRuta" class="form-control" [(ngModel)]="rutaNgModel"
               (input)=resetKeyRuta() [matAutocomplete]="auto" matInput>
@@ -104,7 +104,7 @@
             </table>
           </div>
 
-          <div *ngIf="idUser != null" class="form-group">
+          <div *ngIf="idUser != null" class="form-group my-2">
             <label>Pfx Afip</label>
             <select formControlName="pfxAfip" class="form-control" [(ngModel)]="pfxAfip">
               <option value="">Seleccionar</option>
@@ -115,7 +115,7 @@
             </small>
           </div>
 
-          <div *ngIf="idUser != null" class="form-group">
+          <div *ngIf="idUser != null" class="form-group my-2">
             <label>Punto de Venta</label>
             <input type="number" formControlName="punoDeVenta" class="form-control"
               [(ngModel)]="punoDeVenta">

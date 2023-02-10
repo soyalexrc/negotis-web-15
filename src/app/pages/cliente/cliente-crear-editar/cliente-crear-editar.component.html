@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col"></div>
     <div class="col-lg-8">
-      <mat-card>
+      <mat-card class="p-3">
         <h3 *ngIf="post?.Resultado != true">
           <span *ngIf="idCliente == 0">Registrar</span>
           <span *ngIf="idCliente != 0">Editar</span>
@@ -12,7 +12,7 @@
         </h3>
         <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label class="obligatorio">Razon social(Nombre y Apellido)</label>
             <input type="text" formControlName="razonSocial" class="form-control" [(ngModel)]="razonSocial"
                    [readOnly]="readOnlyMostrador">
@@ -25,14 +25,14 @@
             </small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Usuario App</label>
             <input type="email" formControlName="userName" class="form-control" placeholder="Usuario@nombreEmpresa.com"
               [(ngModel)]="userName">
           </div>
 
 
-          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group my-2">
             <label class="btn btn-info">
               Agregar Archivo
               <input id="fileCliente" accept="image/*,.pdf,.doc,.txt,.rtf" type='file' value="{{fileName}}"
@@ -51,46 +51,46 @@
             </div>
           </div>
 
-          <div  class="form-group">
+          <div  class="form-group my-2">
             <label>Nro Cliente</label>
             <input type="tel" formControlName="nroCliente" class="form-control" [(ngModel)]="nroCliente">
           </div>
 
           <div *ngIf="verDatosTaller">
-            <div  class="form-group">
+            <div  class="form-group my-2">
               <label>Patente</label>
               <input type="text" formControlName="patente" class="form-control" [(ngModel)]="patente">
             </div>
 
-            <div  class="form-group">
+            <div  class="form-group my-2">
               <label>Nro Siniestro</label>
               <input type="tel" formControlName="nSiniestro" class="form-control" [(ngModel)]="nSiniestro">
             </div>
 
-            <div  class="form-group">
+            <div  class="form-group my-2">
               <label>Segundo Nro Siniestro</label>
               <input type="tel" formControlName="nSiniestro2" class="form-control" [(ngModel)]="nSiniestro2">
             </div>
 
-            <div  class="form-group">
+            <div  class="form-group my-2">
               <label>Vehículo </label>
               <input type="text" formControlName="vehiculo" class="form-control" [(ngModel)]="vehiculo">
             </div>
 
-            <div  class="form-group">
+            <div  class="form-group my-2">
               <label>Color</label>
               <input type="text" formControlName="color" class="form-control" [(ngModel)]="color">
             </div>
           </div>
 
           <div *ngIf="razonSocial != 'Mostrador'">
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Nombre Fantasía</label>
               <input type="text" formControlName="nombreFantasia" class="form-control"
                      [(ngModel)]="nombreFantasia">
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Horarios Desde</label>
               <div style="display:flex">
                 <select [(ngModel)]="desdeHora" formControlName="desdeHora" class="form-control"
@@ -134,7 +134,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Horarios Hasta</label>
               <div style="display:flex">
                 <select [(ngModel)]="hastaHora" formControlName="hastaHora" class="form-control"
@@ -178,7 +178,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Horarios Desde (2)</label>
               <div style="display:flex">
                 <select [(ngModel)]="desdeHoraDos" formControlName="desdeHoraDos" class="form-control"
@@ -222,7 +222,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Horarios Hasta (2)</label>
               <div style="display:flex">
                 <select [(ngModel)]="hastaHoraDos" formControlName="hastaHoraDos" class="form-control"
@@ -266,27 +266,27 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Cuit (Sin guiones)</label>
               <input type="number" formControlName="cuit" class="form-control" [(ngModel)]="cuit">
             </div>
             <div *ngIf="datosEsteticaHabilitado">
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Cantidad Sesiones Realizadas</label>
               <input type="number" formControlName="sesionesRealizadas" class="form-control" [(ngModel)]="sesionesRealizadas">
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Cantidad Sesiones Tratamiento</label>
               <input type="number" formControlName="sesionesTratamiento" class="form-control" [(ngModel)]="sesionesTratamiento">
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Cantidad Sesiones Restantes</label>
               <input type="number" formControlName="sesionesTotal" class="form-control" [(ngModel)]="sesionesTotal">
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label >Tipo Sesion:</label>
               <select formControlName="tipoSesion" class="form-control" [(ngModel)]="tipoSesion">
                 <option value="">Seleccionar</option>
@@ -299,7 +299,7 @@
                   <input type="text" formControlName="cantidadSesion" class="form-control" [(ngModel)]="cantidadSesion">
               </label>
             </div>
-            <div class="form-group">
+            <div class="form-group my-2">
               <label >Tipo Sesion:</label>
               <select formControlName="tipoSesion2" class="form-control" [(ngModel)]="tipoSesion2">
                 <option value="">Seleccionar</option>
@@ -312,7 +312,7 @@
                   <input type="text" formControlName="cantidadSesion2" class="form-control" [(ngModel)]="cantidadSesion2">
               </label>
             </div>
-            <div class="form-group">
+            <div class="form-group my-2">
               <label >Tipo Sesion:</label>
               <select formControlName="tipoSesion3" class="form-control" [(ngModel)]="tipoSesion3">
                 <option value="">Seleccionar</option>
@@ -327,12 +327,12 @@
             </div>
 
           </div>
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Dni</label>
               <input type="number" formControlName="dni" class="form-control" [(ngModel)]="dni">
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Condicion Impositiva</label>
               <select formControlName="condicionImpositiva" class="form-control"
                       [(ngModel)]="condicionImpositiva">
@@ -344,14 +344,14 @@
               </select>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Ingresos Brutos</label>
               <input type="number" formControlName="ingresosBrutos" class="form-control"
                      [(ngModel)]="ingresosBrutos">
             </div>
 
 
-          <div *ngIf ="tieneRolProduccion" class="form-group">
+          <div *ngIf ="tieneRolProduccion" class="form-group my-2">
             <label>Distancia</label>
             <input type="number" formControlName="distancia" class="form-control"
                    [(ngModel)]="distancia">
@@ -359,7 +359,7 @@
         </div>
 
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Vendedor</label>
             <input type="text" (keyup)="resetVendedor()"  class="form-control" [matAutocomplete]="autoVendedor"
                    [formControl]="vendedorCtrl" [(ngModel)]="vendedorNombres" >
@@ -372,7 +372,7 @@
           </div>
 
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label class="obligatorio">Lista de Precios</label>
             <select formControlName="listaPrecios" class="form-control" [(ngModel)]="listaPrecios">
               <option value="">Seleccione</option>
@@ -384,7 +384,7 @@
           </div>
 
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label >Categoria Cliente</label>
             <select formControlName="categoriaCliente" class="form-control" [(ngModel)]="categoriaCliente">
               <option value="">Seleccione</option>
@@ -393,18 +393,18 @@
           </div>
 
 
-          <div class="form-group" *ngIf="rolSaldoAFavor">
+          <div class="form-group my-2" *ngIf="rolSaldoAFavor">
             <label>Saldo a Favor</label>
             <input type="number" formControlName="saldoAFavor" class="form-control" [(ngModel)]="saldoAFavor">
           </div>
 
-          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group my-2">
             <label>Teléfono</label>
             <input type="tel" formControlName="telefono" class="form-control" [(ngModel)]="telefono">
           </div>
 
 
-          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group my-2">
             <label >Email </label>
             <input type="email" formControlName="email" class="form-control" [(ngModel)]="email">
             <small *ngIf="myForm.get('email')?.hasError('email') && submitted==true" class="form-text text-muted">
@@ -413,7 +413,7 @@
           </div>
 
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Seleccionar Sucursal</label>
             <div>
               <div *ngFor="let item of sucursalList?.ListSucursal;let i=index" style="margin-left:10px">
@@ -429,19 +429,19 @@
               Ingrese sucursal/es</small>
           </div>
 
-          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group my-2">
             <label>Descripción</label>
             <input type="text" formControlName="descripcion" class="form-control" [(ngModel)]="descripcion">
           </div>
 
 
-          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group my-2">
             <label>1° Res Social (URL)</label>
             <input type="url" formControlName="redSocialUno" class="form-control"
                    [(ngModel)]="redSocialUno">
           </div>
 
-          <div *ngIf="razonSocial != 'Mostrador'" class="form-group">
+          <div *ngIf="razonSocial != 'Mostrador'" class="form-group my-2">
             <label>2° Res Social (URL)</label>
             <input type="url" formControlName="redSocialDos" class="form-control"
                    [(ngModel)]="redSocialDos">
@@ -449,7 +449,7 @@
 
 
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label class="obligatorio">Calle / Country</label>
               <input type="text" formControlName="calle" class="form-control" [(ngModel)]="calle">
               <small *ngIf="myForm.get('calle')?.hasError('required') && submitted==true "
@@ -457,19 +457,19 @@
                 calle
               </small>
             </div>
-            <div class="form-group">
+            <div class="form-group my-2">
               <label class="obligatorio">Número / Manzana</label>
               <input type="text" formControlName="numero" class="form-control" [(ngModel)]="numero">
               <small *ngIf="myForm.get('numero')?.hasError('required') && submitted==true" class="form-text text-muted">
                 Ingrese número / manzana</small>
             </div>
-            <div class="form-group">
+            <div class="form-group my-2">
               <label class="obligatorio">Barrio</label>
               <input type="text" formControlName="barrio" class="form-control" [(ngModel)]="barrio">
               <small *ngIf="myForm.get('barrio')?.hasError('required') && submitted==true " class="form-text text-muted">
                 Ingrese barrio</small>
             </div>
-            <div *ngIf="idUser == null" class="form-group">
+            <div *ngIf="idUser == null" class="form-group my-2">
               <label>Zona</label>
               <select formControlName="idZona" class="form-control" [(ngModel)]="idZona">
                 <option value="">Seleccione</option>

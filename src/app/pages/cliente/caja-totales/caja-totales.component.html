@@ -51,7 +51,7 @@
     <mat-action-row>
       <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
       <button (click)="buscar()" class="btn btn-warning">Buscar</button>
-      
+
     </mat-action-row>
   </mat-expansion-panel>
   <div >
@@ -66,17 +66,17 @@
       <span >Imprimir Caja</span>
       </a>
       </div>
-    
+
   <!--total-->
   <div class="row">
     <!--todas las sucursales-->
     <div class="col-md-4" *ngIf="verTodasSucursalesHabilitado">
-      <mat-card>
+      <mat-card class="p-3">
         <div><strong>Caja de Todas las Sucursales</strong></div>
         <div><strong>Total del {{submittedFechaDesde}} al {{submittedFechaHasta}}</strong></div>
         <table class="table-totales">
           <strong> Ventas </strong>
-          <tr>                        
+          <tr>
             <td>Efectivo: </td>
             <td>${{getTotales?.TotalGral?.TotalGananciaVentaEfect | number:'1.1-2'}}</td>
           </tr>
@@ -101,14 +101,14 @@
             <td>${{getTotales?.TotalGral?.TotalGananciaVentaCtaCte | number:'1.1-2'}}</td>
           </tr>
           <tr>
-            <td><u>Total Ventas : </u></td>           
+            <td><u>Total Ventas : </u></td>
             <td><u>${{getTotales?.TotalGral?.TotalVentas | number:'1.1-2'}}</u></td>
-            
+
           </tr>
           <br>
           <strong>Compras</strong>
           <tr *ngIf="ocultarCompras == false">
-            
+
             <td>Efectivo: </td>
             <td class="restar">${{getTotales?.TotalGral?.TotalCompraEfectivo | number:'1.1-2'}}</td>
           </tr>
@@ -174,7 +174,7 @@
             <td>${{getTotales?.TotalGral?.TotalGancia | number:'1.1-2'}}</td>
           </tr>
           <tr *ngIf="ocultarGanancia == false">
-            <td><strong>Rentabilidad ({{getTotales?.TotalGral?.PorcentajeRentabilidad | number:'1.1-2'}}%):</strong> </td>            
+            <td><strong>Rentabilidad ({{getTotales?.TotalGral?.PorcentajeRentabilidad | number:'1.1-2'}}%):</strong> </td>
             <td>${{getTotales?.TotalGral?.TotalGananciaFuturo | number:'1.1-2'}}</td>
           </tr>
           <tr>
@@ -190,7 +190,7 @@
     </div>
     <!--por sucursal-->
     <div class="col-md-4">
-      <mat-card>
+      <mat-card class="p-3">
         <div>
           <strong>
             Caja de Sucursal: {{sucursal?.Calle}} {{sucursal?.Numero}} {{sucursal?.Barrio}} {{sucursal?.Zona?.Nombre}}
@@ -203,8 +203,8 @@
           </strong>
         </div>
         <table class="table-totales">
-          <strong> Ventas </strong> 
-          <tr>            
+          <strong> Ventas </strong>
+          <tr>
             <td>Efectivo: </td>
             <td>${{getTotales?.TotalSuc?.SucTotalGananciaVentaEfect | number:'1.1-2'}}</td>
           </tr>
@@ -230,12 +230,12 @@
           </tr>
           <tr>
             <td><u>Total Ventas: </u></td>
-            <td><u>${{getTotales?.TotalSuc?.SucTotalVentas | number:'1.1-2'}}</u></td>            
+            <td><u>${{getTotales?.TotalSuc?.SucTotalVentas | number:'1.1-2'}}</u></td>
           </tr>
           <br>
           <strong>Compras</strong>
           <tr *ngIf="ocultarCompras == false">
-            
+
             <td>Efectivo: </td>
             <td class="restar">${{getTotales?.TotalSuc?.SucTotalCompraEfectivo | number:'1.1-2'}}</td>
           </tr>
@@ -268,7 +268,7 @@
           <tr>
             <td><u>Total Gastos: </u></td>
             <td class="restar"> <u>${{getTotales?.TotalSuc?.SucTotalGasto | number:'1.1-2'}}</u></td>
-            
+
           </tr>
           <br>
           <!-- <tr>
@@ -314,7 +314,7 @@
           <tr *ngIf="ocultarGanancia == false">
             <td><strong>Rentabilidad ({{getTotales?.TotalSuc?.SucPorcentajeRentabilidad | number:'1.1-2'}}%):</strong> </td>
             <td>${{getTotales?.TotalSuc?.SucTotalGananciaFuturo | number:'1.1-2'}}</td>
-          </tr>          
+          </tr>
           <tr>
             <td><strong>Cierre de Caja (Efect.):</strong> </td>
             <td>${{getTotales?.TotalSuc?.SucTotalCierreDeCajaEfect | number:'1.1-2'}}</td>

@@ -7,22 +7,22 @@
   </h3>
   <div class="row" *ngIf="modificarProductosHabilitado">
     <div class="col-md-4">
-      <a [routerLink]="['/cliente/articulo/crear']">
-        <mat-card class="pointer">
+      <a style="color: black" [routerLink]="['/cliente/articulo/crear']">
+        <mat-card class="pointer p-3">
           Agregar Artículo
         </mat-card>
       </a>
     </div>
     <div class="col-md-4" *ngIf="visualizarActualizarPreciosHabilitado">
-      <a (click)="agregarArticuloPorNombre()">
-        <mat-card class="pointer">
+      <a style="color: black" (click)="agregarArticuloPorNombre()">
+        <mat-card class="pointer p-3">
           Actualizar Precios
         </mat-card>
       </a>
     </div>
     <div class="col-md-4" *ngIf="puedeSincronizarExcel">
-      <a (click)="sincronizarExcel2()">
-        <mat-card class="pointer">
+      <a style="color: black" (click)="sincronizarExcel2()">
+        <mat-card class="pointer p-3">
          Sincronizar Excel
         </mat-card>
       </a>
@@ -221,7 +221,7 @@
   <!--calculo de precios-->
   <div class="row">
     <div class="col-md-4" *ngIf="visualizarListaPreciosHabilitado">
-      <mat-card>
+      <mat-card class="p-3">
         <span class="form-group">
           <label>Lista de Precios (Activas)</label>
           <select size="3" class="form-control" [(ngModel)]="idLista">
@@ -248,7 +248,7 @@
    <!-- <div class="mb-3" *ngIf="visualizarStockValorHabilitado">-->
       <div class="col-md-4 ng-star-inserted" *ngIf="visualizarStockValorHabilitado">
         <div class="col-md-12">
-          <mat-card>
+          <mat-card class="p-3">
             <div><strong>Capital Existente</strong></div>
             <div>$ {{totalCapitalExistente | number:'1.1-2'}}</div>
           </mat-card>
@@ -256,7 +256,7 @@
       </div>
       <div class="col-md-4 ng-star-inserted" *ngIf="visualizarStockValorHabilitado">
         <div class="col-md-12">
-          <mat-card>
+          <mat-card class="p-3">
             <div><strong>Capital Venta</strong></div>
             <div>$ {{totalCapitalVenta | number:'1.1-2'}}</div>
           </mat-card>

@@ -181,7 +181,7 @@ export class PedidoCrearEditarComponent implements OnInit, AfterViewInit {
   totalPrecio: any = 0;
   calcTotal: any = 0 ;
 
-  idVendedor: any=localStorage.getItem('idUser');
+  idVendedor: any;
   vendedorPerfil: any;
   vendedorNombres: any;
   infoVendedores: any;
@@ -245,7 +245,7 @@ export class PedidoCrearEditarComponent implements OnInit, AfterViewInit {
   token: any;
   pagoParcial = 0;
   pagoParcial2 = 0;
-  idClienteNegotis: any = localStorage.getItem('idClienteNegotis');
+  idClienteNegotis: any ;
   pagoCantidad: any = 0;
   vuelto: any = 0;
   readOnlyCliente!: boolean;
@@ -362,9 +362,9 @@ export class PedidoCrearEditarComponent implements OnInit, AfterViewInit {
     ) {
       titleService.setTitle("Ventas");
       this.request = new CuentaDetalleModel();
-    this.token = localStorage.getItem('token');
     this.myForm = fb.group({
       idSucursalCliente: ['', Validators.compose([])],
+      fechaVencimiento: ['', Validators.compose([])],
       estadoEntrega: ['', Validators.compose([/*Validators.required*/])],
       estadoPago: ['', Validators.compose([Validators.required])],
       comision: ['', Validators.compose([/*Validators.required*/])],
@@ -406,12 +406,8 @@ export class PedidoCrearEditarComponent implements OnInit, AfterViewInit {
       fechaOperacion: ['', Validators.compose([])],
       retencion: ['', Validators.compose([])],
     });
-    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? '');
-    this.soporte = JSON.parse(localStorage.getItem('soporte') ?? '');
-    const roles = JSON.parse(localStorage.getItem('roles') ?? '');
-    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? '') || false;
-    this.tieneRolEsconderDatosSucursal = (roles != null && roles.VisualizarDatosSucursal ) || tieneRolClienteNegotis;
-   // if(this.tieneRolEsconderDatosSucursal)
+
+  // if(this.tieneRolEsconderDatosSucursal)
    // {
    //  this.myForm.controls.idSucursalCliente.errors.required = false;
 
@@ -1038,12 +1034,18 @@ export class PedidoCrearEditarComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
+    this.token = localStorage.getItem('token');
+    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? 'false');
+    this.soporte = JSON.parse(localStorage.getItem('soporte') ?? 'false');
+    this.idClienteNegotis = localStorage.getItem('idClienteNegotis')
+    this.idVendedor = localStorage.getItem('idUser')
     this.idUser = localStorage.getItem('idUser');
-    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? '');
-    this.soporte = JSON.parse(localStorage.getItem('soporte') ?? '');
     const roles = JSON.parse(localStorage.getItem('roles') ?? '');
-    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? '') || false;
-    const tieneRolSoporte = eval(localStorage.getItem('soporte') ?? '') || false;
+
+    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? 'false') || false;
+    this.tieneRolEsconderDatosSucursal = (roles != null && roles.VisualizarDatosSucursal ) || tieneRolClienteNegotis;
+
+    const tieneRolSoporte = eval(localStorage.getItem('soporte') ?? 'false') || false;
     this.tieneRolVenderConStock = (roles != null && roles.VenderConStock );
     this.puedeVisualizarColor = (roles != null && roles.VisualizarColor ) || tieneRolClienteNegotis || tieneRolSoporte;
     this.permisoAumentoDescuentoLista = (roles != null && roles.VisualizarAumentoDescuentoLista ) || tieneRolClienteNegotis || tieneRolSoporte;

@@ -5,19 +5,19 @@
   </h3>
   <div class="row">
     <div class="col-md-4">
-      <a routerLink="/cliente/crear">
-        <mat-card class="pointer">
+      <a style="color: black" routerLink="/cliente/crear">
+        <mat-card class="pointer p-3">
           Agregar Cliente
         </mat-card>
       </a>
     </div>
     <div class="col-md-4" >
-      <a (click)="sincronizarExcel2()">
-        <mat-card class="pointer">
+      <a style="color: black" (click)="sincronizarExcel2()">
+        <mat-card class="pointer p-3">
          Sincronizar Excel
         </mat-card>
       </a>
-     
+
     </div>
     <div class="col-md-4"></div>
     <div class="col-md-4"></div>
@@ -85,7 +85,7 @@
           </select>
         </div>
       </div>
-    
+
       <div class="col-md-3" *ngIf="verDatosTaller">
         <div class="form-group">
           <label>Patente</label>
@@ -99,7 +99,7 @@
           <input type="text" [(ngModel)]="filtroNroSiniestro"   class="form-control">
         </div>
       </div>
-    
+
 
       <div class="col-md-3">
         <div class="form-group">
@@ -134,7 +134,7 @@
   </mat-expansion-panel>
   <div class="row">
     <div class="col-md-4">
-      <mat-card>        
+      <mat-card class="p-3">
         <table class="table-totales">
           <tr>
             <td>Total Clientes</td>
@@ -160,7 +160,7 @@
           <th scope="col">CUIT</th>
           <th scope="col">Tel.</th>
           <th scope="col" *ngIf="datosEsteticaHabilitado">Nro Total de Sesiones</th>
-          <th scope="col" *ngIf="datosEsteticaHabilitado">Nro Sesión del Tratamiento</th>          
+          <th scope="col" *ngIf="datosEsteticaHabilitado">Nro Sesión del Tratamiento</th>
           <th scope="col">*</th>
           <th scope="col" *ngIf="eliminarClientesHabilitado">*</th>
         </tr>
@@ -191,7 +191,7 @@
             <a *ngIf="item?.RazonSocial != 'Mostrador'" (click)="openCrearUsuarioClienteModal(item, i)">
               <span class="pointer">Crear Usuario</span>
             </a>
-          </td> -->          
+          </td> -->
           <td  *ngIf="eliminarClientesHabilitado"><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
         </tr>
       </tbody>

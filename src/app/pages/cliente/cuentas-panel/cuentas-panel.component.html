@@ -6,7 +6,8 @@
   <div class="margin-filtro">
     <mat-action-row>
           <!--Fecha Desde-->
-                  
+
+  <div class="row">
     <div class="col-md-3">
       <div class="form-group">
         <label>Fecha Desde</label>
@@ -15,7 +16,7 @@
     </div>
 
     <!--Fecha Hasta-->
-    
+
     <div class="col-md-3">
       <div class="form-group">
         <label>Fecha Hasta</label>
@@ -37,13 +38,14 @@
           <option [ngValue]="9">Septiembre</option>
           <option [ngValue]="10">Octubre</option>
           <option [ngValue]="11">Noviembre</option>
-          <option [ngValue]="12">Diciembre</option>                 
+          <option [ngValue]="12">Diciembre</option>
         </select>
-      </div>   
-    </div> 
+      </div>
+    </div>
+  </div>
 
 
-        <button (click)="buscar()" class="btn btn-warning">Buscar</button>
+        <button (click)="buscar()" class="btn btn-warning mt-2">Buscar</button>
       </mat-action-row>
   </div>
   <div>
@@ -51,20 +53,20 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">#</th>   
+          <th scope="col">#</th>
           <th scope="col">Razon Social</th>
-          <th scope="col">Direccion</th>          
-          <th scope="col">Saldo</th>          
+          <th scope="col">Direccion</th>
+          <th scope="col">Saldo</th>
         </tr>
       </thead>
       <tbody *ngFor="let item of ClientesLista; let i = index">
         <tr>
           <th scope="row">{{i+1}}</th>
           <td>{{item.RazonSocial}}</td>
-          <td>{{item.DireccionSucursalCliente}}</td>          
+          <td>{{item.DireccionSucursalCliente}}</td>
           <td >
             {{item.totalCuentas}}
-          </td>                         
+          </td>
         </tr>
       </tbody>
     </table>
@@ -82,6 +84,6 @@
     <a target="_blank"
         href="{{urlImprimir}}"
         class="btn btn-primary pdf-btn mb-2">Imprimir Cuenta
-      </a>      
+      </a>
   </div>
 </div>

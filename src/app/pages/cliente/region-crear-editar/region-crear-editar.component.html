@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col"></div>
     <div class="col-lg-8">
-      <mat-card>
+      <mat-card class="p-3">
         <h3 *ngIf="post?.Resultado != true">
           <span *ngIf="idRegion == 0">Crear</span>
           <span *ngIf="idRegion != 0">Editar</span>
@@ -13,7 +13,7 @@
         <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
           <small *ngIf="post?.Repetido == true" class="form-text text-muted">Nombre de region existente</small>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Region</label>
             <input type="text" formControlName="region" class="form-control" [(ngModel)]="region">
             <small *ngIf="myForm.get('region')?.hasError('required') && submitted==true" class="form-text text-muted">

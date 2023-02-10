@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col"></div>
     <div class="col-lg-8">
-      <mat-card>
+      <mat-card class="p-3">
         <h3 *ngIf="post?.Resultado != true">
           <span *ngIf="idListaPrecios == 0">Crear</span>
           <span *ngIf="idListaPrecios != 0">Editar</span>
@@ -13,21 +13,21 @@
         <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
           <small *ngIf="post?.Repetido == true" class="form-text text-muted">Nombre de lista de precios existente</small>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Lista de Precios</label>
             <input type="text" formControlName="listaPrecios" class="form-control" [(ngModel)]="listaPrecios">
             <small *ngIf="myForm.get('listaPrecios')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese lista de precios</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Porcentaje de Aumento/Descuento</label>
             <input type="number" formControlName="porcentajeAumento" class="form-control" [(ngModel)]="porcentajeAumento">
             <small *ngIf="myForm.get('porcentajeAumento')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese porcentaje aumento / descuento</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Estado</label>
 
             <select formControlName="activo" class="form-control" [(ngModel)]="activo">

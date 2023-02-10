@@ -6,8 +6,8 @@
   </h3>
   <div class="row">
     <div class="col-md-4">
-      <a [routerLink]="['/cliente/categoria/rubro/crear']">
-        <mat-card class="pointer">
+      <a style="color: black" [routerLink]="['/cliente/categoria/rubro/crear']">
+        <mat-card class="pointer p-3">
           Agregar Categoría
         </mat-card>
       </a>
@@ -68,10 +68,10 @@
             <span (click)="fotoModal(item.Id)" style="height: 50px;" *ngIf="item.existe == false" class="fas fa-image pointer"></span>
             <img (click)="fotoModal(item.Id)" style="height: 50px;" class="image-sample-img pointer" *ngIf="item.existe == true" src="{{item.imagen}}">
           </th>
-          <th scope="row">{{i+1}}</th>          
+          <th scope="row">{{i+1}}</th>
           <td>{{item.Nombre}}</td>
           <td *ngIf="item.Activo == true">Activo</td>
-          <td *ngIf="item.Activo != true">Inactivo</td>                 
+          <td *ngIf="item.Activo != true">Inactivo</td>
           <td><a routerLink="/cliente/categoria/rubro/editar/{{item.Id}}"><span class="pointer">Editar</span></a></td>
           <td><span (click)="delete(item)" class="fas fa-trash-alt pointer"></span></td>
         </tr>

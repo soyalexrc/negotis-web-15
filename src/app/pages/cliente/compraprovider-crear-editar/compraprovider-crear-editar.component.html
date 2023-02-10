@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-12">
-      <mat-card>
+      <mat-card class="p-3">
         <h3>
           <span *ngIf="idCompra == 0">Crear</span>
           <span *ngIf="idCompra != 0">Editar</span>
@@ -21,7 +21,7 @@
             <div class="row">
               <!--Proveedor (Razon Social)-->
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Nombre de Proveedor</label>
                   <input type="text" class="form-control" [formControl]="ctrlProveedor" [(ngModel)]="proveedor"
                     (input)=resetProveedor() [matAutocomplete]="autoProveedor" matInput>
@@ -41,7 +41,7 @@
 
               <!--Forma de Pago-->
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Forma de Pago</label>
                   <select formControlName="formaPago" class="form-control" [(ngModel)]="formaPago"
                     (change)="updateDropdowns()">
@@ -51,7 +51,7 @@
               </div>
               <!--Estado de Pago-->
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label> Estado de Pago</label>
                   <select formControlName="estadoPago" class="form-control" [(ngModel)]="estadoPago"
                     (change)="updateDropdowns()">
@@ -76,28 +76,28 @@
               </div>
               <!--Proveedor Data-->
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Tasa</label>
                   <input type="number" class="form-control" formControlName="tasa" [(ngModel)]="tasa" [disabled]="true">
                 </div>
               </div>
 
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Retención</label>
                   <input type="number" class="form-control" formControlName="retencion" [(ngModel)]="retencion" [disabled]="true">
                 </div>
               </div>
 
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Percepción</label>
                   <input type="number" class="form-control" formControlName="percepcion" [(ngModel)]="percepcion" [disabled]="true">
                 </div>
               </div>
               <!--Estado de Entrega-->
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Estado de Entrega</label>
                   <select formControlName="estadoEntrega" class="form-control" [(ngModel)]="estadoEntrega">
                     <option *ngFor="let item of estadosEntrega" [ngValue]="item.Id">{{item.Valor}}</option>
@@ -109,7 +109,7 @@
               </div>
               <!--Fecha Compra-->
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Fecha Compra</label>
                   <div (click)="fechaCompraDatePicker()" class="input-group mb-3 pointer">
                     <input formControlName="fechaCompra" readonly type="text" class="form-control"
@@ -126,7 +126,7 @@
               </div>
               <!--Fecha Entrega-->
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Fecha Entrega</label>
                   <div (click)="fechaEntregaDatePicker()" class="input-group mb-3 pointer">
                     <input formControlName="fechaEntrega" readonly type="text" class="form-control"
@@ -143,14 +143,14 @@
               </div>
 
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Nro Comprobante</label>
                   <input type="text" formControlName="numeroComprobante" class="form-control"
                   [(ngModel)]="numeroComprobante">
                 </div>
               </div>
               <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Tipo Comprobante</label>
                   <select formControlName="tipoComprobante" class="form-control" [(ngModel)]="tipoComprobante">
                     <option value="">Seleccionar</option>
@@ -165,7 +165,7 @@
                 </div>
               </div>
               <div >
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Cambiar Lista Precios</label>
                   <input type="text"  class="form-control" [(ngModel)]="listaNombres" [matAutocomplete]="autoLista"
                          [formControl]="listaCtrl">
@@ -185,9 +185,9 @@
           <div class="row">
             <!--Agregar articulos-->
             <div class="col-md-6">
-              <mat-card *ngIf="compraCerrada != true">
+              <mat-card class="p-3" *ngIf="compraCerrada != true">
 
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Agregar Artículos</label>
                   <div>
                     <label (click)="agregarArticuloPorNombre()" class="btn btn-secondary btn-carro"
@@ -208,7 +208,7 @@
                   </div>
                 </span>
                 </div>
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Código de Barra / Articulo (F2)</label>
                   <input formControlName="codigo" type="text" #codigoBarras class="form-control"
                     [(ngModel)]="codigo">
@@ -234,15 +234,15 @@
             <!--Totales-->
             <div #totales class="col-md-6">
 
-              <mat-card>
+              <mat-card class="p-3">
                 <div>
-                  <div class="form-group">
+                  <div class="form-group my-2">
                     <label>Observación</label>
                     <textarea rows="2" formControlName="observacion" class="form-control"
                       [(ngModel)]="observacion"></textarea>
                   </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group my-2">
                   <div>
                     <label>Total Artículos: {{totalArticulos | number:'1.1-2'}}</label>
                   </div>

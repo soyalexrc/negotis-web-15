@@ -5,15 +5,15 @@
   </h3>
   <div class="row">
     <div class="col-md-4">
-      <a routerLink="/cliente/compras/crear">
-        <mat-card class="pointer">
+      <a style="color: black" routerLink="/cliente/compras/crear">
+        <mat-card class="pointer p-3">
           Agregar Compra (+)
         </mat-card>
       </a>
     </div>
     <div class="col-md-6">
       <div>
-        <mat-card>
+        <mat-card class="p-3">
           Id° Compra (F4)
           <div style="display:flex">
             <input #numFactura type="number" class="form-control" [(ngModel)]="idCompra">
@@ -116,7 +116,7 @@
       <div class="col-md-3">
         <div class="form-group">
           <label>Nro Comprobante</label>
-          <input type="text" class="form-control" [(ngModel)]="filtro.numeroComprobante">              
+          <input type="text" class="form-control" [(ngModel)]="filtro.numeroComprobante">
         </div>
       </div>
       <div class="col-md-3">
@@ -126,15 +126,15 @@
             <option value="null">Seleccionar</option>
             <option value="PRESUPUESTO">PRESUPUESTO</option>
             <option value="FACTURA">FACTURA</option>
-            <option value="NOTA DEBITO">NOTA DEBITO</option>       
-            <option value="NOTA CREDITO">NOTA CREDITO</option>        
+            <option value="NOTA DEBITO">NOTA DEBITO</option>
+            <option value="NOTA CREDITO">NOTA CREDITO</option>
           </select>
         </div>
       </div>
 
     </div>
 
- 
+
     <mat-action-row>
       <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
       <button (click)="buscar()" class="btn btn-warning">Buscar</button>
@@ -144,7 +144,7 @@
   <!--totales-->
   <div class="row">
     <div class="col-md-4">
-      <mat-card>
+      <mat-card class="p-3">
         <div class="text-center">Totales</div>
         <table class="table-totales">
           <tr>
@@ -173,7 +173,7 @@
 
     <div style="display:flex; margin-top: 50px;" *ngIf="deudaCalculada > 0 && this.visualizarCambioEstados">
       <a (click)="cambiarEstados($event)" class="btn btn-primary pdf-btn mb-2" style="color: white !important;">
-        Cambiar Estado/s 
+        Cambiar Estado/s
       </a>
     </div>
 
@@ -222,16 +222,16 @@
             <span *ngIf="!item.esParcial">{{item.UltimoEstadoPago}}</span>
           </td>
           <td *ngIf="item.UltimoEstadoPago == null">{{getEstadoDePago(item.datosPago)}}</td>
-          <td *ngIf="item.esParcial == null">{{item.totalCompra}} 
+          <td *ngIf="item.esParcial == null">{{item.totalCompra}}
             <div *ngIf="item.PagoFinal" style="display: inline;"><br><span style="font-size: .8rem;">Resto a Pagar</span><br><span style="font-size: .8rem;">({{item.PagoFinal}})</span></div>
           </td>
-          <td *ngIf="item.esParcial != null" style="color:blue">{{item.PrecioTotal}}            
+          <td *ngIf="item.esParcial != null" style="color:blue">{{item.PrecioTotal}}
           </td>
           <td>{{getEstadoEntrega(item.estadoEntrega)}}</td>
           <td>{{item.fechaEntrega}}</td>
           <td>{{getEstadoCompra(item)}}</td>
           <td>{{item.observacion}}</td>
-          
+
           <td *ngIf="rolEliminarCompra">
             <span (click)="delete(item)" class="fas fa-trash-alt pointer"></span>
           </td>
@@ -246,7 +246,7 @@
       <a target="_blank"
           href="{{urlImprimir}}"
           class="btn btn-primary pdf-btn mb-2">Imprimir Compras
-        </a>      
+        </a>
     </div>
   </div>
 </div>

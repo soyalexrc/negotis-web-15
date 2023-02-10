@@ -149,7 +149,7 @@ export class ArticuloPanelComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? '');
+    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? 'false');
     if (this.route.snapshot.queryParams['filter'] != null) {
       this.filtroDescripcionArticulo = this.route.snapshot.queryParams['filter'];
     }

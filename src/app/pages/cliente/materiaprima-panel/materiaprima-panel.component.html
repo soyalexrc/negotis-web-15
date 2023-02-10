@@ -7,8 +7,8 @@
   </h3>
   <div class="row">
     <div class="col-md-4">
-      <a [routerLink]="['/cliente/materiaprima/crear']">
-        <mat-card class="pointer">
+      <a style="color: black" [routerLink]="['/cliente/materiaprima/crear']">
+        <mat-card class="pointer p-3">
           Agregar Materia Prima
         </mat-card>
       </a>
@@ -41,56 +41,56 @@
     </div>
     </div>
 
-    
+
     <mat-action-row>
-      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>      
+      <button (click)="limpiar()" class="btn btn-secondary btn-limpiard">Limpiar</button>
       <button (click)="buscar()"  class="btn btn-warning">Buscar(Enter)</button>
     </mat-action-row>
   </mat-expansion-panel>
-  
+
   <div class="row">
       <div class="col-md-4 ng-star-inserted">
         <div class="col-md-12">
-          <mat-card>
+          <mat-card class="p-3">
             <div><strong>Capital Existente</strong></div>
             <div>$ {{totalCapitalExistente | number:'1.1-2'}}</div>
           </mat-card>
         </div>
-      </div>     
+      </div>
   </div>
-  
+
 
     <!--tabla-->
     <table class="table">
       <thead>
-        <tr>         
+        <tr>
           <th scope="col" class="sticky">#</th>
-          <th scope="col" class="sticky">*</th>         
-          <th scope="col" class="sticky">ArtÍculo</th>    
+          <th scope="col" class="sticky">*</th>
+          <th scope="col" class="sticky">ArtÍculo</th>
           <th scope="col" class="sticky">Marca</th>
-          <th scope="col" class="sticky" *ngIf="OcultarPreciosProduccion == false">Precio Costo</th>                           
+          <th scope="col" class="sticky" *ngIf="OcultarPreciosProduccion == false">Precio Costo</th>
           <th scope="col"  class="sticky" >Unidades</th>
           <th scope="col" class="sticky">Rubro</th>
           <th scope="col"  class="sticky">Proveedor</th>
-          <th scope="col" class="sticky">Categoría Rubro</th>          
-          <th scope="col"  class="sticky">Estado</th> 
-          <th scope="col" class="sticky">Código</th>         
-        </tr>        
+          <th scope="col" class="sticky">Categoría Rubro</th>
+          <th scope="col"  class="sticky">Estado</th>
+          <th scope="col" class="sticky">Código</th>
+        </tr>
       </thead>
       <tbody  *ngFor="let item of listadoMP; let i = index">
-        <tr>         
+        <tr>
           <th scope="row" >{{i+1}}</th>
           <td><a routerLink="/cliente/materiaprima/editar/{{item.id}}/#"
             [queryParams]="{ panelQuery: this.filtroDescripcionMP, pageQuery: this.page}"><span class="pointer">Editar</span></a>
           </td>
-          <td>{{item.nombre}}</td>          
+          <td>{{item.nombre}}</td>
           <td>{{item.nombreMarca}}</td>
-          
+
 
           <td (click)="openPrecioCostoModal(item,i)" *ngIf="OcultarPreciosProduccion == false">
             {{item.precioCosto}}
-          </td>          
- 
+          </td>
+
           <td (click)="openCantidadModal(item,i)" class="cant-art">
             {{item.cantidad}}
             <span *ngIf="item.kilogramo == true">Kilogramo</span>
@@ -105,7 +105,7 @@
             <span *ngIf="item.kilogramo == true">Kilogramo</span>
             <span *ngIf="item.unidad == true">Unidad</span>
           </td>-->
-         
+
           <td>{{item.nombreRubro}}</td>
           <td >{{item.nombreProveedor}}</td>
           <td>{{item.nombreCategoriaRubro}}</td>

@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col"></div>
     <div class="col-lg-8">
-      <mat-card>
+      <mat-card class="p-3">
         <h3 *ngIf="post?.Resultado != true">
           <span *ngIf="idArticulo == 0">Crear</span>
           <span *ngIf="idArticulo != 0">Editar</span>
@@ -16,7 +16,7 @@
         </div>
         <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label class="obligatorio">Articulo (Nombre)</label>
             <input type="text" formControlName="articulo" class="form-control" [(ngModel)]="articulo">
             <small *ngIf="myForm.get('articulo')?.hasError('required') && submitted==true" class="form-text text-muted">
@@ -27,13 +27,13 @@
             </small>
           </div>
 
-          <div class="form-group" *ngIf="tieneRolVisualizarOfertas">
+          <div class="form-group my-2" *ngIf="tieneRolVisualizarOfertas">
             <label>Descripción</label>
             <textarea rows="4" formControlName="especificacion" class="form-control"
               [(ngModel)]="especificacion"></textarea>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label class="obligatorio">Codigo de barras (Mínimo 7)</label>
             <input type="text" formControlName="codigoDeBarras" class="form-control"
               [(ngModel)]="codigoDeBarras">
@@ -43,26 +43,26 @@
             <small *ngIf="post?.RepetidoCodigo == true && tieneRolCargaDuplicado == false" class="form-text text-muted">Código de barras existente</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Segundo Codigo de barras (Mínimo 7)</label>
             <input type="text" formControlName="codigobarras2" class="form-control"
               [(ngModel)]="codigobarras2">
           </div>
 
-          <div class="form-group" *ngIf="tieneRolQR">
+          <div class="form-group my-2" *ngIf="tieneRolQR">
             <label >Codigo QR</label>
             <input type="text" formControlName="codigoQR" class="form-control"
               [(ngModel)]="codigoQR">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Codigo Articulo</label>
             <input type="text" formControlName="codigoArticulo" class="form-control"
               [(ngModel)]="codigoArticulo">
           </div>
 
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label class="obligatorio">Marca</label>
             <select formControlName="idMarca" class="form-control" [(ngModel)]="idMarca">
               <option value="">Seleccionar</option>
@@ -72,7 +72,7 @@
               Ingrese marca</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label class="obligatorio">Proveedor</label>
             <select formControlName="idProveedor" class="form-control" [(ngModel)]="idProveedor">
               <option value="">Seleccionar</option>
@@ -83,14 +83,14 @@
             </small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Segundo Proveedor</label>
             <select formControlName="idProveedor2" class="form-control" [(ngModel)]="idProveedor2">
               <option value="">Seleccionar</option>
               <option *ngFor="let item of listadoProveedores" value="{{item.id}}">{{item.nombre}}</option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group my-2">
             <label >Tercer Proveedor</label>
             <select formControlName="idProveedor3" class="form-control" [(ngModel)]="idProveedor3">
               <option value="">Seleccionar</option>
@@ -98,24 +98,24 @@
             </select>
           </div>
 
-          <div class="form-group" *ngIf="Ubicaciones">
+          <div class="form-group my-2" *ngIf="Ubicaciones">
             <label>Ubicación Depósito</label>
             <input formControlName="ubicacionDeposito" class="form-control" [(ngModel)]="ubicacionDeposito">
           </div>
-          <div class="form-group" *ngIf="Ubicaciones">
+          <div class="form-group my-2" *ngIf="Ubicaciones">
             <label>Ubicación Artículo</label>
             <input formControlName="ubicacionArticulo" class="form-control" [(ngModel)]="ubicacionArticulo">
           </div>
-          <div class="form-group" *ngIf="VerCodigoCliente">
+          <div class="form-group my-2" *ngIf="VerCodigoCliente">
             <label>Código Cliente</label>
             <input formControlName="codigoCliente" class="form-control" [(ngModel)]="codigoCliente">
           </div>
-          <div class="form-group" *ngIf="VerCodigoCliente">
+          <div class="form-group my-2" *ngIf="VerCodigoCliente">
             <label>Código Proveedor</label>
             <input formControlName="codigoProveedor" class="form-control" [(ngModel)]="codigoProveedor">
           </div>
 
-          <div *ngIf="tieneRolMP" class="form-group">
+          <div *ngIf="tieneRolMP" class="form-group my-2">
             <button (click)="MPModal()" type="button" > Cargar
              Materia Prima</button>
             <table class="table">
@@ -143,7 +143,7 @@
           </div>
 
 
-          <div *ngIf="tieneRolComboArticulos" class="form-group">
+          <div *ngIf="tieneRolComboArticulos" class="form-group my-2">
             <button (click)="ComboModal()" type="button" > Cargar
              Combo Artículo</button>
             <table class="table">
@@ -170,7 +170,7 @@
 
 
 
-          <div class="form-group" >
+          <div class="form-group my-2" >
             <label class="obligatorio">Rubro</label>
             <select formControlName="idRubro" class="form-control" [(ngModel)]="idRubro">
               <option value="">Seleccionar</option>
@@ -181,7 +181,7 @@
               Ingrese rubro</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label class="obligatorio">Precio Costo</label>
             <input type="number" formControlName="precioCosto" class="form-control"
               [(ngModel)]="precioCosto" (change)="onChange()">
@@ -191,13 +191,13 @@
               Ingrese precio costo mayor o igual a 0</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Porcentaje</label>
             <input type="number" formControlName="porcentaje" class="form-control"
               [(ngModel)]="porcentaje" (change)="onChange()">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label class="obligatorio">Precio Base</label>
             <input type="number" formControlName="precioBase" class="form-control"
              [(ngModel)]="precioBase">
@@ -209,19 +209,19 @@
           </div>
 
           <div *ngIf="tieneRolCostosAdicionales">
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Precio Costo 2</label>
             <input type="number" formControlName="precioCosto2" class="form-control"
               [(ngModel)]="precioCosto2 " (change)="onChange()">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Precio Costo 3</label>
             <input type="number" formControlName="precioCosto3" class="form-control"
               [(ngModel)]="precioCosto3" (change)="onChange()">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Precio Costo 4</label>
             <input type="number" formControlName="precioCosto4" class="form-control"
               [(ngModel)]="precioCosto4" (change)="onChange()">
@@ -229,25 +229,25 @@
 
         </div>
 
-        <div class="form-group" *ngIf="visualizarAcciones">
+        <div class="form-group my-2" *ngIf="visualizarAcciones">
           <label>Porcentaje Precio Oferta</label>
           <input type="number" formControlName="porcentajeO" class="form-control"
             [(ngModel)]="porcentajeO" (change)="onChange()">
         </div>
 
-        <div class="form-group" *ngIf="visualizarAcciones">
+        <div class="form-group my-2" *ngIf="visualizarAcciones">
           <label>Precio Oferta</label>
           <input type="number" formControlName="precioBulto" class="form-control"
             [(ngModel)]="precioBulto ">
         </div>
 
-          <div class="form-group" ng *ngIf="tieneRolPrecioDolar">
+          <div class="form-group my-2" ng *ngIf="tieneRolPrecioDolar">
             <label>Precio Dolar</label>
             <input type="number" formControlName="precioDolar" class="form-control"
               [(ngModel)]="precioDolar">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label >Cantidad Por Pack / Cantidad Oferta</label>
             <input type="number" formControlName="cantidadPorPack" class="form-control"
               [(ngModel)]="cantidadPorPack">
@@ -256,7 +256,7 @@
               Ingrese cantidad mayor o igual a 0</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Unidad de Medida</label>
             <div>
               <label>
@@ -320,7 +320,7 @@
               [(ngModel)]="limiteStock">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Stock Minimo</label>
             <input type="number" formControlName="stockMinimo" class="form-control"
               [(ngModel)]="stockMinimo">
@@ -339,14 +339,14 @@
                 [(ngModel)]="lote">
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Fecha de Ingreso (año/mes/dia)</label>
               <input type="text" formControlName="fechaIngreso" class="form-control"
                 [(ngModel)]="fechaIngreso">
             </div>
 
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label>Fecha de Egreso (año/mes/dia)</label>
               <input type="text" formControlName="fechaEgreso" class="form-control"
                 [(ngModel)]="fechaEgreso">
@@ -354,7 +354,7 @@
 
         </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Vencimiento (año/mes/dia)</label>
             <input type="text" formControlName="vencimiento" class="form-control"
               [(ngModel)]="vencimiento">
@@ -362,7 +362,7 @@
                 Ingrese Vencimiento</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Vencimiento Oferta (año/mes/dia)</label>
             <input type="text" formControlName="vencimientoOferta" class="form-control"
               [(ngModel)]="vencimientoOferta">
@@ -370,7 +370,7 @@
 
 
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Talle/Tamaño</label>
             <input type="text" formControlName="talle" class="form-control"
               [(ngModel)]="talle">
@@ -378,14 +378,14 @@
 
 
 <!--
-          <div class="form-group" *ngIf="mostrarDatosEcommerce">
+          <div class="form-group my-2" *ngIf="mostrarDatosEcommerce">
             <label>Agregar a E-commerce</label>
             <div>
             <input (change)="ecommerceClick($event)" type="checkbox" class="ecommerce" [checked]="articuloE">
             </div>
           </div>
 
-          <div class="form-group" *ngIf="mostrarDatosEcommerce">
+          <div class="form-group my-2" *ngIf="mostrarDatosEcommerce">
             <label>Lista de Precios (Activas)</label>
             <select size="3" class="form-control" [(ngModel)]="idLista" >
               <option (click)="getLista(item);" *ngFor="let item of listadoPrecios" value="{{item?.Id}}">{{item?.Nombre}}
@@ -393,7 +393,7 @@
             </select>
           </div>
 -->
-            <div class="form-group">
+            <div class="form-group my-2">
               <label >Destacar En Carro</label>
               <select formControlName="destacar" class="form-control" [(ngModel)]="destacar">
                 <option value="false">No</option>
@@ -401,7 +401,7 @@
               </select>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <label >Iva</label>
               <select formControlName="iva" class="form-control" [(ngModel)]="iva">
                 <option value="21">21</option>
@@ -412,7 +412,7 @@
             </div>
 
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label >Estado</label>
             <select formControlName="activo" class="form-control" [(ngModel)]="activo">
               <option value="">Seleccionar</option>
@@ -424,7 +424,7 @@
             </small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label >Eliminar</label>
             <select formControlName="eliminar" class="form-control" [(ngModel)]="eliminar">
               <option value="false">No</option>

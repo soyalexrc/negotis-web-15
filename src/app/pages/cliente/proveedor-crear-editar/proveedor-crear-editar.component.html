@@ -4,35 +4,35 @@
   <div class="row">
     <div class="col"></div>
     <div class="col-lg-8">
-      <mat-card>
+      <mat-card class="p-3">
         <h3 *ngIf="model">
           <span *ngIf="model.Id == null">Registrar</span>
           <span *ngIf="model.Id != null">Editar</span>
           Proveedor
         </h3>
         <form *ngIf="model" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
-          <div class="form-group">
+          <div class="form-group my-2">
             <label class="obligatorio">Razon social *</label>
             <input type="text" formControlName="razonsocial" class="form-control" [(ngModel)]="model.RazonSocial">
             <small *ngIf="myForm.get('razonsocial')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese razon social</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label class="obligatorio">Nombres *</label>
             <input type="text" formControlName="nombre" class="form-control" [(ngModel)]="model.Nombre">
             <small *ngIf="myForm.get('nombre')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese nombres</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Apellidos</label>
             <input type="text" formControlName="apellido" class="form-control" [(ngModel)]="model.Apellido">
             <small *ngIf="myForm.get('apellido')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese apellidos</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>CUIT(Sin Guión)</label>
             <input type="number" formControlName="cuit" class="form-control" [(ngModel)]="model.CUIT">
             <small *ngIf="myForm.get('cuit')?.hasError('required') && submitted==true" class="form-text text-muted">
@@ -41,43 +41,43 @@
               Ingrese solo números</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Teléfono</label>
             <input type="number" formControlName="telefono" class="form-control" [(ngModel)]="model.Telefono">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Tasa</label>
             <input type="number" formControlName="tasa" class="form-control" [(ngModel)]="model.Tasa">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Retención</label>
             <input type="number" formControlName="retencion" class="form-control" [(ngModel)]="model.Retencion">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Percepción</label>
             <input type="number" formControlName="percepcion" class="form-control" [(ngModel)]="model.Percepcion">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Provincia</label>
             <input type="text" formControlName="provincia" class="form-control" [(ngModel)]="model.Provincia">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Localidad</label>
             <input type="text" formControlName="localidad" class="form-control" [(ngModel)]="model.Localidad">
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Dirección</label>
             <input type="text" formControlName="direccion" class="form-control" [(ngModel)]="model.Direccion">
           </div>
 
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Numero de cuenta</label>
             <input type="number" formControlName="numerocuenta" class="form-control" [(ngModel)]="model.NumeroCuenta">
             <small *ngIf="myForm.get('numerocuenta')?.hasError('required') && submitted==true" class="form-text text-muted">
@@ -86,27 +86,29 @@
               Ingrese solo números</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Empresa</label>
             <input type="text" formControlName="empresa" class="form-control" [(ngModel)]="model.Empresa">
             <small *ngIf="myForm.get('empresa')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese empresa</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Email</label>
             <input type="email" formControlName="email" class="form-control" [(ngModel)]="model.Email">
             <small *ngIf="myForm.get('email')?.hasError('required') && submitted==true" class="form-text text-muted">
               Ingrese email</small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Detalle</label>
             <input type="text" formControlName="detalle" class="form-control" [(ngModel)]="model.Detalle">
           </div>
 
-          <button type="submit" class="btn btn-warning">Guardar</button>
-            <a routerLink="/cliente/proveedor/panel" class="float-right"><span class="pointer">Volver</span></a>
+          <div class="d-flex justify-content-between align-items-center">
+            <button type="submit" class="btn btn-warning">Guardar</button>
+            <a routerLink="/cliente/proveedor/panel" ><span class="pointer">Volver</span></a>
+          </div>
         </form>
 
       </mat-card>

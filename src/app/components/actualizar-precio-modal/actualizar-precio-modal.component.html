@@ -1,4 +1,4 @@
-<div>
+<div class="p-3">
     <h1 >
       Actualizar Precio
     </h1>
@@ -9,11 +9,11 @@
           <!--
             <label><strong><h5> Precio Base </h5></strong></label>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <label>Porcentaje</label>
                 <input (change)="porcentajeGClick()" type="checkbox" [checked]="porcentajeG">
             </div>
-            <div class="form-group">
+            <div class="form-group my-2">
                 <input type="number"  formControlName="mmontoPorcentajeG" [(ngModel)]="montoPorcentajeG" *ngIf="porcentajeG; else elseBlock">
                 <ng-template #elseBlock>
                       <input  type="number"
@@ -24,7 +24,7 @@
 
         <div>
 
-        <div class="form-group">
+        <div class="form-group my-2">
             <label>Monto Fijo</label>
             <input (change)="montoFijoGClick()" type="checkbox" [checked]="montoG">
         </div>
@@ -38,10 +38,10 @@
         </div>
         </div>
         -->
-        <div class="form-group">
+        <div class="form-group my-2">
             <label><strong> <h5>Precio Costo </h5></strong></label>
 
-            <div>
+            <div class="my-2">
                 <label>Porcentaje</label>
                 <input (change)="porcentajeGClick()" type="checkbox" [checked]="porcentajeG">
             </div>
@@ -56,7 +56,7 @@
 
         <div>
 
-        <div>
+        <div class="my-2">
             <label>Monto Fijo</label>
             <input (change)="montoFijoGClick()" type="checkbox"  [checked]="montoG">
         </div>
@@ -70,13 +70,13 @@
         </div>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group my-2">
         <label><strong> <h5>Porcentaje utilidad </h5></strong></label>
-        <div class="form-group">
+        <div class="form-group my-2">
             <label>Porcentaje</label>
             <input (change)="porcentajeUClick()" type="checkbox" [checked]="porcentajeU">
         </div>
-        <div class="form-group">
+        <div class="form-group my-2">
             <input type="number"  formControlName="montoPorcentajeU" [(ngModel)]="montoPorcentajeU" *ngIf="porcentajeU; else elseBlock">
             <ng-template #elseBlock>
                   <input  type="number"
@@ -85,10 +85,10 @@
               </ng-template>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group my-2">
         <label><strong> <h5>Porcentaje utilidad Precio Oferta </h5></strong></label>
 
-        <div>
+        <div class="my-2">
             <label>Porcentaje Oferta</label>
             <input (change)="porcentajePOlick()" type="checkbox" [checked]="porcentajeO">
         </div>
@@ -102,12 +102,12 @@
         </div>
 
     </div>
-    <div class="form-group">
+    <div class="form-group my-2">
         <label><strong> <h5>Porcentaje utilidad Lista</h5></strong></label>
 
         <div>
-            <mat-card>
-              <span class="form-group">
+            <mat-card class="p-3">
+              <span class="form-group my-2">
                 <label>Lista de Precios (Activas)</label>
                 <select size="3" class="form-control" [(ngModel)]="idLista">
                   <!-- <option (click)="sinAumneto();" value="0">Sin aumento</option> -->
@@ -134,13 +134,13 @@
         </div>
 
     </div>
-    <div class="form-group">
+    <div class="form-group my-2">
         <label><strong> <h5>Cotizacion Dolar </h5></strong></label>
-        <div class="form-group">
+        <div class="form-group my-2">
             <label>Monto</label>
             <input (change)="precioDClick()" type="checkbox" [checked]="precioD">
         </div>
-        <div class="form-group">
+        <div class="form-group my-2">
             <input type="number"  formControlName="montoPrecioDolar" [(ngModel)]="montoPrecioDolar" *ngIf="precioD; else elseBlock">
             <ng-template #elseBlock>
                   <input  type="number"
@@ -150,25 +150,36 @@
         </div>
     </div>
 </div>
+      <div class="my-2">
         <label>Proveedor</label>
 
         <select size="3" class="form-control" formControlName="idProveedor" [(ngModel)]="idProveedor" >
         <option  *ngFor="let item of listadoProveedores" value="{{item?.id}}">{{item?.nombre}}
     </option>
     </select>
+
+      </div>
+
+      <div class="my-2">
+
     <label>Categoria</label>
 
     <select size="3" class="form-control"  formControlName="idCategoria" [(ngModel)]="idCategoria" >
      <option  *ngFor="let item of listadoCategoria" value="{{item?.Id}}">{{item?.Nombre}}
     </option>
 </select>
+      </div>
+      <div class="my-2">
 
 <label>Rubro</label>
-
 <select size="3" class="form-control" formControlName="idRubro" [(ngModel)]="idRubro" >
  <option *ngFor="let item of listadoRubro" value="{{item?.Id}}">{{item?.Nombre}}
 </option>
 </select>
+      </div>
+
+<div class="my-2">
+
 
 <label>Marca</label>
 
@@ -177,6 +188,7 @@
 
 </option>
 </select>
+</div>
 
 <button (click)="cerrar()" class="btn btn-danger">Volver</button>
     <div mat-dialog-actions>

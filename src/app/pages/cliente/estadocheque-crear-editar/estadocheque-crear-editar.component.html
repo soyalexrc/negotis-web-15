@@ -4,15 +4,15 @@
   <div class="row">
     <div class="col"></div>
     <div class="col-lg-8">
-      <mat-card>
+      <mat-card class="p-3">
         <h3 *ngIf="post?.Resultado != true">
           Estado de Cheque
         </h3>
         <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
-          <div class="form-group">
+          <div class="form-group my-2">
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Nombre.</label>
                   <input type="text" class="form-control"
                          formControlName="descripcion" [(ngModel)]="model.descripcion">
@@ -24,10 +24,10 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group my-2">
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Representa (Valor)</label>
                   <div>
                     <input type="radio" name="representaValor" value="0" formControlName="modificadorValor" [ngModel]="model.modificadorValor.toString()">
@@ -47,7 +47,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Representa (Efectivo)</label>
                   <div>
                     <input type="radio" name="representaEfectivo" value="0" formControlName="modificadorCaja" [ngModel]="model.modificadorCaja.toString()">
@@ -70,7 +70,7 @@
 
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Tipo de Operacion</label>
                   <div>
                     <input type="radio" name="tipoOperacion" value=1 formControlName="tipoOperacion" [ngModel]="model.tipoOperacion.toString()">

@@ -6,30 +6,30 @@
     </h3>
     <div class="row">
         <div class="col-md-4 col-box">
-            <a [routerLink]="['/cliente/finanzas/cuentadetalle/panel']">
-                <mat-card class="box pointer">
+            <a style="color: black" [routerLink]="['/cliente/finanzas/cuentadetalle/panel']">
+                <mat-card class="box pointer p-3">
                     Cuentas
                 </mat-card>
             </a>
         </div>
         <div class="col-md-4 col-box">
-            <a [routerLink]="['/cliente/finanzas/valores/panel']">
-                <mat-card class="box pointer">
+            <a style="color: black" [routerLink]="['/cliente/finanzas/valores/panel']">
+                <mat-card class="box pointer p-3">
                     Valores
                 </mat-card>
             </a>
       </div>
       <div class="col-md-4 col-box">
-            <a [routerLink]="['/cliente/finanzas/configuracion/panel']">
-                <mat-card class="box pointer">
+            <a style="color: black" [routerLink]="['/cliente/finanzas/configuracion/panel']">
+                <mat-card class="box pointer p-3">
                     Configuraciones
                 </mat-card>
             </a>
         </div>
         <div class="col-md-4 col-box" *ngIf="this.rolPrestamos || rolClienteNegotis == 'true'">
-            <a [routerLink]="['/cliente/prestamos/panel']">
-              <mat-card class="box pointer">
-                Préstamos 
+            <a style="color: black" [routerLink]="['/cliente/prestamos/panel']">
+              <mat-card class="box pointer p-3" >
+                Préstamos
               </mat-card>
             </a>
           </div>

@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col"></div>
     <div class="col-lg-8">
-      <mat-card>
+      <mat-card class="p-3">
         <h3 *ngIf="post?.Resultado != true">
           <span *ngIf="idValor == 0">Crear</span>
           <span *ngIf="idValor != 0">Editar</span>
@@ -12,10 +12,10 @@
         </h3>
         <form *ngIf="post?.Resultado != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Cliente</label>
 
                   <input type="text" formControlName="nombreCliente" class="form-control"
@@ -40,12 +40,12 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <h5>Datos del Cheque</h5>
 
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Número</label>
                   <input type="text" formControlName="numero" class="form-control"
                     [(ngModel)]="request.numero">
@@ -56,7 +56,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Plaza</label>
                   <input type="text" formControlName="plaza" class="form-control"
                     [(ngModel)]="request.plaza">
@@ -67,7 +67,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Banco</label>
                   <input type="text" formControlName="banco" class="form-control"
                     [(ngModel)]="request.banco">
@@ -80,7 +80,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>CUIT</label>
                   <input type="text" formControlName="cuit" class="form-control" [(ngModel)]="request.cuit">
                   <small
@@ -91,7 +91,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Librador</label>
                   <input type="text" formControlName="librador" class="form-control"
                     [(ngModel)]="request.librador">
@@ -102,7 +102,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Nº Cuenta</label>
                   <input type="text" formControlName="cuenta" class="form-control"
                     [(ngModel)]="request.cuenta">
@@ -116,7 +116,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Importe</label>
                   <input type="text" formControlName="importe" class="form-control"
                     [(ngModel)]="request.importe">
@@ -128,7 +128,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Fecha de Emision</label>
                   <div (click)="fechaEmisionDatePicker()" class="input-group pointer">
                     <input formControlName="fechaEmision" readonly type="text" class="form-control"
@@ -145,7 +145,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Fecha de Vencimiento</label>
                   <div (click)="fechaVencimientoDatePicker()" class="input-group pointer">
                     <input formControlName="fechaVencimiento" readonly type="text" class="form-control"
@@ -164,10 +164,10 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Estado</label>
                   <input type="text" formControlName="nombreEstado" class="form-control"
                       [(ngModel)]="nombreEstado" (input)=resetKeyEstado() [matAutocomplete]="auto1" matInput>
@@ -188,7 +188,7 @@
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Fecha de Recepción</label>
                   <div (click)="fechaIngresoValorDatePicker()" class="input-group pointer"
                     *ngIf="MostrarFechaIngresoValor(selectedOptionEstado); else fechaIngresoValorRO">
@@ -210,7 +210,7 @@
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Fecha de Pago</label>
                   <div (click)="fechaEgresoEfectivoDatePicker()" class="input-group pointer"
                     *ngIf="MostrarFechaEgresoEfectivo(selectedOptionEstado); else fechaEgresoEfectivoRO">
@@ -232,7 +232,7 @@
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Fecha de Venta</label>
                   <div (click)="fechaEgresoValorDatePicker()" class="input-group pointer"
                     *ngIf="MostrarFechaEgresoValor(selectedOptionEstado); else fechaEgresoValorRO">
@@ -253,7 +253,7 @@
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Fecha de Cobro</label>
                   <div (click)="fechaIngresoEfectivoDatePicker()" class="input-group pointer"
                     *ngIf="MostrarFechaIngresoEfectivo(selectedOptionEstado); else fechaIngresoEfectivoRO">
@@ -278,11 +278,11 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <div class="row">
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Dias Demora</label>
                   <input type="text" formControlName="demora" class="form-control"
                     [(ngModel)]="request.demoraDeposito">
@@ -295,7 +295,7 @@
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Dias hasta el deposito</label>
                   <input readonly type="text" formControlName="resultDeposito" class="form-control"
                     [ngModel]="calcularDiasDeposito(this.request)">
@@ -303,7 +303,7 @@
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Ajuste</label>
                   <input type="text" formControlName="ajusteDeposito" class="form-control"
                     [(ngModel)]="request.ajusteDeposito">
@@ -318,7 +318,7 @@
 
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Tasa (%)</label>
                   <input type="text" formControlName="tasa" class="form-control" [(ngModel)]="request.tasa">
                   <small
@@ -330,7 +330,7 @@
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Monto</label>
                   <input readonly type="text" formControlName="montoTasa" class="form-control"
                     [ngModel]="fixedMontoTasa(this.request)">
@@ -338,7 +338,7 @@
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Ajuste</label>
                   <input type="text" formControlName="ajusteTasa" class="form-control"
                     [(ngModel)]="request.ajusteTasa">
@@ -353,7 +353,7 @@
 
             <div class="row">
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Imp. Bancario (%)</label>
                   <input type="text" formControlName="impBancario" class="form-control"
                     [(ngModel)]="request.impBancario">
@@ -366,7 +366,7 @@
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Monto</label>
                   <input readonly type="text" formControlName="montoImpBancario" class="form-control"
                     [ngModel]="fixedMontoImpuestoBancario(this.request)">
@@ -374,7 +374,7 @@
               </div>
 
               <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group my-2">
                   <label>Ajuste</label>
                   <input type="text" formControlName="ajusteImpBancario" class="form-control"
                     [(ngModel)]="request.ajusteImpBancario">
@@ -388,10 +388,10 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <h5>Resumen</h5>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <div class="row">
                 <div class="col-md-4">
                   <label>Retenciones</label>
@@ -403,7 +403,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
               <div class="row">
                 <div class="col-md-4">
                   <label>Subtotal</label>

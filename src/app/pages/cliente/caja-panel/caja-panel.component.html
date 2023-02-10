@@ -3,29 +3,29 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4 col-box">
-      <a [routerLink]="['/cliente/caja/totales']">
-        <mat-card class="box pointer">
+      <a style="color: black" [routerLink]="['/cliente/caja/totales']">
+        <mat-card class="box pointer p-3">
           Totales
         </mat-card>
       </a>
     </div>
     <div class="col-md-4 col-box">
-      <a [routerLink]="['/cliente/gasto/panel']">
-        <mat-card class="box pointer">
+      <a style="color: black" [routerLink]="['/cliente/gasto/panel']">
+        <mat-card class="box pointer p-3">
           Gastos
         </mat-card>
       </a>
     </div>
     <div *ngIf="rolClienteNegotis == 'true' || roles?.TRANSFERENCIAS == true" class="col-md-4 col-box">
-      <a [routerLink]="['/cliente/transferencia/deposito/dinero/panel']">
-        <mat-card class="box pointer">
+      <a style="color: black" [routerLink]="['/cliente/transferencia/deposito/dinero/panel']">
+        <mat-card class="box pointer p-3">
           Ingreso / Depósitos / Egreso
         </mat-card>
       </a>
     </div>
     <div class="col-md-4 col-box">
-      <a [routerLink]="['/cliente/caja/configuracion/panel']">
-        <mat-card class="box pointer">
+      <a style="color: black" [routerLink]="['/cliente/caja/configuracion/panel']">
+        <mat-card class="box pointer p-3">
           Configuracion
         </mat-card>
       </a>

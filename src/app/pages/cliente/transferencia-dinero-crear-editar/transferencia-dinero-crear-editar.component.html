@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col"></div>
     <div class="col-lg-8">
-      <mat-card>
+      <mat-card class="p-3">
         <h3 *ngIf="post != true">
           <span *ngIf="idTransDep == 0">Crear</span>
           <span *ngIf="idTransDep != 0">Editar</span>
@@ -16,7 +16,7 @@
 
         <form *ngIf="post != true" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Opciones</label>
             <div>
               <label (click)="extParaSucFunc($event)">
@@ -47,7 +47,7 @@
 
 
 
-          <div *ngIf="deSucParaSuc == true || egresoDinero == true" class="form-group">
+          <div *ngIf="deSucParaSuc == true || egresoDinero == true" class="form-group my-2">
             <label>De</label>
             <div>
               <strong>
@@ -57,7 +57,7 @@
             </div>
           </div>
 
-          <div *ngIf="egresoDinero == false" class="form-group">
+          <div *ngIf="egresoDinero == false" class="form-group my-2">
             <label>Para</label>
             <select formControlName="idParaSucursal" class="form-control" [(ngModel)]="idParaSucursal">
               <option value="">Seleccionar</option>
@@ -69,7 +69,7 @@
             </small>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Monto <!-- <strong *ngIf="extParaSuc != true">(Máximo ${{infoInicio?.TotalSuc | number:'1.1-2'}})</strong> --></label>
             <input type="number" formControlName="monto" class="form-control" [(ngModel)]="monto">
             <small *ngIf="(myForm.get('monto')?.hasError('required') || myForm.get('monto')?.hasError('pattern') || valMonto == true)
@@ -84,7 +84,7 @@
               <input type="text" class="form-control" (click)="fechaDesdeFunc()"  value="{{fechaDesde}}" [(ngModel)]="fechaDesde" readonly>
           </div>
 
-          <div class="form-group">
+          <div class="form-group my-2">
             <label>Descripción</label>
             <textarea rows="4" formControlName="descripcion" class="form-control"
               [(ngModel)]="descripcion"></textarea>
