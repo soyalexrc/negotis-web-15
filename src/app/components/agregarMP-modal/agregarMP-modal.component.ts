@@ -43,7 +43,7 @@ export class AgregarMPModalComponent implements OnInit, AfterViewInit {
   listadoMP: any;
   listadoMPOriginal: any;
   sucursalActual: any;
-  idSucursal: any=JSON.parse(localStorage.getItem('sucursalSeleccionada') ?? '');
+  idSucursal: any;
   idUser:any;
   precio:any;
   tieneRolModificarPrecio: any;
@@ -87,10 +87,11 @@ export class AgregarMPModalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? '');
+    this.idSucursal = JSON.parse(localStorage.getItem('sucursalSeleccionada') ?? '')
+    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? 'false');
 
-    const roles = JSON.parse(localStorage.getItem('roles') ?? '');
-    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? '') || false;
+    const roles = JSON.parse(localStorage.getItem('roles') ?? '[]');
+    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? 'false') || false;
     this.tieneRolVisualizarCategoria = (roles != null && roles.VisualizarCategoria ) || tieneRolClienteNegotis;
     this.tieneRolVisualizarOfertas = (roles != null && roles.VisualizarOfertas ) || tieneRolClienteNegotis;
     this.tieneRolVisualizarCantXPack = (roles != null && roles.VisualizarCantXPack ) || tieneRolClienteNegotis;

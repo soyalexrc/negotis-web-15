@@ -5,7 +5,7 @@
       <form [formGroup]="myForm">
         <div class="form-group">
           <label>Cantidad</label>
-          <input type="number" formControlName="cantidad" #myInput (focus)="$event.target" class="form-control" [(ngModel)]="cantidad">
+          <input (keyup.enter)="onSubmit(myForm.value)" type="number" formControlName="cantidad" #myInput (focus)="$event.target" class="form-control" [(ngModel)]="cantidad">
           <small *ngIf="myForm.get('cantidad')?.hasError('required') || errorEntero == true" class="form-text text-muted">
             Ingrese cantidad <span *ngIf="errorEntero == true"> (Entero)</span></small>
           <small *ngIf="myForm.get('cantidad')?.hasError('pattern')" class="form-text text-muted">

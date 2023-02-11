@@ -129,8 +129,9 @@
       [formControl]="rubroCtrl">
     <mat-autocomplete #autoRubro="matAutocomplete">
       <mat-option (click)="getRubro(item)" *ngFor="let item of filteredRubro | async" [value]="item.Nombre">
-        <span *ngIf="rubroFiltro != null && rubroFiltro != ''">{{item.Nombre}}</span>
-        <span *ngIf="rubroFiltro == null || rubroFiltro == ''">Ingrese al menos un carácter</span>
+        <span>{{item.Nombre}}</span>
+<!--        <span *ngIf="rubroFiltro">{{item.Nombre}}</span>-->
+<!--        <span *ngIf="!rubroFiltro">Ingrese al menos un carácter</span>-->
       </mat-option>
     </mat-autocomplete>
   </div>
@@ -142,8 +143,9 @@
       [formControl]="crCtrl">
     <mat-autocomplete #autoCR="matAutocomplete">
       <mat-option (click)="getRubro(item)" *ngFor="let item of filteredCR | async" [value]="item.Nombre">
-        <span *ngIf="categoriaRubroFiltro != null && categoriaRubroFiltro != ''">{{item.Nombre}}</span>
-        <span *ngIf="categoriaRubroFiltro == null || categoriaRubroFiltro == ''">Ingrese al menos un carácter</span>
+        <span>{{item.Nombre}}</span>
+<!--        <span *ngIf="categoriaRubroFiltro != null && categoriaRubroFiltro != ''">{{item.Nombre}}</span>-->
+<!--        <span *ngIf="categoriaRubroFiltro == null || categoriaRubroFiltro == ''">Ingrese al menos un carácter</span>-->
       </mat-option>
     </mat-autocomplete>
   </div>
@@ -155,8 +157,9 @@
       [formControl]="marcaCtrl">
     <mat-autocomplete #autoMarca="matAutocomplete">
       <mat-option (click)="getMarca(item)" *ngFor="let item of filteredMarca | async" [value]="item.Nombre">
-        <span *ngIf="marcaFiltro != null && marcaFiltro != ''">{{item.Nombre}}</span>
-        <span *ngIf="marcaFiltro == null || marcaFiltro == ''">Ingrese al menos un carácter</span>
+        <span>{{item.Nombre}}</span>
+<!--        <span *ngIf="marcaFiltro != null && marcaFiltro != ''">{{item.Nombre}}</span>-->
+<!--        <span *ngIf="marcaFiltro == null || marcaFiltro == ''">Ingrese al menos un carácter</span>-->
       </mat-option>
     </mat-autocomplete>
   </div>

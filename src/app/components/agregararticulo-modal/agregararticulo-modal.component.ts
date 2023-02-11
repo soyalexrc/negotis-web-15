@@ -74,10 +74,10 @@ export class AgregararticuloModalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? '');
+    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? 'false');
 
-    const roles = JSON.parse(localStorage.getItem('roles') ?? '');
-    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? '') || false;
+    const roles = JSON.parse(localStorage.getItem('roles') ?? '[]');
+    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? 'false') || false;
     this.tieneRolVisualizarCategoria = (roles != null && roles.VisualizarCategoria ) || tieneRolClienteNegotis;
     this.tieneRolVisualizarOfertas = (roles != null && roles.VisualizarOfertas ) || tieneRolClienteNegotis;
     this.tieneRolVisualizarCantXPack = (roles != null && roles.VisualizarCantXPack ) || tieneRolClienteNegotis;

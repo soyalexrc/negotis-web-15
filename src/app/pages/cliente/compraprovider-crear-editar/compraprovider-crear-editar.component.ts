@@ -193,9 +193,9 @@ turnos:any;
 
   ngOnInit() {
 
-    const roles = JSON.parse(localStorage.getItem('roles') ?? '');
-    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? '') || false;
-    const soporte = eval(localStorage.getItem('soporte') ?? '') || false;
+    const roles = JSON.parse(localStorage.getItem('roles') ?? '[]');
+    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? 'false') || false;
+    const soporte = eval(localStorage.getItem('soporte') ?? 'false') || false;
     this.tieneRolProduccion = (roles != null && roles.Produccion);
     this.turnoCaja = (roles != null && roles.TurnosCaja) || soporte;
     this.tieneRolEditarPrecios = (roles != null && roles.EditarPrecios) || soporte;

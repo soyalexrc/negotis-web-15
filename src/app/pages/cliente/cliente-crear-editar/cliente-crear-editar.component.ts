@@ -423,9 +423,9 @@ export class ClienteCrearEditarComponent implements OnInit {
 
     //
     //this.listaPrecServ.GetListaDefault(data).subscribe(data => { this.listaPrecios = data})
-    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? '');
-    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? '') || false;
-    const roles = JSON.parse(localStorage.getItem('roles') ?? '');
+    this.tieneRolCliente = JSON.parse(localStorage.getItem('RolCliente') ?? 'false');
+    const tieneRolClienteNegotis = eval(localStorage.getItem('RolClienteNegotis') ?? 'false') || false;
+    const roles = JSON.parse(localStorage.getItem('roles') ?? '[]');
     this.datosEsteticaHabilitado = (roles != null && roles.VisualizarDatosEstetica) || tieneRolClienteNegotis;
     this.verDatosTaller = (roles != null && roles.VisualizarDatosTaller) || tieneRolClienteNegotis;
     this.tieneRolEsconderDatosSucursal = (roles != null && roles.VisualizarDatosSucursal) || tieneRolClienteNegotis;
@@ -510,7 +510,7 @@ export class ClienteCrearEditarComponent implements OnInit {
             }
 
             loadingUsuSuc.close();
-            this.selectSucursal(this.sucursalGuardada.Id);
+            this.selectSucursal(this.sucursalGuardada?.Id);
           }, error => { console.log(error); loadingUsuSuc.close(); })
       }, error => { console.log(error); loadingSuc.close(); });
   }
